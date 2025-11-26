@@ -4,13 +4,17 @@
   <meta charset="UTF-8" />
   <title>손다현 포트폴리오</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- 🔒 검색 엔진에 노출 안 되게 -->
+  <meta name="robots" content="noindex, nofollow" />
+
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@200;400&display=swap" rel="stylesheet">
 
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
-      padding: 40px 60px 120px 60px; 
+      padding: 40px 60px 120px 60px;
       background: #ffffff;
       font-family: 'Noto Sans KR', sans-serif;
       color: #121212;
@@ -18,11 +22,18 @@
 
     a { text-decoration: none; color: inherit; }
 
+    /* 🔝 항상 상단에 고정되는 헤더 */
     header {
+      position: fixed;
+      top: 40px;         /* 위 여백 40px 유지 */
+      left: 60px;        /* 좌우 여백 60px */
+      right: 60px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       height: 40px;
+      background: #ffffff;
+      z-index: 100;
     }
 
     /* 왼쪽 헤더 */
@@ -52,22 +63,31 @@
     .nav {
       display: flex;
       align-items: center;
-      font-weight: 200;
       font-size: 14pt;
     }
 
     .nav a {
       margin-left: 22px;
+      font-weight: 200;
       transition: font-weight 0.2s ease;
     }
 
-    .nav a:hover { font-weight: 400; }
+    /* 마우스를 올렸을 때 진하게 */
+    .nav a:hover {
+      font-weight: 400;
+    }
 
+    /* ✅ 현재 페이지(선택된 메뉴)는 항상 진하게 유지 */
+    .nav a.active {
+      font-weight: 400;
+    }
+
+    /* 헤더가 fixed라서, 그 아래 컨텐츠와 간격 보정 */
     main {
       display: flex;
       flex-direction: column;
       align-items: center;
-      margin-top: 120px;
+      margin-top: 160px; /* 원래 120이었는데 헤더 빠진 만큼 +40 보정 */
     }
 
     .section-title {
@@ -104,11 +124,8 @@
 
     .slide.active { opacity: 1; }
 
-/* 화살표 버튼 */
 .arrow-btn {
-  position: absolute;   /* 🔥 fixed → absolute */
-  top: 50%;  /* 메인 이미지 높이 기준 세로 중앙 */
-  transform: translateY(-50%);
+  position: fixed; /* 페이지 기준 가로 위치 잡기 위해 fixed */
   background: none;
   border: none;
   font-size: 34px;
@@ -119,17 +136,16 @@
   color: #121212;
   opacity: 0.7;
   transition: opacity 0.2s ease;
-  z-index: 10;
+  z-index: 1000;
 }
 
-/* 페이지 끝 기준 60px */
-.arrow-prev {
-  left: 60px;   /* 슬라이더 밖으로 60px */
+.arrow-btn:hover {
+  opacity: 1;
 }
 
-.arrow-next {
-  right: 60px;  /* 슬라이더 밖으로 60px */
-}
+/* 페이지 양끝에서 60px */
+.arrow-prev { left: 60px; }
+.arrow-next { right: 60px; }
 
     /* 이미지 아래 캡션 */
     .caption {
@@ -150,11 +166,12 @@
       <div class="role">디자이너</div>
     </div>
 
+    <!-- 🔗 파일 이름 그대로 연결 + 홈 페이지라 홈에 active 클래스 -->
     <nav class="nav">
-      <a href="#home">홈</a>
-      <a href="#profile">프로필</a>
-      <a href="#projects">프로젝트</a>
-      <a href="#contact">연락</a>
+      <a href="index.html" class="active">홈</a>
+      <a href="profile.html">프로필</a>
+      <a href="projects.html">프로젝트</a>
+      <a href="contact.html">연락</a>
     </nav>
   </header>
 
@@ -164,7 +181,6 @@
     <div class="slider-wrapper">
       <div class="slider" id="slider">
 
-        <!-- 🔥 Dropbox 변환 링크 완전 적용 -->
         <img class="slide active"
              src="https://dl.dropboxusercontent.com/scl/fi/24cwrkrnw4jlgkyqu9zrh/1_home_mainimage01_860x532px.jpg?rlkey=5cqh8k006x8ahi6zg0oy4cgnn&st=fblad150&dl=0"
              alt="메인 이미지 1">
@@ -178,11 +194,10 @@
              alt="메인 이미지 3">
 
       </div>
-    </div>
 
-    <!-- 🔥 페이지 기준 화살표 -->
-    <button class="arrow-btn arrow-prev" id="prevBtn">&#8249;</button>
-    <button class="arrow-btn arrow-next" id="nextBtn">&#8250;</button>
+      <button class="arrow-btn arrow-prev" id="prevBtn">&#8249;</button>
+      <button class="arrow-btn arrow-next" id="nextBtn">&#8250;</button>
+    </div>
 
     <p class="caption">
       Son Dahyun– Design Portfolio<br>
@@ -223,8 +238,25 @@
 
       startAutoPlay();
     })();
+
+function updateArrowPosition() {
+  const slider = document.querySelector('.slider-wrapper');
+  const rect = slider.getBoundingClientRect(); 
+  const middleY = rect.top + rect.height / 2;
+
+  // 화살표 세로 위치 조정
+  document.querySelector('.arrow-prev').style.top = middleY + 'px';
+  document.querySelector('.arrow-next').style.top = middleY + 'px';
+}
+
+// 첫 로딩 시 적용
+updateArrowPosition();
+
+// 창 크기 바뀌면 자동 재계산
+window.addEventListener('resize', updateArrowPosition);
+window.addEventListener('scroll', updateArrowPosition);
+
+
   </script>
 </body>
 </html>
-
-

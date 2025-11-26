@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>손다현 포트폴리오 – 프로젝트</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- 검색 노출 방지 -->
+  <meta name="robots" content="noindex, nofollow" />
+
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@200;400&display=swap" rel="stylesheet">
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      padding: 40px 60px 120px 60px;
+      background: #ffffff;
+      font-family: 'Noto Sans KR', sans-serif;
+      color: #121212;
+    }
+
+    a { text-decoration: none; color: inherit; }
+
+    /* 고정 헤더 */
+    header {
+      position: fixed;
+      top: 40px;
+      left: 60px;
+      right: 60px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 40px;
+      background: #ffffff;
+      z-index: 100;
+    }
+
+    .left-header {
+      display: flex;
+      align-items: center;
+    }
+
+    .left-header .name {
+      font-weight: 400;
+      font-size: 22pt;
+    }
+
+    .left-header .divider {
+      width: 1px;
+      height: 12px;
+      background: #121212;
+      margin: 0 22px;
+    }
+
+    .left-header .role {
+      font-weight: 200;
+      font-size: 14pt;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      font-size: 14pt;
+    }
+
+    .nav a {
+      margin-left: 22px;
+      font-weight: 200;
+      transition: font-weight 0.2s ease;
+    }
+
+    .nav a:hover {
+      font-weight: 400;
+    }
+
+    .nav a.active {
+      font-weight: 400;
+    }
+
+    main {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 160px; /* 헤더 보정 */
+    }
+
+    .section-title {
+      font-weight: 400;
+      font-size: 22pt;
+      letter-spacing: 0.2em; /* 글자 간격 200 */
+    }
+
+    /* 전체 프로젝트 컨테이너 (필터바 + 썸네일 공통) */
+    .projects-container {
+      width: 100%;
+      max-width: 1300px; /* 420*3 + 20*2 = 1300 */
+      margin: 40px auto 0; /* 제목에서 아래로 40px */
+    }
+
+    /* ===== 필터 바 ===== */
+ .filter-bar {
+  position: relative;
+  height: 30px;
+  background: #eeeeee;
+  border-radius: 15px;
+  display: inline-flex;      /* 내용 길이에 맞춰 자동 폭 */
+  align-items: center;
+  overflow: hidden;
+}
+
+/* 버튼들을 담는 래퍼: 좌우 14px, 항목 간 28px */
+.filter-inner {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 26px;
+  margin: 0 14px;   /* 전체보기 왼쪽 14px, 컨셉 오른쪽 14px */
+  gap: 28px;        /* 항목 간 간격 28px */
+}
+
+
+    /* 검정 선택 바 */
+    .filter-pill {
+      position: absolute;
+      top: 2px;          /* 바 높이 30px → 위/아래 2px 남기고 26px */
+      left: 2px;         /* 전체보기 선택 시, 바 왼쪽으로부터 2px */
+      height: 26px;
+      width: 0;
+      background: #000000;
+      border-radius: 13px;
+      z-index: 0;
+      transition: left 0.25s ease, width 0.25s ease;
+    }
+
+    .filter-btn {
+      position: relative;
+      z-index: 1;
+      border: none;
+      background: none;
+      cursor: pointer;
+      padding: 0;              /* 글자 폭 그대로 사용 */
+      height: 26px;
+ line-height: 26px;   /* ⭐ 글자를 정확히 중앙에 맞춤 */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 14pt;
+      font-weight: 200;
+      color: #121212;
+      white-space: nowrap;
+    }
+
+ .filter-btn.active {
+  font-weight: 300;
+  color: #ffffff;  /* 검은 바 위에서 보이게 흰색으로 */
+}
+
+    /* ===== 썸네일 그리드 ===== */
+    .projects-grid {
+      margin-top: 40px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      /* 최대 3열, 나머지는 줄바꿈 */
+    }
+
+    .project-item {
+      flex: 0 0 auto;
+      width: 420px;        /* 기본 썸네일 너비 */
+      cursor: pointer;
+    }
+
+    .project-item img {
+      width: 100%;
+      height: auto;
+      display: block;
+      background: #cccccc;
+    }
+
+    /* 화면이 좁아질 때: 2열 / 1열로 줄이기 */
+    @media (max-width: 1300px) {
+      .projects-container {
+        padding-right: 0;
+        padding-left: 0;
+      }
+    }
+
+    @media (max-width: 900px) {
+      .project-item {
+        width: 420px;
+      }
+    }
+
+    @media (max-width: 500px) {
+      .project-item {
+        width: 100%;      /* 화면이 420px보다 작아지면 그때부터 축소 */
+      }
+
+      .filter-bar {
+        transform: scale(0.9); /* 너무 꽉 차면 살짝 줄이기 */
+        transform-origin: left;
+      }
+    }
+
+    /* ===== 모달 (썸네일 크게 보기) ===== */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 200;
+    }
+
+    .modal-overlay.open {
+      display: flex;
+    }
+
+    .modal-content {
+      max-width: 90vw;
+      max-height: 90vh;
+    }
+
+    .modal-content img {
+      max-width: 100%;
+      max-height: 100%;
+      display: block;
+    }
+
+    .modal-close {
+      position: fixed;
+      top: 20px;
+      right: 30px;
+      font-size: 24px;
+      color: #ffffff;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="left-header">
+      <div class="name">손다현</div>
+      <div class="divider"></div>
+      <div class="role">디자이너</div>
+    </div>
+
+    <nav class="nav">
+      <a href="index.html">홈</a>
+      <a href="profile.html">프로필</a>
+      <a href="projects.html" class="active">프로젝트</a>
+      <a href="contact.html">연락</a>
+    </nav>
+  </header>
+
+  <main>
+    <h1 class="section-title">프로젝트</h1>
+
+    <div class="projects-container">
+      <!-- 필터 바 -->
+      <div class="filter-bar" id="filterBar">
+        <div class="filter-pill" id="filterPill"></div>
+
+        <div class="filter-inner" id="filterInner">
+          <button class="filter-btn active" data-filter="all">전체보기</button>
+          <button class="filter-btn" data-filter="detail">상세페이지</button>
+          <button class="filter-btn" data-filter="package">패키지</button>
+          <button class="filter-btn" data-filter="logo">로고</button>
+          <button class="filter-btn" data-filter="banner">배너</button>
+          <button class="filter-btn" data-filter="concept">컨셉</button>
+        </div>
+      </div>
+
+      <!-- 썸네일 영역 -->
+      <div class="projects-grid" id="projectsGrid">
+        <!-- 긴 썸네일: 상세페이지 예시 (420 x 700) -->
+        <div class="project-item" data-category="detail">
+          <img src="https://dl.dropboxusercontent.com/scl/fi/1nvr95s4vvpqwy3obh917/700px.jpg?rlkey=nfh61m66s58gkzazv634inw20&st=t9yewtnr&dl=0"
+               alt="상세페이지 예시 1">
+        </div>
+
+        <!-- 정사각형 썸네일 (420 x 420) -->
+        <div class="project-item" data-category="package">
+          <img src="https://dl.dropboxusercontent.com/scl/fi/yeilxun7w4i8yarlheiku/420px.jpg?rlkey=0ih1qru1ps4w6sqosf17ekgu9&st=dnz6fwa3&dl=0"
+               alt="패키지 예시 1">
+        </div>
+
+        <div class="project-item" data-category="logo">
+          <img src="https://dl.dropboxusercontent.com/scl/fi/yeilxun7w4i8yarlheiku/420px.jpg?rlkey=0ih1qru1ps4w6sqosf17ekgu9&st=dnz6fwa3&dl=0"
+               alt="로고 예시 1">
+        </div>
+
+        <div class="project-item" data-category="banner">
+          <img src="https://dl.dropboxusercontent.com/scl/fi/1nvr95s4vvpqwy3obh917/700px.jpg?rlkey=nfh61m66s58gkzazv634inw20&st=t9yewtnr&dl=0"
+               alt="배너 예시 1">
+        </div>
+
+        <div class="project-item" data-category="concept">
+          <img src="https://dl.dropboxusercontent.com/scl/fi/yeilxun7w4i8yarlheiku/420px.jpg?rlkey=0ih1qru1ps4w6sqosf17ekgu9&st=dnz6fwa3&dl=0"
+               alt="컨셉 예시 1">
+        </div>
+
+        <div class="project-item" data-category="detail">
+          <img src="https://dl.dropboxusercontent.com/scl/fi/1nvr95s4vvpqwy3obh917/700px.jpg?rlkey=nfh61m66s58gkzazv634inw20&st=t9yewtnr&dl=0"
+               alt="상세페이지 예시 2">
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- 모달 -->
+  <div class="modal-overlay" id="modal">
+    <div class="modal-content">
+      <img src="" alt="큰 이미지" id="modalImage">
+    </div>
+    <div class="modal-close" id="modalClose">✕</div>
+  </div>
+
+  <script>
+    // === 필터 pill 위치/크기 계산 ===
+    function updateFilterPill(targetBtn) {
+      const pill = document.getElementById('filterPill');
+      const bar = document.getElementById('filterBar');
+      const inner = document.getElementById('filterInner');
+
+      const barRect = bar.getBoundingClientRect();
+      const innerRect = inner.getBoundingClientRect();
+      const btnRect = targetBtn.getBoundingClientRect();
+
+      const barWidth = barRect.width;
+      const textWidth = btnRect.width; // 패딩 0이라 거의 글자 폭
+
+      const filter = targetBtn.getAttribute('data-filter');
+      let left;
+      let width;
+
+      if (filter === 'all') {
+        // 전체보기: 바 왼쪽에서 2px 떨어져 시작
+        left = 2;
+        width = textWidth + 28; // 글자 + 좌우 14px
+      } else if (filter === 'concept') {
+        // 컨셉: 바 오른쪽에서 2px 남기고 끝나도록
+        width = textWidth + 28;
+        left = barWidth - 2 - width;
+      } else {
+        // 가운데 항목들: 글자 기준 좌우 14px
+        const textLeftInBar = btnRect.left - barRect.left;
+        left = textLeftInBar - 14;
+        width = textWidth + 28;
+      }
+
+      pill.style.left = left + 'px';
+      pill.style.width = width + 'px';
+    }
+
+    // === 필터 기능 ===
+    (function () {
+      const filterButtons = document.querySelectorAll('.filter-btn');
+      const items = document.querySelectorAll('.project-item');
+
+      function applyFilter(filter) {
+        items.forEach(item => {
+          const category = item.getAttribute('data-category');
+          if (filter === 'all' || category === filter) {
+            item.style.display = '';
+          } else {
+            item.style.display = 'none';
+          }
+        });
+      }
+
+      filterButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          filterButtons.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+
+          updateFilterPill(btn);
+
+          const filter = btn.getAttribute('data-filter');
+          applyFilter(filter);
+        });
+      });
+
+      window.addEventListener('load', () => {
+        const initialBtn = document.querySelector('.filter-btn.active');
+        if (initialBtn) updateFilterPill(initialBtn);
+      });
+
+      window.addEventListener('resize', () => {
+        const activeBtn = document.querySelector('.filter-btn.active');
+        if (activeBtn) updateFilterPill(activeBtn);
+      });
+    })();
+
+    // === 모달(썸네일 크게 보기) ===
+    (function () {
+      const modal = document.getElementById('modal');
+      const modalImage = document.getElementById('modalImage');
+      const modalClose = document.getElementById('modalClose');
+      const thumbs = document.querySelectorAll('.project-item img');
+
+      thumbs.forEach(img => {
+        img.addEventListener('click', () => {
+          modalImage.src = img.src;
+          modal.classList.add('open');
+        });
+      });
+
+      function closeModal() {
+        modal.classList.remove('open');
+      }
+
+      modalClose.addEventListener('click', closeModal);
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+      });
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeModal();
+      });
+    })();
+  </script>
+</body>
+</html>
