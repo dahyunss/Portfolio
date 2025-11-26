@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>손다현 포트폴리오</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@200;400&display=swap" rel="stylesheet">
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      padding: 40px 60px 120px 60px; 
+      background: #ffffff;
+      font-family: 'Noto Sans KR', sans-serif;
+      color: #121212;
+    }
+
+    a { text-decoration: none; color: inherit; }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 40px;
+    }
+
+    /* 왼쪽 헤더 */
+    .left-header {
+      display: flex;
+      align-items: center;
+    }
+
+    .left-header .name {
+      font-weight: 400;
+      font-size: 22pt;
+    }
+
+    .left-header .divider {
+      width: 1px;
+      height: 12px;
+      background: #121212;
+      margin: 0 22px;
+    }
+
+    .left-header .role {
+      font-weight: 200;
+      font-size: 14pt;
+    }
+
+    /* 오른쪽 네비 */
+    .nav {
+      display: flex;
+      align-items: center;
+      font-weight: 200;
+      font-size: 14pt;
+    }
+
+    .nav a {
+      margin-left: 22px;
+      transition: font-weight 0.2s ease;
+    }
+
+    .nav a:hover { font-weight: 400; }
+
+    main {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 120px;
+    }
+
+    .section-title {
+      font-weight: 400;
+      font-size: 22pt;
+      letter-spacing: 0.2em;
+    }
+
+    /* 슬라이더 */
+    .slider-wrapper {
+      margin-top: 40px;
+      position: relative;
+      width: 860px;
+      height: 532px;
+    }
+
+    .slider {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #e0e0e0;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transition: opacity 0.6s ease-in-out;
+    }
+
+    .slide.active { opacity: 1; }
+
+/* 화살표 버튼 */
+.arrow-btn {
+  position: absolute;   /* 🔥 fixed → absolute */
+  top: 50%;  /* 메인 이미지 높이 기준 세로 중앙 */
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  font-size: 34px;
+  font-weight: 200;
+  cursor: pointer;
+  padding: 12px;
+  line-height: 1;
+  color: #121212;
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+  z-index: 10;
+}
+
+/* 페이지 끝 기준 60px */
+.arrow-prev {
+  left: 60px;   /* 슬라이더 밖으로 60px */
+}
+
+.arrow-next {
+  right: 60px;  /* 슬라이더 밖으로 60px */
+}
+
+    /* 이미지 아래 캡션 */
+    .caption {
+      margin-top: 40px;
+      font-weight: 200;
+      font-size: 12pt;
+      text-align: center;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="left-header">
+      <div class="name">손다현</div>
+      <div class="divider"></div>
+      <div class="role">디자이너</div>
+    </div>
+
+    <nav class="nav">
+      <a href="#home">홈</a>
+      <a href="#profile">프로필</a>
+      <a href="#projects">프로젝트</a>
+      <a href="#contact">연락</a>
+    </nav>
+  </header>
+
+  <main id="home">
+    <h1 class="section-title">포트폴리오</h1>
+
+    <div class="slider-wrapper">
+      <div class="slider" id="slider">
+
+        <!-- 🔥 Dropbox 변환 링크 완전 적용 -->
+        <img class="slide active"
+             src="https://dl.dropboxusercontent.com/scl/fi/24cwrkrnw4jlgkyqu9zrh/1_home_mainimage01_860x532px.jpg?rlkey=5cqh8k006x8ahi6zg0oy4cgnn&st=fblad150&dl=0"
+             alt="메인 이미지 1">
+
+        <img class="slide"
+             src="https://dl.dropboxusercontent.com/scl/fi/day3yq1vpebptuir4pw6j/1_home_mainimage02_860x532px.jpg?rlkey=aqebit6lovoyd70dcriagx106&st=kuc711o7&dl=0"
+             alt="메인 이미지 2">
+
+        <img class="slide"
+             src="https://dl.dropboxusercontent.com/scl/fi/pm130emn8ahilmdeyvkwd/1_home_mainimage03_860x532px.jpg?rlkey=cwjmesyf42s6zgrhq9iadw4pv&st=ggbicrrd&dl=0"
+             alt="메인 이미지 3">
+
+      </div>
+    </div>
+
+    <!-- 🔥 페이지 기준 화살표 -->
+    <button class="arrow-btn arrow-prev" id="prevBtn">&#8249;</button>
+    <button class="arrow-btn arrow-next" id="nextBtn">&#8250;</button>
+
+    <p class="caption">
+      Son Dahyun– Design Portfolio<br>
+      Crafting Product Stories Through Design, Photography &amp; 3D Visualization
+    </p>
+  </main>
+
+  <script>
+    (function () {
+      const slides = document.querySelectorAll('.slide');
+      const prevBtn = document.getElementById('prevBtn');
+      const nextBtn = document.getElementById('nextBtn');
+
+      let current = 0;
+      const stayTime = 5000;
+      let timer = null;
+
+      function showSlide(index) {
+        slides[current].classList.remove('active');
+        current = (index + slides.length) % slides.length;
+        slides[current].classList.add('active');
+      }
+
+      function nextSlide() { showSlide(current + 1); }
+      function prevSlide() { showSlide(current - 1); }
+
+      function startAutoPlay() {
+        stopAutoPlay();
+        timer = setInterval(nextSlide, stayTime);
+      }
+
+      function stopAutoPlay() {
+        if (timer) clearInterval(timer);
+      }
+
+      nextBtn.addEventListener('click', () => { nextSlide(); startAutoPlay(); });
+      prevBtn.addEventListener('click', () => { prevSlide(); startAutoPlay(); });
+
+      startAutoPlay();
+    })();
+  </script>
+</body>
+</html>
+
+
