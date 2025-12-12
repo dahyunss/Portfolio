@@ -24,7 +24,6 @@
 
     /* 고정 헤더 */
     header {
-      position: fixed;
       top: 40px;
       left: 60px;
       right: 60px;
@@ -58,25 +57,30 @@
       font-size: 14pt;
     }
 
-    .nav {
-      display: flex;
-      align-items: center;
-      font-size: 14pt;
-    }
+.nav {
+  display: flex;
+  align-items: center;
+  font-size: 14pt;
+}
 
-    .nav a {
-      margin-left: 22px;
-      font-weight: 200;
-      transition: font-weight 0.2s ease;
-    }
+.nav a {
+  margin-left: 22px;
+  font-weight: 200;
+  color: #121212;
+  transition: color 0.2s ease;
+}
 
-    .nav a:hover {
-      font-weight: 400;
-    }
+/* 마우스 올렸을 때는 살짝 진하게만 */
+.nav a:hover {
+  color: #eb1d1d;
+}
 
-    .nav a.active {
-      font-weight: 400;
-    }
+/* 선택된 페이지(현재 페이지)는 빨간색으로 표시 */
+.nav a.active {
+  font-weight: 200;   /* 더 두꺼워지지 않게 유지 */
+  color: #eb1d1d;
+}
+
 
     main {
       display: flex;
@@ -157,27 +161,122 @@
   color: #ffffff;  /* 검은 바 위에서 보이게 흰색으로 */
 }
 
-    /* ===== 썸네일 그리드 ===== */
-    .projects-grid {
-      margin-top: 40px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 20px;
-      /* 최대 3열, 나머지는 줄바꿈 */
-    }
+.projects-grid {
+  margin-top: 40px;
+  column-width: 420px;   /* ✅ 한 컬럼 목표 폭 */
+  column-gap: 20px;
+}
 
-    .project-item {
-      flex: 0 0 auto;
-      width: 420px;        /* 기본 썸네일 너비 */
-      cursor: pointer;
-    }
+.project-item {
+  break-inside: avoid;  /* 항목이 중간에서 잘리지 않게 */
+  margin-bottom: 20px;  /* 각 썸네일 사이 간격 */
+  width: 100%;
+}
 
-    .project-item img {
-      width: 100%;
-      height: auto;
-      display: block;
-      background: #cccccc;
-    }
+@media (max-width: 1200px) {
+  .projects-grid { column-count: 2; }
+}
+
+@media (max-width: 700px) {
+  .projects-grid { column-count: 1; }
+}
+
+
+.project-item {
+  display: inline-block; /* ✅ column 레이아웃에서 필수급 */
+  width: 100%;
+  margin: 0 0 20px;
+  break-inside: avoid;
+  position: relative;
+  overflow: hidden;
+  border-radius: 15px;
+}
+
+.project-item img {
+  width: 100%;           /* ✅ 컬럼 폭에 맞게 줄어듦 */
+  height: auto;
+  display: block;
+  border-radius: 15px;
+}
+
+
+/* 전체 오버레이 */
+.project-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: background 0.25s ease, opacity 0.25s ease;
+}
+
+.project-overlay-card {
+  width: 100%;                /* ✔ 썸네일 가로 끝까지 */
+  max-width: none;            /* ✔ 제한 해제 */
+  height: 210px;              /* ✔ 높이는 유지 */
+  background: rgba(0,0,0,0.6);
+  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 0;           /* ✔ 라운딩 없음 */
+  
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+
+  /* 👉 라운딩 없애기 */
+  border-radius: 0;
+
+  /* 나타날 때 애니메이션용 */
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+/* 제목 */
+.project-title {
+  font-family: 'Noto Sans KR';
+  font-weight: 300;
+  font-size: 22pt;
+  color: #fff;
+  margin-bottom: 20px;
+}
+
+/* 20x1px 선 */
+.project-title-divider {
+  width: 20px;
+  height: 1px;
+  background: #fff;
+  margin-bottom: 20px;
+}
+
+/* 설명 */
+.project-desc {
+  font-family: 'Noto Sans KR';
+  font-weight: 100;
+  font-size: 14pt;
+  line-height: 20pt;
+  color: #fff;
+  text-align: center;
+}
+
+/* === Hover 동작 === */
+.project-item:hover .project-overlay {
+  background: rgba(0,0,0,0.6);
+  opacity: 1;
+}
+
+.project-item:hover .project-overlay-card {
+  opacity: 1;
+  transform: translateY(0);
+}
 
     /* 화면이 좁아질 때: 2열 / 1열로 줄이기 */
     @media (max-width: 1300px) {
@@ -187,11 +286,6 @@
       }
     }
 
-    @media (max-width: 900px) {
-      .project-item {
-        width: 420px;
-      }
-    }
 
     @media (max-width: 500px) {
       .project-item {
@@ -204,40 +298,350 @@
       }
     }
 
-    /* ===== 모달 (썸네일 크게 보기) ===== */
-    .modal-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.6);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 200;
-    }
+/* ===== 모달 기본 ===== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.9);
+  display: none;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 230px;   /* 위에서 230px 떨어뜨리기 */
+  overflow-y: auto;     /* 모달이 화면보다 길면 전체 페이지 스크롤 */
+  z-index: 9999; /* ★ 이거 추가 */
+}
 
-    .modal-overlay.open {
-      display: flex;
-    }
+/* PC, 일반 작업 이미지만 15px 라운딩 */
+.modal-image-pc,
+.modal-frame.normal .modal-image {
+  border-radius: 15px;
+}
 
-    .modal-content {
-      max-width: 90vw;
-      max-height: 90vh;
-    }
+/* 모바일 화면 안의 이미지는 라운딩 없음 (폰틀이 잘라줌) */
+.modal-image-mo {
+  border-radius: 0;
+}
 
-    .modal-content img {
-      max-width: 100%;
-      max-height: 100%;
-      display: block;
-    }
 
-    .modal-close {
-      position: fixed;
-      top: 20px;
-      right: 30px;
-      font-size: 24px;
-      color: #ffffff;
-      cursor: pointer;
-    }
+.modal-overlay.open {
+  display: flex;
+}
+
+/* 공통 회색 틀 */
+.modal-frame {
+  position: relative;
+  background: #e7e7e7;
+  border-radius: 16px;
+  padding: 70px;              /* 왼/오 70px, 위/아래 70px */
+  box-sizing: border-box;
+  margin: 0 auto;             /* 가운데 정렬 */
+}
+
+/* 상세페이지 – PC 보기: 틀 가로 1000px */
+.modal-frame.detail-pc {
+  width: 1000px;
+  max-width: calc(100% - 80px);   /* 화면이 좁아지면 같이 줄어듦 */
+}
+
+/* 상세페이지 MO 틀: 515 x (740+140) = 880 */
+.modal-frame.detail-mo {
+  width: 515px;
+  height: 880px;                  /* 세로 고정 (740 + 140) */
+  padding: 70px;
+  box-sizing: border-box;
+  border-radius: 16px;
+  background: #e7e7e7;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+
+/* PC / MO 각각의 뷰 박스 */
+.detail-pc-view {
+  width: 100%;
+  display: block;
+}
+
+.detail-mo-view {
+  width: 100%;
+  display: none;      /* 처음에는 안 보이게 → MO 버튼 누르면 보이게 */
+}
+
+/* 모바일 화면(기계 화면 크기) */
+.mobile-viewport {
+  width: 375px;
+  height: 740px;      /* 세로 고정 */
+  overflow: hidden;   /* 프레임 밖은 잘라내기 */
+  background: #000;
+  border-radius: 12px;
+}
+
+/* 프레임 안에서만 스크롤 */
+.mobile-scroll {
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+}
+
+/* PC용 이미지 */
+.modal-image-pc {
+  width: 100%;
+  max-width: 860px;   /* PC 기준 최대 860px */
+  height: auto;
+  display: block;
+}
+
+/* MO용 이미지 (세로 길어도 됨) */
+.modal-image-mo {
+  width: 100%;        /* 375px에 맞춰 줄어듦 */
+  height: auto;
+  display: block;
+}
+
+
+/* 패키지/로고/배너/컨셉 등 일반 작업: 틀 1300, 안쪽 1160 */
+.modal-frame.normal {
+  width: 1300px;
+  max-width: calc(100% - 80px);   /* 화면 줄어들면 1300 이하로 같이 줄어듦 */
+}
+
+/* 회색 틀 안의 이미지 공통 */
+.modal-image {
+  display: block;
+  width: 100%;                    /* 회색 틀 안에서 가로 꽉 채우고 */
+  height: auto;
+  background: #888888;            /* 테스트용 회색, 실 이미지 넣으면 안 보임 */
+  margin: 0 auto;                 /* 가운데 정렬 */
+  max-width: 1160px;              /* 일반 작업(normal)일 때 최대 1160px */
+}
+
+/* 상세페이지일 때는 최대 860px로 제한 (좌우 여백 70px 유지) */
+.modal-frame.detail-pc .modal-image,
+.modal-frame.detail-mo .modal-image {
+  max-width: 860px;
+}
+
+
+/* ✅ 상세 PC : 이미지 폭 정확히 860px */
+.modal-frame.detail-pc .modal-image {
+  width: 860px;
+  max-width: 100%;
+  height: auto;
+}
+
+/* ✅ 상세 MO : 이미지 375 x 최대 740px */
+.modal-frame.detail-mo .modal-image {
+  width: 375px;
+  max-width: 100%;
+  height: auto;
+  max-height: 740px;
+}
+
+/* ✅ 일반 작업 : 이미지 폭 1160px */
+.modal-frame.normal .modal-image {
+  width: 1160px;
+  max-width: 100%;
+  height: auto;
+}
+
+/* PC / MO 아이콘 영역 */
+.modal-toolbar {
+  position: absolute;
+  top: 40px;
+  left: 40px;
+  display: flex;
+  gap: 40px;
+  align-items: center;
+}
+
+.view-btn {
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  opacity: 0.4;          /* 기본 40% */
+}
+
+.view-btn.active {
+  opacity: 1;            /* 선택된 아이콘은 100% */
+}
+
+/* 닫기 버튼 */
+.modal-close-btn {
+  position: absolute;
+  top: 40px;
+  right: 40px;
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+/* 좁은 화면에서 일반 작업 틀 대응용 */
+@media (max-width: 900px) {
+  .modal-frame.normal {
+    width: 100%;
+    margin: 230px 20px 0 20px;
+  }
+}
+
+
+/* 모드별 이미지 크기 ---------------------- */
+/* 상세페이지 PC : 안쪽 860px */
+.modal-frame.detail-pc .modal-image {
+  width: 860px;
+  max-width: 860px;
+  height: auto;          /* 세로는 비율대로 */
+}
+
+/* 상세페이지 MO : 375 x 740 */
+.modal-frame.detail-mo .modal-image {
+  width: 375px;
+  height: 740px;         /* 고정 높이 */
+}
+
+/* 일반 작업 : 1160px */
+.modal-frame.normal .modal-image {
+  width: 1160px;
+  max-width: 1160px;
+  height: auto;
+}
+
+/* PC / MO 아이콘 : 회색 틀 기준 왼쪽에 맞추고, 위로 40px 띄우기 */
+.modal-toolbar {
+  position: absolute;
+  /* 아이콘 높이 60px, 틀 위에서 40px 떨어지게 하기 위해 -100px */
+  top: -100px;        /* 아이콘 아랫부분이 회색 틀 윗선보다 40px 위에 옴 */
+  left: 0;            /* 회색 틀의 왼쪽에 딱 맞춤 */
+  display: flex;
+  gap: 40px;          /* PC–MO 사이 간격 40px */
+  align-items: center;
+}
+
+.view-btn {
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  opacity: 0.4;           /* 기본 40% */
+}
+
+.view-btn.active {
+  opacity: 1;             /* 선택된 건 100% */
+}
+
+/* 닫기 버튼 : 회색 틀 오른쪽으로 40px 바깥에 나오게 */
+.modal-close-btn {
+  position: absolute;
+  top: 0;          /* 회색 틀 윗선 근처에 정렬 */
+  right: -80px;    /* 틀의 오른쪽에서 40px 밖으로 나가게 */
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+
+/* 화면 좁을 때 일반 작업 틀 반응형 */
+@media (max-width: 900px) {
+  .modal-frame.normal {
+    width: 100%;
+    margin: 230px 20px 0 20px;
+  }
+}
+
+
+
+/* 썸네일 라운딩 */
+.project-item img {
+  border-radius: 15px;
+  display: block;
+}
+
+/* 오버레이 전체 */
+.project-item {
+  position: relative;
+  overflow: hidden;
+  border-radius: 15px;
+}
+
+.project-item .overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0); /* 기본 0% */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.25s ease;
+}
+
+.project-item:hover .overlay {
+  background: rgba(0,0,0,0.6);
+}
+
+/* 가운데 검정 박스 */
+.overlay-inner {
+  background: rgba(0, 0, 0, 0.6);
+  width: 420px;
+  max-width: 90%;
+  height: 210px;
+  border-radius: 10px;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  padding: 30px 20px;
+}
+
+.project-item:hover .overlay-inner {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* 텍스트 스타일 */
+.project-title {
+  font-family: 'Noto Sans KR';
+  font-weight: 300;
+  font-size: 22pt;
+  color: #ffffff;
+  margin-bottom: 20px;
+}
+
+.line {
+  width: 20px;
+  height: 1px;
+  background: #ffffff;
+  margin: 0 auto 20px auto;
+}
+
+.project-desc {
+  font-family: 'Noto Sans KR';
+  font-weight: 100;
+  font-size: 14pt;
+  color: #ffffff;
+  line-height: 20pt;
+}
+
+.modal-frame.detail-pc .modal-image-pc {
+  width: 100%;
+  max-width: 860px;
+  height: auto;
+}
+
+.modal-frame.detail-mo .modal-image-mo {
+  width: 100%;
+  max-width: 375px;
+  height: auto;
+}
+
+.modal-frame {
+  margin-bottom: 230px; /* 회색틀 아래 여백 */
+}
+
+
+
   </style>
 </head>
 
@@ -278,10 +682,107 @@
       <!-- 썸네일 영역 -->
       <div class="projects-grid" id="projectsGrid">
         <!-- 긴 썸네일: 상세페이지 예시 (420 x 700) -->
-        <div class="project-item" data-category="detail">
-          <img src="https://dl.dropboxusercontent.com/scl/fi/1nvr95s4vvpqwy3obh917/700px.jpg?rlkey=nfh61m66s58gkzazv634inw20&st=t9yewtnr&dl=0"
-               alt="상세페이지 예시 1">
-        </div>
+
+<!-- 여기서부터 프로젝트 등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록 -->
+
+
+<!-- 프린트 - 상세페이지 (이미지 2장) -->
+<div class="project-item"
+     data-category="detail"
+     data-type="detail"
+     data-detail="
+       https://dl.dropboxusercontent.com/scl/fi/rr44ng8h3cwgfjx2gkvzx/01.jpg?rlkey=stjahd4l6khnft668r0dvji6n&st=nqekxl6v&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/84lkgpc81y6xbe6l7y87f/02.jpg?rlkey=mtiw1r0oegbviw122fxayhp9n&st=q6kr4c7y&dl=0 ">
+  <!-- 프린트 - 썸네일 -->
+  <img src="https://dl.dropboxusercontent.com/scl/fi/kpkpazr0ulvc7c7bf7046/Thumbnail.jpg?rlkey=iqveqita7wwl71ec0kta3hv6m&st=zmsfo9ab&dl=0" alt="프린트 - 상세페이지 썸네일"/>
+  <!-- 프린트 - 오버레이 -->
+  <div class="project-overlay">
+    <div class="project-overlay-card">
+      <div class="project-title">프린트 상세페이지</div>
+      <div class="project-title-divider"></div>
+      <div class="project-desc">
+        제품 리서치 · 상세페이지 기획 · 디자인 제작<br>
+        기여도 100% 
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- 화이완리 - 상세페이지 (이미지 2장) -->
+<div class="project-item"
+     data-category="detail"
+     data-type="detail"
+     data-detail="
+       https://dl.dropboxusercontent.com/scl/fi/v94ucd3kspjzdz1ztueyk/01.jpg?rlkey=w7nkivsax3xtl0ylkvv6b8cas&st=k9fbhgej&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/x5zq4dz5hpsoqvlqwknhw/02.jpg?rlkey=6n5o6wnmo50xfzh20ikjc8kxg&st=fm2a8wce&dl=0 ">
+  <!-- 화이완리 - 썸네일 -->
+  <img src="https://dl.dropboxusercontent.com/scl/fi/92w0d2uzcxfh1xqtcyntw/Thumbnail.jpg?rlkey=h50uobay0yxcsjvktpan8syq7&st=r8qci625&dl=0" alt="화이완리 - 상세페이지 썸네일" />
+  <!-- 화이완리 - 오버레이 -->
+  <div class="project-overlay">
+    <div class="project-overlay-card">
+      <div class="project-title">화이완리 상세페이지</div>
+      <div class="project-title-divider"></div>
+      <div class="project-desc">
+        제품 리서치 · 상세페이지 기획 · 디자인 제작<br>
+        기여도 100% 
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- 고양이와 일요일 - 상세페이지 (이미지 2장) -->
+<div class="project-item"
+     data-category="detail"
+     data-type="detail"
+     data-detail="
+       https://dl.dropboxusercontent.com/scl/fi/majmzq473y8rp8p3llgyv/01.jpg?rlkey=8end4ihkgl6bkq9kzys7yd74x&st=m7nggxly&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/2mfsa3c69w1qmg99vwvqh/02.jpg?rlkey=hn1syqxb89k8f9ycxer6zbwy0&st=e7dro47w&dl=0 ">
+  <!-- 고양이와 일요일 - 썸네일 -->
+  <img src="https://dl.dropboxusercontent.com/scl/fi/zes4fgnrs5sfwryhojam7/Thumbnail.jpg?rlkey=94bh9gchkwt8ftuvnr6pit5yo&st=wyfortde&dl=0" alt="고양이와 일요일 - 상세페이지 썸네일" />
+  <!-- 고양이와 일요일 - 오버레이 -->
+  <div class="project-overlay">
+    <div class="project-overlay-card">
+      <div class="project-title">고양이와 일요일 상세페이지</div>
+      <div class="project-title-divider"></div>
+      <div class="project-desc">
+        제품 리서치 · 상세페이지 기획 · 디자인 제작<br>
+        기여도 100% 
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- 아이린도 린카접시 - 상세페이지 (이미지 7장) -->
+<div class="project-item"
+     data-category="detail"
+     data-type="detail"
+     data-detail="
+       https://dl.dropboxusercontent.com/scl/fi/diqzmlwc5fb9dc0sx3igr/01.jpg?rlkey=pb8emdocw2q1vdvo3p7h6pggh&st=8kd35dvf&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/sck659y5u6jdvvx2ei4mx/02_860px.gif?rlkey=4drjebje92cknpkl7aif3sb19&st=wpmodsdw&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/h2eyje18vydoqu9b07e4q/03.jpg?rlkey=xblzezwqhustsyzv9ab72u575&st=fipm54sa&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/2q3roo11jjo6gv47cgq30/04.jpg?rlkey=6701r86unw9kj6sg67kkstrw3&st=zz0j0uz6&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/uhkdjj4glmtwpj2p3sflj/05_600px.gif?rlkey=2i2i43yhtmchn8f89rlfjc963&st=7lwt24oa&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/fupu0uf848m6eyhftfq9q/06.jpg?rlkey=lds8njjqxm68dqwvoianbl8dd&st=0sxnheng&dl=0 ">
+  <!-- 아이린도 린카접시 - 썸네일 -->
+  <img src="https://dl.dropboxusercontent.com/scl/fi/eu3xxrwg3g6rwuikcyydh/Thumbnail.jpg?rlkey=i0sb71tka8dt90ahd7a5hkdj6&st=t4dc0luz&dl=0" alt="아이린도 린카접시 - 상세페이지 썸네일"/>
+  <!-- 아이린도 린카접시 - 오버레이 -->
+  <div class="project-overlay">
+    <div class="project-overlay-card">
+      <div class="project-title">린카접시 상세페이지</div>
+      <div class="project-title-divider"></div>
+      <div class="project-desc">
+        제품 리서치 · 상세페이지 기획 · 디자인 제작<br>
+        기여도 100% 
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
 
         <!-- 정사각형 썸네일 (420 x 420) -->
         <div class="project-item" data-category="package">
@@ -308,17 +809,17 @@
           <img src="https://dl.dropboxusercontent.com/scl/fi/1nvr95s4vvpqwy3obh917/700px.jpg?rlkey=nfh61m66s58gkzazv634inw20&st=t9yewtnr&dl=0"
                alt="상세페이지 예시 2">
         </div>
+
+
+<!-- 여기서부터 프로젝트 마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리 -->
+
       </div>
     </div>
   </main>
 
-  <!-- 모달 -->
-  <div class="modal-overlay" id="modal">
-    <div class="modal-content">
-      <img src="" alt="큰 이미지" id="modalImage">
-    </div>
-    <div class="modal-close" id="modalClose">✕</div>
-  </div>
+  <!-- 모달 (내용은 JS에서 채움) -->
+  <div class="modal-overlay" id="modal"></div>
+
 
   <script>
     // === 필터 pill 위치/크기 계산 ===
@@ -396,32 +897,189 @@
       });
     })();
 
-    // === 모달(썸네일 크게 보기) ===
+    // === 모달(썸네일 크게 보기) – 상세/일반 분리 ===
     (function () {
       const modal = document.getElementById('modal');
-      const modalImage = document.getElementById('modalImage');
-      const modalClose = document.getElementById('modalClose');
-      const thumbs = document.querySelectorAll('.project-item img');
+      const items = document.querySelectorAll('.project-item');
 
-      thumbs.forEach(img => {
-        img.addEventListener('click', () => {
-          modalImage.src = img.src;
-          modal.classList.add('open');
-        });
-      });
+      // 아이콘 SVG들 (그대로 복붙)
+      const PC_ICON = `
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="70px" height="60px">
+<image x="0px" y="0px" width="70px" height="60px" xlink:href="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEYAAAA8CAMAAADsSTwRAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAACFlBMVEX19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//////hmBbaAAAAsHRSTlMAAy5QV1VWSRlMxtu9vr/B6ZSc0IxUWVq0x7WIGECwqnIznnodO6KrbAYlm6a7n4+QrqTf3MnOzcvn0ahfQUdGQ0R3sm4UBBUQeRwxi3EIOhcNKSEynZckUbfTdmZ0eGpldTmt5eHd3ujy7vHiEzQ/NaWHOOBpNz4BBTARYe1CG8C2CewK14ESymPqxD3kLV0OJkUHhSKs9GDzayrmDAJohnvZfH1+mf0PS/n16/r8768iMsUAAAABYktHRLE0Y55SAAAAB3RJTUUH6QwEDgoYVBDHagAAAfxJREFUWMNjYGRiZmGlCLCxczAycHJx8/DyUQB4+QUEORmEhEVExcQpAGJsEpJCDFLSMgwUAlk5KQZ5BQ5KjVFUkmeQV1ah1BhVtVFjRo0ZNWbUmFFjRo0ZNWbUmEFkjLqGJqXGaGmrM+jo6unjBwYGBBQY8uswGBmbmJrhA+YWFnjlzSwsrYwYrJVsbO3wAXsHR7zydg5OztYM8i6u+H3u5u5BIGyYhIAx5emFX5G3j68ffhX+oJhSCMCvKDAomIBrQkLVGaTCwimN8IhIKQaDKCOXaCdsQCPGBURFx8YCybjY+ASFOGzKEmO5+A0YkpJTUtPSsQDujEwBhERaalZ2DlZ16Tk5ykkMDLl5DrL5WEBBYVqRP5xXLGpYUlpWjkWdrG0QKB9UuFViBRVqFlUIKbfqmto6RuwqGfEFXH1DYxNKtDa7tJAR/r6tbSh8GV4eRdJNae9oyEMRqOzs8qwk1ZQWXwFPVJGK3G4uWxJNYezpde5DF+xPTZ5AmjETeUsmYUTAZH2BKSSZMnXa9BlYosWrcOYsEkyZXZhW6obVkWrGGk1EGMAYmOuRq2o9x8Bvrkc1JphX1p0eN3uCR3vTPLzGhM9fsHBK1IZFi30XL8EES51ily3f4Ky8ZCnzCrzGrORa1bx6Q2bvnFqsIGtNiuXaddnru0LRaiUAiYQdtw6IMCYAAAAASUVORK5CYII=" />
+</svg>`;
+
+      const MO_ICON = `
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="34px" height="60px">
+<image x="0px" y="0px" width="34px" height="60px" xlink:href="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAACIAAAA8CAMAAAA0RZgbAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAABC1BMVEX19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19/////9arr+NAAAAWHRSTlMAOrPt6+nMUhe3u4JgZ2bJr3PzexMBBQR6xa7uVlC2tOpkA1xjDQsPHx4gEhZpCHHf2NXX5IgKKycCMGJfYWVdWFG1svV0cMSxw2tHT05NvH1Mvebc294hD8udVAAAAAFiS0dEWO21xI4AAAAHdElNRQfpDAQOCgEwe2+qAAAAuElEQVRIx+3VxxbBUBSF4UN00UWIFkQneolEi9477/8mwlpG3OsF7j/+BmePDuj0lMGIjDKZLWC12WkHKqfT5faA1+dnAsjYYIiDcARwRWNx4BNJHElZOeCFD0mmM0w2l9cqFBGkVKbFSrVWrzeaLfY3aXe6Uk+WFaU/0DG/ySuGfe+QAE3+nEsIIYQQQggh3wT/+IYaoUY4AWN1AtOZiCPzxRJW+vVmi2q3P6hHOJ0vV2S3e014PAHoEkeE3ICOfgAAAABJRU5ErkJggg==" />
+</svg>`;
+
+      const CLOSE_ICON = `
+<svg xmlns="http://www.w3.org/2000/svg" width="43.5px" height="43.5px">
+<path fill-rule="evenodd" stroke="rgb(255, 255, 255)" stroke-width="1px" fill="none"
+ d="M1.500,1.500 L41.500,1.500 L41.500,41.500 L1.500,41.500 L1.500,1.500 Z"/>
+<path fill-rule="evenodd" stroke="rgb(235, 29, 29)" stroke-width="1px" fill="rgb(235, 29, 29)"
+ d="M13.926,14.421 L14.688,13.659 L29.920,28.890 L29.159,29.651 L13.926,14.421 Z"/>
+<path fill-rule="evenodd" stroke="rgb(235, 29, 29)" stroke-width="1px" fill="rgb(235, 29, 29)"
+ d="M28.956,13.659 L29.717,14.421 L14.485,29.651 L13.723,28.890 L28.956,13.659 Z"/>
+</svg>`;
 
       function closeModal() {
         modal.classList.remove('open');
+        modal.innerHTML = '';
       }
 
-      modalClose.addEventListener('click', closeModal);
-      modal.addEventListener('click', (e) => {
-        if (e.target === modal) closeModal();
-      });
-      window.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') closeModal();
-      });
+// 상세페이지용 모달
+function openDetailModal(detailSrcList) {
+  // 혹시 문자열이 넘어오면 배열로 변환
+  if (!Array.isArray(detailSrcList)) {
+    detailSrcList = [detailSrcList];
+  }
+
+  // PC용 이미지들 HTML
+  const pcImagesHtml = detailSrcList
+    .map(src => `<img src="${src}" alt="상세페이지" class="modal-image-pc">`)
+    .join('');
+
+  // MO용 이미지들 HTML
+  const moImagesHtml = detailSrcList
+    .map(src => `<img src="${src}" alt="상세페이지 모바일" class="modal-image-mo">`)
+    .join('');
+
+  modal.innerHTML = `
+    <div class="modal-frame detail-pc">
+      <div class="modal-toolbar">
+        <button class="view-btn view-pc active" title="PC 화면 기준으로 보기">
+          ${PC_ICON}
+        </button>
+        <button class="view-btn view-mo" title="모바일 화면 기준으로 보기">
+          ${MO_ICON}
+        </button>
+      </div>
+
+      <button class="modal-close-btn" aria-label="닫기">
+        ${CLOSE_ICON}
+      </button>
+
+      <!-- PC 모드 뷰 : 여러 장 붙이기 -->
+      <div class="detail-pc-view">
+        ${pcImagesHtml}
+      </div>
+
+      <!-- MO 모드 뷰 : 여러 장을 세로로 쭉, 안에서 스크롤 -->
+      <div class="detail-mo-view">
+        <div class="mobile-viewport">
+          <div class="mobile-scroll">
+            ${moImagesHtml}
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+
+  modal.classList.add('open');
+
+  const frame     = modal.querySelector('.modal-frame');
+  const pcBtn     = modal.querySelector('.view-pc');
+  const moBtn     = modal.querySelector('.view-mo');
+  const closeBtn  = modal.querySelector('.modal-close-btn');
+  const pcView    = modal.querySelector('.detail-pc-view');
+  const moView    = modal.querySelector('.detail-mo-view');
+
+  function setPC() {
+    frame.classList.add('detail-pc');
+    frame.classList.remove('detail-mo');
+    pcBtn.classList.add('active');
+    moBtn.classList.remove('active');
+    pcView.style.display = 'block';
+    moView.style.display = 'none';
+  }
+
+  function setMO() {
+    frame.classList.add('detail-mo');
+    frame.classList.remove('detail-pc');
+    moBtn.classList.add('active');
+    pcBtn.classList.remove('active');
+    pcView.style.display = 'none';
+    moView.style.display = 'block';
+  }
+
+  pcBtn.addEventListener('click', setPC);
+  moBtn.addEventListener('click', setMO);
+  closeBtn.addEventListener('click', closeModal);
+
+  // 배경 클릭 시 닫기
+  modal.addEventListener(
+    'click',
+    function onBg(e) {
+      if (e.target === modal) closeModal();
+    },
+    { once: true }
+  );
+
+  // ESC 닫기
+  window.addEventListener('keydown', function onEsc(e) {
+    if (e.key === 'Escape') {
+      closeModal();
+      window.removeEventListener('keydown', onEsc);
+    }
+  });
+}
+
+
+      // 일반 작업(패키지, 로고 등) 모달
+      function openNormalModal(src) {
+        modal.innerHTML = `
+          <div class="modal-frame normal">
+            <button class="modal-close-btn" aria-label="닫기">
+              ${CLOSE_ICON}
+            </button>
+            <img src="${src}" alt="프로젝트 이미지" class="modal-image">
+          </div>
+        `;
+
+        modal.classList.add('open');
+
+        const closeBtn = modal.querySelector('.modal-close-btn');
+        closeBtn.addEventListener('click', closeModal);
+
+        modal.addEventListener('click', function onBg(e) {
+          if (e.target === modal) closeModal();
+        }, { once: true });
+
+        window.addEventListener('keydown', function onEsc(e) {
+          if (e.key === 'Escape') {
+            closeModal();
+            window.removeEventListener('keydown', onEsc);
+          }
+        });
+      }
+
+      // 썸네일 클릭 핸들러
+items.forEach(item => {
+  item.addEventListener('click', () => {
+    const type = item.dataset.type || (item.dataset.category === 'detail' ? 'detail' : 'normal');
+
+    if (type === 'detail') {
+      // 1) data-detail 읽기
+      const raw = item.dataset.detail || item.querySelector('img').src;
+
+      // 2) 콤마로 나눠서 배열로 만들기 (공백 제거)
+      const detailList = raw
+        .split(',')
+        .map(s => s.trim())
+        .filter(s => s.length > 0);
+
+      openDetailModal(detailList); // 배열 넘기기
+    } else {
+      const src = item.dataset.full || item.querySelector('img').src;
+      openNormalModal(src);
+    }
+  });
+});
+
     })();
+
   </script>
 </body>
 </html>
+
