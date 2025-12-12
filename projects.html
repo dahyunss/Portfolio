@@ -318,7 +318,7 @@
 }
 
 /* 모바일 화면 안의 이미지는 라운딩 없음 (폰틀이 잘라줌) */
-.modal-image-mo {
+.modal-image-mo { 
   border-radius: 0;
 }
 
@@ -377,6 +377,30 @@
   background: #000;
   border-radius: 12px;
 }
+
+/* ✅ PC도 모바일처럼 "프레임 안에서만" 스크롤 되게 */
+.pc-viewport {
+  width: 860px;          /* PC 가로 기준 */
+  max-width: 100%;       /* 화면 줄면 같이 줄어듦 */
+  height: min(1040px, calc(100vh - 160px));
+  overflow: hidden;      /* 바깥 잘라내기 */
+  background: #fff;
+  border-radius: 12px;   /* 필요없으면 0으로 */
+}
+
+.pc-scroll {
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;      /* ✅ 스크롤은 여기서만 */
+}
+
+/* PC 안의 이미지: 가로 100%로 박스에 맞춤 */
+.modal-image-pc {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
 
 /* 프레임 안에서만 스크롤 */
 .mobile-scroll {
@@ -640,6 +664,10 @@
   margin-bottom: 230px; /* 회색틀 아래 여백 */
 }
 
+/* ✅ 모달 열리면 뒤(썸네일 페이지) 스크롤 잠금 */
+body.modal-open {
+  overflow: hidden;
+}
 
 
   </style>
@@ -691,10 +719,10 @@
      data-category="detail"
      data-type="detail"
      data-detail="
-       https://dl.dropboxusercontent.com/scl/fi/rr44ng8h3cwgfjx2gkvzx/01.jpg?rlkey=stjahd4l6khnft668r0dvji6n&st=nqekxl6v&dl=0,
-       https://dl.dropboxusercontent.com/scl/fi/84lkgpc81y6xbe6l7y87f/02.jpg?rlkey=mtiw1r0oegbviw122fxayhp9n&st=q6kr4c7y&dl=0 ">
+       img src="assets/project/DetailPage_Print/01.jpg",
+       img src="assets/project/DetailPage_Print/02.jpg"">
   <!-- 프린트 - 썸네일 -->
-  <img src="https://dl.dropboxusercontent.com/scl/fi/kpkpazr0ulvc7c7bf7046/Thumbnail.jpg?rlkey=iqveqita7wwl71ec0kta3hv6m&st=zmsfo9ab&dl=0" alt="프린트 - 상세페이지 썸네일"/>
+  <img src="img src="assets/project/DetailPage_Print/Print_main.jpg" alt="프린트 - 상세페이지 썸네일"/>
   <!-- 프린트 - 오버레이 -->
   <div class="project-overlay">
     <div class="project-overlay-card">
@@ -923,10 +951,39 @@
  d="M28.956,13.659 L29.717,14.421 L14.485,29.651 L13.723,28.890 L28.956,13.659 Z"/>
 </svg>`;
 
-      function closeModal() {
-        modal.classList.remove('open');
-        modal.innerHTML = '';
-      }
+function closeModal() {
+  modal.classList.remove('open');
+  modal.innerHTML = '';
+  unlockBodyScroll();   // ✅ 추가
+}
+
+
+function lockBodyScroll() {
+  const scrollY = window.scrollY || document.documentElement.scrollTop;
+  document.body.dataset.scrollY = String(scrollY);
+
+  document.body.classList.add('modal-open');
+  document.body.style.position = 'fixed';
+  document.body.style.top = `-${scrollY}px`;
+  document.body.style.left = '0';
+  document.body.style.right = '0';
+  document.body.style.width = '100%';
+}
+
+function unlockBodyScroll() {
+  const scrollY = parseInt(document.body.dataset.scrollY || '0', 10);
+
+  document.body.classList.remove('modal-open');
+  document.body.style.position = '';
+  document.body.style.top = '';
+  document.body.style.left = '';
+  document.body.style.right = '';
+  document.body.style.width = '';
+  delete document.body.dataset.scrollY;
+
+  window.scrollTo(0, scrollY);
+}
+
 
 // 상세페이지용 모달
 function openDetailModal(detailSrcList) {
@@ -960,10 +1017,15 @@ function openDetailModal(detailSrcList) {
         ${CLOSE_ICON}
       </button>
 
-      <!-- PC 모드 뷰 : 여러 장 붙이기 -->
-      <div class="detail-pc-view">
-        ${pcImagesHtml}
-      </div>
+<!-- PC 모드 뷰 : 모바일처럼 "고정 박스 + 내부 스크롤" -->
+<div class="detail-pc-view">
+  <div class="pc-viewport">
+    <div class="pc-scroll">
+      ${pcImagesHtml}
+    </div>
+  </div>
+</div>
+
 
       <!-- MO 모드 뷰 : 여러 장을 세로로 쭉, 안에서 스크롤 -->
       <div class="detail-mo-view">
@@ -976,7 +1038,9 @@ function openDetailModal(detailSrcList) {
     </div>
   `;
 
-  modal.classList.add('open');
+lockBodyScroll();  // ✅ 추가
+modal.classList.add('open');
+
 
   const frame     = modal.querySelector('.modal-frame');
   const pcBtn     = modal.querySelector('.view-pc');
@@ -1037,7 +1101,11 @@ function openDetailModal(detailSrcList) {
           </div>
         `;
 
-        modal.classList.add('open');
+
+
+lockBodyScroll();  // ✅ 추가
+modal.classList.add('open');
+
 
         const closeBtn = modal.querySelector('.modal-close-btn');
         closeBtn.addEventListener('click', closeModal);
