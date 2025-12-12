@@ -24,7 +24,6 @@
 
     /* 🔝 항상 상단에 고정되는 헤더 */
     header {
-      position: fixed;
       top: 40px;         /* 위 여백 40px 유지 */
       left: 60px;        /* 좌우 여백 60px */
       right: 60px;
@@ -60,27 +59,30 @@
     }
 
     /* 오른쪽 네비 */
-    .nav {
-      display: flex;
-      align-items: center;
-      font-size: 14pt;
-    }
+ .nav {
+  display: flex;
+  align-items: center;
+  font-size: 14pt;
+}
 
-    .nav a {
-      margin-left: 22px;
-      font-weight: 200;
-      transition: font-weight 0.2s ease;
-    }
+.nav a {
+  margin-left: 22px;
+  font-weight: 200;
+  color: #121212;
+  transition: color 0.2s ease;
+}
 
-    /* 마우스를 올렸을 때 진하게 */
-    .nav a:hover {
-      font-weight: 400;
-    }
+/* 마우스 올렸을 때는 살짝 진하게(빨간색) */
+.nav a:hover {
+  color: #eb1d1d;
+}
 
-    /* ✅ 현재 페이지(선택된 메뉴)는 항상 진하게 유지 */
-    .nav a.active {
-      font-weight: 400;
-    }
+/* 선택된 페이지(현재 페이지)는 빨간색으로 표시 */
+.nav a.active {
+  font-weight: 200;
+  color: #eb1d1d;
+}
+
 
     /* 헤더가 fixed라서, 그 아래 컨텐츠와 간격 보정 */
     main {
