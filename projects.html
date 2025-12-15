@@ -311,11 +311,11 @@
   z-index: 9999; /* ★ 이거 추가 */
 }
 
-/* PC, 일반 작업 이미지만 15px 라운딩 */
-.modal-image-pc,
+/* ✅ 일반 작업(패키지/로고/배너 등)만 15px 라운딩 */
 .modal-frame.normal .modal-image {
   border-radius: 15px;
 }
+
 
 /* 모바일 화면 안의 이미지는 라운딩 없음 (폰틀이 잘라줌) */
 .modal-image-mo { 
@@ -714,15 +714,83 @@ body.modal-open {
 <!-- 여기서부터 프로젝트 등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록 -->
 
 
+<!-- 레브 - 상세페이지 (이미지 45장) -->
+<div class="project-item"
+     data-category="detail"
+     data-type="detail"
+     data-detail="
+       https://dl.dropboxusercontent.com/scl/fi/jaznqe3mmupw8dm5puc6p/01.jpg?rlkey=07go3wg8jgwwncdkqr4ppakvh&st=8bcpvzmk&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/iyvaa3tg17htx9ehy44kq/02_500px.gif?rlkey=ybkuazefrt3k8h58sftob1y02&st=wk11fmnd&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/psgetxnxswlzk42vbvroy/03.jpg?rlkey=wtdc75zp47qbwzqjrhd4tmj5w&st=vdr5385y&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/ephlhbvgd9ek1q7gc8hqu/04_400px.gif?rlkey=3b44tl6679e0cfjhvki937rv9&st=ycwhl44n&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/uekir82d6naxi8gfblmxe/05.jpg?rlkey=qza451labvy0mt38n59igsmwe&st=i263uomp&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/dfysz8lisiu4m05vjcwop/06.gif?rlkey=519rx0hqvc5j860nqd4te5vxe&st=4nkyfm19&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/hge1txfxn7uwcqfexqct7/07.jpg?rlkey=m6gytfubqu3tgil0qff8ykep8&st=gyf4crk0&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/2pzm4p8uw63ei6fsq4dac/08.gif?rlkey=3ekbeqhglzbxnw8590195kqos&st=diiv4my6&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/qpugtdrkqu9dzz57pp297/09.jpg?rlkey=vamjsllv3rcnleh333mqr1j5u&st=2rk9umc3&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/7ah0vg1etz1i7qifovzuo/10_500px.gif?rlkey=ge9wsj06llwafoc90zohuudt1&st=c9r8oj4p&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/vup7b7mi2bihntt50o68z/11.jpg?rlkey=qk0ptota5t4hs3auo14yqmz8v&st=up4fdyqt&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/71dq7j1ac5b6xdsl4oi8n/12_500px.gif?rlkey=jlzx0jj8q14cgobanm35pssuo&st=fmq1otj0&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/145j3vpbanaabozxagc21/13.jpg?rlkey=5vslwto3n85onfpzb8oxsu4l2&st=ng9e8mhj&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/t3girl43g9l4ei9vvz5se/14_500px.gif?rlkey=kng5j48nf20kh9487somd9jen&st=k6hnz34i&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/ff86zdreh80y90yi1iko8/15.jpg?rlkey=l2t2hm49p7i9pxj545zr7noc2&st=7qpu9apr&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/0x4w7m7ia8niu0le660as/16.jpg?rlkey=bcdbfq43c206v1orllv7ngs9j&st=kxwvi0bh&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/72kqybsja6ofbefz49wlk/17_500px.gif?rlkey=8eclx58tunytdp29xhfk0oegs&st=dxdxgne4&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/n92qo7vc87571shpzzmym/18.jpg?rlkey=8c9f5otp1bt792g7btdlwztub&st=njanpghl&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/mnz2tvroot6h16fn3ettb/19_500px.gif?rlkey=jy07bp1kylgfe8fae22haxqbh&st=9ew5jopm&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/l2f30xqbrlpvapi69anqj/20.jpg?rlkey=dbnivplb745175djf1qltx8at&st=drzn5v5s&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/kiavpp1xwdbhd0nw25bo6/21_500px.gif?rlkey=droa0bu4h2xjmmfjsmk333hb3&st=1hn26t0c&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/0njfd2h4cxo4b5se8ytvo/22.jpg?rlkey=g5f5vanwou2buk9lpy7n321pe&st=jm0jn0xc&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/gmf24mx1fubizsgy82tkq/23_500px.gif?rlkey=4g3iiu626v7xvglpt3ren3p1l&st=f5aqdzef&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/v48u4eb6fqf9tt81hx28j/24.jpg?rlkey=gzl0xeueu9a3yrz2xgwztmf08&st=px1977su&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/c69gwty2adve9fno03ckg/25_500px.gif?rlkey=d8eeytjyk5wb3xhosn61pwi2y&st=r283c65b&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/s9c8of563lf8f1891qfhj/26.jpg?rlkey=mw3rcx2f7e6t22dn7bz2zuf4z&st=g115m7ki&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/j0u0krkmexug7uz538b82/27_500px.gif?rlkey=bk77r4jboxp2td7j6p13v7w77&st=ghnu1kfh&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/zqkbhcz6i1dmg65q9s1l1/28.jpg?rlkey=kozu88wc9koi05kph2lf9pn1t&st=ka9s9co8&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/ieh965dwugnhjifmh8jfq/29_500px.gif?rlkey=or5mxim7zmpgf9tr6w9zj0lvu&st=e42xdo97&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/4co86x6qbrz71nr99an4t/30.jpg?rlkey=s4kelqxcj5pt9hc2a65xe40mv&st=69v4e5vp&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/mrniskzeh9gxiph5tebee/31_400px.gif?rlkey=txmglfbv4o31wh2s8wem5047f&st=5fwt5iov&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/yn27fkpw56ft281mwz98i/32.jpg?rlkey=to6r7wsovde3w84adensee4mu&st=igmfin2b&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/gd8omdue9vf0xdhahwup3/33_400px.gif?rlkey=ekl30mlgv79zwvtueo7p5zc8w&st=9vg9jxib&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/qosx9datly9tquw8ud0xl/34.jpg?rlkey=j8qui3aox7f5n8qrvg49c11em&st=5m1wo9md&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/pb92aor60b1avel8se1o4/35_500px.gif?rlkey=1tz1nt8ah4ud9kdyr0b5vlsib&st=chf2dque&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/kt4hnfv9yzyrjl8q5jt6w/36.jpg?rlkey=d61i4fcgs9smwkadtml98f94e&st=3wok56e0&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/ak0rkso0u1xzyxgqw3ti7/37_500px.gif?rlkey=eczjru6prwdipifgsastkd81v&st=f3a60jif&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/y11q9dk2c5l378zyqvjc0/38.jpg?rlkey=duuzax5s0ubx6hgjm8uki6w01&st=he2r36xr&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/1etl66shkfujm0zpqzpwf/39_500px.gif?rlkey=yaus22003wksuvh4bofjq26h5&st=vs8nn0vj&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/po0bmfbtmtbsqm16p7lyw/40.jpg?rlkey=bint8y6yabca7fn589qgkrygx&st=xdwb4mxd&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/l8kijglxck1j45v1vf7tu/41_500px.gif?rlkey=c52k6vufsildms314uq95l9re&st=k4yyzlmk&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/v5x0den46deklajcprgoy/41.jpg?rlkey=8eaedaf7znk8o2oaxp6gbozd6&st=cufyct5l&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/b0xtla3utusgk1qtisphq/42.jpg?rlkey=jaolsf3jkboavm45gjq36od70&st=up142zhx&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/1cavivsjjchkow3qf3una/43.jpg?rlkey=uz69lvrehnzu1njp5rjahia1w&st=fnmuwiet&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/rgbccer3f1lzxs6tlxnvv/44.jpg?rlkey=bm11ymkiagv6p2pmehweixrgc&st=od9b864g&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/5u28koc4uw9es6vki21zc/45.jpg?rlkey=9zcr1dlo7hssz8po1mpeje5kq&st=urx1l9l8&dl=0">
+  <!-- 레브 - 썸네일 -->
+  <img src="https://dl.dropboxusercontent.com/scl/fi/ut83r3nqjhb0yrxpddvvf/Thumbnail.jpg?rlkey=jie7ve59pm08c0y0u41erzjom&st=4ri4q6c5&dl=0" alt="레브 - 상세페이지 썸네일"/>
+  <!-- 레브 - 오버레이 -->
+  <div class="project-overlay">
+    <div class="project-overlay-card">
+      <div class="project-title">레브 상세페이지</div>
+      <div class="project-title-divider"></div>
+      <div class="project-desc">
+        촬영 기획 · 현장 핸들링 · 제품 리서치<br>
+        상세페이지 기획 · 디자인 제작<br>
+        기여도 100%
+      </div>
+    </div>
+  </div>
+</div>
+
+
 <!-- 프린트 - 상세페이지 (이미지 2장) -->
 <div class="project-item"
      data-category="detail"
      data-type="detail"
      data-detail="
-       assets/project/DetailPage_Print/01.jpg,
-       assets/project/DetailPage_Print/02.jpg ">
+       https://dl.dropboxusercontent.com/scl/fi/rr44ng8h3cwgfjx2gkvzx/01.jpg?rlkey=stjahd4l6khnft668r0dvji6n&st=nqekxl6v&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/84lkgpc81y6xbe6l7y87f/02.jpg?rlkey=mtiw1r0oegbviw122fxayhp9n&st=q6kr4c7y&dl=0 ">
   <!-- 프린트 - 썸네일 -->
-  <img src="assets/project/DetailPage_Print/Print_main.jpg" alt="프린트 상세페이지 썸네일"/>
+  <img src="https://dl.dropboxusercontent.com/scl/fi/kpkpazr0ulvc7c7bf7046/Thumbnail.jpg?rlkey=iqveqita7wwl71ec0kta3hv6m&st=zmsfo9ab&dl=0" alt="프린트 - 상세페이지 썸네일"/>
   <!-- 프린트 - 오버레이 -->
   <div class="project-overlay">
     <div class="project-overlay-card">
@@ -737,8 +805,88 @@ body.modal-open {
 </div>
 
 
+<!-- 화이완리 - 상세페이지 (이미지 2장) -->
+<div class="project-item"
+     data-category="detail"
+     data-type="detail"
+     data-detail="
+       https://dl.dropboxusercontent.com/scl/fi/v94ucd3kspjzdz1ztueyk/01.jpg?rlkey=w7nkivsax3xtl0ylkvv6b8cas&st=k9fbhgej&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/x5zq4dz5hpsoqvlqwknhw/02.jpg?rlkey=6n5o6wnmo50xfzh20ikjc8kxg&st=fm2a8wce&dl=0 ">
+  <!-- 화이완리 - 썸네일 -->
+  <img src="https://dl.dropboxusercontent.com/scl/fi/92w0d2uzcxfh1xqtcyntw/Thumbnail.jpg?rlkey=h50uobay0yxcsjvktpan8syq7&st=r8qci625&dl=0" alt="화이완리 - 상세페이지 썸네일" />
+  <!-- 화이완리 - 오버레이 -->
+  <div class="project-overlay">
+    <div class="project-overlay-card">
+      <div class="project-title">화이완리 상세페이지</div>
+      <div class="project-title-divider"></div>
+      <div class="project-desc">
+        제품 리서치 · 상세페이지 기획 · 디자인 제작<br>
+        기여도 100% 
+      </div>
+    </div>
+  </div>
+</div>
 
 
+<!-- 고양이와 일요일 - 상세페이지 (이미지 2장) -->
+<div class="project-item"
+     data-category="detail"
+     data-type="detail"
+     data-detail="
+       https://dl.dropboxusercontent.com/scl/fi/majmzq473y8rp8p3llgyv/01.jpg?rlkey=8end4ihkgl6bkq9kzys7yd74x&st=m7nggxly&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/2mfsa3c69w1qmg99vwvqh/02.jpg?rlkey=hn1syqxb89k8f9ycxer6zbwy0&st=e7dro47w&dl=0 ">
+  <!-- 고양이와 일요일 - 썸네일 -->
+  <img src="https://dl.dropboxusercontent.com/scl/fi/zes4fgnrs5sfwryhojam7/Thumbnail.jpg?rlkey=94bh9gchkwt8ftuvnr6pit5yo&st=wyfortde&dl=0" alt="고양이와 일요일 - 상세페이지 썸네일" />
+  <!-- 고양이와 일요일 - 오버레이 -->
+  <div class="project-overlay">
+    <div class="project-overlay-card">
+      <div class="project-title">고양이와 일요일 상세페이지</div>
+      <div class="project-title-divider"></div>
+      <div class="project-desc">
+        제품 리서치 · 상세페이지 기획 · 디자인 제작<br>
+        기여도 100% 
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- 아이린도 린카접시 - 상세페이지 (이미지 7장) -->
+<div class="project-item"
+     data-category="detail"
+     data-type="detail"
+     data-detail="
+       https://dl.dropboxusercontent.com/scl/fi/diqzmlwc5fb9dc0sx3igr/01.jpg?rlkey=pb8emdocw2q1vdvo3p7h6pggh&st=8kd35dvf&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/sck659y5u6jdvvx2ei4mx/02_860px.gif?rlkey=4drjebje92cknpkl7aif3sb19&st=wpmodsdw&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/h2eyje18vydoqu9b07e4q/03.jpg?rlkey=xblzezwqhustsyzv9ab72u575&st=fipm54sa&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/2q3roo11jjo6gv47cgq30/04.jpg?rlkey=6701r86unw9kj6sg67kkstrw3&st=zz0j0uz6&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/uhkdjj4glmtwpj2p3sflj/05_600px.gif?rlkey=2i2i43yhtmchn8f89rlfjc963&st=7lwt24oa&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/fupu0uf848m6eyhftfq9q/06.jpg?rlkey=lds8njjqxm68dqwvoianbl8dd&st=0sxnheng&dl=0 ">
+  <!-- 아이린도 린카접시 - 썸네일 -->
+  <img src="https://dl.dropboxusercontent.com/scl/fi/eu3xxrwg3g6rwuikcyydh/Thumbnail.jpg?rlkey=i0sb71tka8dt90ahd7a5hkdj6&st=t4dc0luz&dl=0" alt="아이린도 린카접시 - 상세페이지 썸네일"/>
+  <!-- 아이린도 린카접시 - 오버레이 -->
+  <div class="project-overlay">
+    <div class="project-overlay-card">
+      <div class="project-title">린카접시 상세페이지</div>
+      <div class="project-title-divider"></div>
+      <div class="project-desc">
+        제품 리서치 · 상세페이지 기획 · 디자인 제작<br>
+        기여도 100% 
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- 정사각형 썸네일 (420 x 420) -->
+<div class="project-item" data-category="package">
+  <a href="https://YOUR_ID.github.io/dahyunss/assets/project/Package_reve/test/레브_포폴용_XR.1.html"
+     target="_blank" rel="noopener">
+    <img src="https://dl.dropboxusercontent.com/scl/fi/yeilxun7w4i8yarlheiku/420px.jpg?rlkey=0ih1qru1ps4w6sqosf17ekgu9&st=dnz6fwa3&dl=0"
+         alt="레브 패키지 360도 보기">
+  </a>
+</div>
 
 
 
