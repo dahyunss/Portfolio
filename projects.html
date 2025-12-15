@@ -526,12 +526,15 @@
   height: 740px;         /* 고정 높이 */
 }
 
-/* 일반 작업 : 1160px */
+/* 일반 작업(패키지/로고/배너/컨셉) 이미지 */
 .modal-frame.normal .modal-image {
-  width: 1160px;
+  width: 100%;
   max-width: 1160px;
   height: auto;
+  display: block;
+  margin: 0 auto;
 }
+
 
 /* PC / MO 아이콘 : 회색 틀 기준 왼쪽에 맞추고, 위로 40px 띄우기 */
 .modal-toolbar {
@@ -648,11 +651,15 @@
   line-height: 20pt;
 }
 
+/* 상세페이지 PC 이미지 */
 .modal-frame.detail-pc .modal-image-pc {
   width: 100%;
   max-width: 860px;
   height: auto;
+  display: block;
+  margin: 0 auto;
 }
+
 
 .modal-frame.detail-mo .modal-image-mo {
   width: 100%;
@@ -669,6 +676,29 @@ body.modal-open {
   overflow: hidden;
 }
 
+/* 회색 틀 기준 */
+.modal-frame.normal {
+  position: relative;
+}
+
+/* 360도 버튼 */
+.xr-btn {
+  position: absolute;
+  top: 20px;
+  left: 20px;     /* ✅ 회색 틀 왼쪽 + 20px */
+  height: 60px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  z-index: 20;
+}
+
+.xr-btn svg {
+  height: 60px;
+  width: auto;
+  display: block;
+}
 
   </style>
 </head>
@@ -878,14 +908,25 @@ body.modal-open {
 </div>
 
 
-
-<!-- 정사각형 썸네일 (420 x 420) -->
-<div class="project-item" data-category="package">
-  <a href="https://dahyunss.github.io/Portfolio/assets/project/Package_reve/test/레브_포폴용_XR.1.html"
-     target="_blank" rel="noopener">
-    <img src="https://dl.dropboxusercontent.com/scl/fi/yeilxun7w4i8yarlheiku/420px.jpg?rlkey=0ih1qru1ps4w6sqosf17ekgu9&st=dnz6fwa3&dl=0"
-         alt="레브 패키지 360도 보기">
-  </a>
+<!-- 레브 - 패키지 (이미지 1장 + XR) -->
+<div class="project-item"
+     data-category="package"
+     data-type="normal"
+     data-src="https://dl.dropboxusercontent.com/scl/fi/o1gqpu4a6tlo0y3ofet3i/01.jpg?rlkey=0mcsnbsa6wdzew0f5x5r53npm&st=8elgvse3&dl=0"
+     data-xr="https://dahyunss.github.io/Portfolio/assets/project/Package_reve/test/%EB%A0%88%EB%B8%8C_%ED%8F%AC%ED%8F%B4%EC%9A%A9_XR.1.html">
+  <!-- 레브 - 썸네일 -->
+  <img src="https://dl.dropboxusercontent.com/scl/fi/qw2ks8p839zmwcyo99ms9/Package_reve_Thumbnail.jpg?rlkey=8dmfx00uyt97pqhc7y2ppy0qq&st=80gz08gl&dl=0" alt="레브 - 패키지 썸네일" />
+  <!-- 레브 - 오버레이 -->
+  <div class="project-overlay">
+    <div class="project-overlay-card">
+      <div class="project-title">레브 패키지</div>
+      <div class="project-title-divider"></div>
+      <div class="project-desc">
+        디자인 제작<br>
+        기여도 : 100%
+      </div>
+    </div>
+  </div>
 </div>
 
 
@@ -929,6 +970,14 @@ body.modal-open {
 
 
   <script>
+
+const XR_360_ICON = `
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="87px" height="60px">
+  <image x="0px" y="0px" width="87px" height="60px"
+    xlink:href="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFcAAAA8CAQAAAC58u5+AAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QA/4ePzL8AAAAHdElNRQfpDA8OMjc/X8HJAAAGqk..."/>
+</svg>
+`;
+
     // === 필터 pill 위치/크기 계산 ===
     function updateFilterPill(targetBtn) {
       const pill = document.getElementById('filterPill');
@@ -1169,16 +1218,25 @@ modal.classList.add('open');
 }
 
 
-      // 일반 작업(패키지, 로고 등) 모달
-      function openNormalModal(src) {
-        modal.innerHTML = `
-          <div class="modal-frame normal">
-            <button class="modal-close-btn" aria-label="닫기">
-              ${CLOSE_ICON}
-            </button>
-            <img src="${src}" alt="프로젝트 이미지" class="modal-image">
-          </div>
-        `;
+function openNormalModal(src, xrUrl = null) {
+  modal.innerHTML = `
+    <div class="modal-frame normal">
+      
+      <button class="modal-close-btn" aria-label="닫기">
+        ${CLOSE_ICON}
+      </button>
+
+      ${xrUrl ? `
+        <button class="xr-btn" type="button" data-xr="${xrUrl}" aria-label="360도 보기">
+          ${XR_360_ICON}
+        </button>
+      ` : ""}
+
+      <img src="${src}" alt="프로젝트 이미지" class="modal-image">
+    </div>
+  `;
+}
+
 
 
 
@@ -1229,4 +1287,5 @@ items.forEach(item => {
   </script>
 </body>
 </html>
+
 
