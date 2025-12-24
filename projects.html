@@ -676,28 +676,17 @@ body.modal-open {
   overflow: hidden;
 }
 
-/* 회색 틀 기준 */
-.modal-frame.normal {
-  position: relative;
-}
-
-/* 360도 버튼 */
-.xr-btn {
+/* 360 XR 아이콘 버튼 (회색 틀 기준 왼쪽 정렬 + 위로 20px 띄움) */
+.xr-btn{
   position: absolute;
-  top: 20px;
-  left: 20px;     /* ✅ 회색 틀 왼쪽 + 20px */
+  left: 0;
+  top: -80px;           /* 60px(아이콘) + 20px(간격) */
+  width: 87px;
   height: 60px;
+  border: none;
+  background: none;
   padding: 0;
-  border: 0;
-  background: transparent;
   cursor: pointer;
-  z-index: 20;
-}
-
-.xr-btn svg {
-  height: 60px;
-  width: auto;
-  display: block;
 }
 
   </style>
@@ -908,22 +897,232 @@ body.modal-open {
 </div>
 
 
-<!-- 레브 - 패키지 (이미지 1장 + XR) -->
+<!-- 아이린도 택배 패키지 (이미지 1장 + XR) -->
 <div class="project-item"
      data-category="package"
      data-type="normal"
-     data-src="https://dl.dropboxusercontent.com/scl/fi/o1gqpu4a6tlo0y3ofet3i/01.jpg?rlkey=0mcsnbsa6wdzew0f5x5r53npm&st=8elgvse3&dl=0"
-     data-xr="https://dahyunss.github.io/Portfolio/assets/project/Package_reve/test/%EB%A0%88%EB%B8%8C_%ED%8F%AC%ED%8F%B4%EC%9A%A9_XR.1.html">
-  <!-- 레브 - 썸네일 -->
-  <img src="https://dl.dropboxusercontent.com/scl/fi/qw2ks8p839zmwcyo99ms9/Package_reve_Thumbnail.jpg?rlkey=8dmfx00uyt97pqhc7y2ppy0qq&st=80gz08gl&dl=0" alt="레브 - 패키지 썸네일" />
-  <!-- 레브 - 오버레이 -->
+     data-src="https://dl.dropboxusercontent.com/scl/fi/pn8bapfepxgktg0j3b03d/01.jpg?rlkey=533f35t3p5hwcbqwqcwhiq98v&st=zukpk0jw&dl=0"
+     data-xr="https://dahyunss.github.io/Portfolio/assets/project/Package_airindodeliverybox/Package_airindodeliverybox_XR.5.html">
+  <!-- 아이린도 택배 패키지 - 썸네일 -->
+  <img src="https://dl.dropboxusercontent.com/scl/fi/b3hhwn15ri8l8n6p1c7rg/Package_airindodeliverybox_Thumbnail.jpg?rlkey=y28aqi2gahbhyls79ydc4p3d9&st=kkuga7ad&dl=0" alt="아이린도 택배 패키지 썸네일" />
+  <!-- 아이린도 택배 패키지 - 오버레이 -->
+  <div class="project-overlay">
+    <div class="project-overlay-card">
+      <div class="project-title">아이린도 택배 패키지</div>
+      <div class="project-title-divider"></div>
+      <div class="project-desc">
+        디자인 제작<br>
+        기여도 100%
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 아이린도 포장 패키지 (이미지 1장 + XR) -->
+<div class="project-item"
+     data-category="package"
+     data-type="normal"
+     data-src="https://dl.dropboxusercontent.com/scl/fi/mws3lryhpn5n5ktll6xnk/01.jpg?rlkey=91fw8822a4omnqisim376v9cg&st=vx7u63qv&dl=0"
+     data-xr="https://dahyunss.github.io/Portfolio/assets/project/Package_airindoinbox/Package_airindoinbox_XR.3.html">
+  <!-- 아이린도 포장 패키지 - 썸네일 -->
+  <img src="https://dl.dropboxusercontent.com/scl/fi/qyefyu4l83od1tslq03sf/Package_airindoinbox_Thumbnail.jpg?rlkey=3ft7nleaj8sikkoknx441u3cd&st=4nl1oekn&dl=0" alt="아이린도 포장 패키지 썸네일" />
+  <!-- 아이린도 포장 패키지 - 오버레이 -->
+  <div class="project-overlay">
+    <div class="project-overlay-card">
+      <div class="project-title">아이린도 포장 패키지</div>
+      <div class="project-title-divider"></div>
+      <div class="project-desc">
+        디자인 제작<br>
+        기여도 100%
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 씨엘로 패키지 (이미지 1장 + XR) -->
+<div class="project-item"
+     data-category="package"
+     data-type="normal"
+     data-src="https://dl.dropboxusercontent.com/scl/fi/s3fwm31v90lnmfpifrogs/01.jpg?rlkey=44kj2zqjhb7opzwg54h7s5hdd&st=tr73y8oz&dl=0"
+     data-xr="https://dahyunss.github.io/Portfolio/assets/project/Package_clelo/clelo_XR_XR.1.html">
+  <!-- 씨엘로 패키지 - 썸네일 -->
+  <img src="https://dl.dropboxusercontent.com/scl/fi/j6mj8i5w7fqaxff9ufm9v/Package_clelo_Thumbnail.jpg?rlkey=gvhjaw3r6thfn83l8x9abglx0&st=4j02lq4z&dl=0" alt="씨엘로 패키지 썸네일" />
+  <!-- 씨엘로 패키지 - 오버레이 -->
+  <div class="project-overlay">
+    <div class="project-overlay-card">
+      <div class="project-title">씨엘로 패키지</div>
+      <div class="project-title-divider"></div>
+      <div class="project-desc">
+        디자인 제작<br>
+        기여도 100%
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 레브 패키지 (이미지 1장 + XR) -->
+<div class="project-item"
+     data-category="package"
+     data-type="normal"
+     data-src="https://dl.dropboxusercontent.com/scl/fi/jlklce0kyw4ee41c23r0p/01.jpg?rlkey=gtr1t9k8d7bcqzf7plurt8ago&st=8b2hktcy&dl=0"
+     data-xr="https://dahyunss.github.io/Portfolio/assets/project/Package_reve/Package_reve_XR.1.html">
+  <!-- 레브 패키지 - 썸네일 -->
+  <img src="https://dl.dropboxusercontent.com/scl/fi/ot1nv39ltr76rd0cgbvm9/Package_reve_Thumbnail.jpg?rlkey=29jjvxw4h8cu6a82ant2npolb&st=dz3vdha8&dl=0" alt="레브 패키지 썸네일" />
+  <!-- 레브 패키지 - 오버레이 -->
   <div class="project-overlay">
     <div class="project-overlay-card">
       <div class="project-title">레브 패키지</div>
       <div class="project-title-divider"></div>
       <div class="project-desc">
         디자인 제작<br>
-        기여도 : 100%
+        기여도 100%
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 실리콘 끈 보온병 패키지 (이미지 1장 + XR) -->
+<div class="project-item"
+     data-category="package"
+     data-type="normal"
+     data-src="https://dl.dropboxusercontent.com/scl/fi/8xvm9sxrullvepscbkoml/01.jpg?rlkey=0sx2k2g2yl2q7k4gsalwaqzoe&st=xts0plk1&dl=0"
+     data-xr="https://dahyunss.github.io/Portfolio/assets/project/Package_siliconestringvacuum/Package_siliconestringvacuum_XR.8.html">
+  <!-- 실리콘 끈 보온병 패키지 - 썸네일 -->
+  <img src="https://dl.dropboxusercontent.com/scl/fi/a6n55oa426fr48o986g0t/Package_siliconestringvacuum_Thumbnail.jpg?rlkey=n6ay1gw6q1v8vr94o5wz9ddre&st=qr8egn4e&dl=0" alt="실리콘 끈 보온병 패키지 썸네일" />
+  <!-- 실리콘 끈 보온병 패키지 - 오버레이 -->
+  <div class="project-overlay">
+    <div class="project-overlay-card">
+      <div class="project-title">실리콘 끈 보온병 패키지</div>
+      <div class="project-title-divider"></div>
+      <div class="project-desc">
+        디자인 제작<br>
+        기여도 100%
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 슬라이드 진공 머그컵 패키지 (이미지 1장 + XR) -->
+<div class="project-item"
+     data-category="package"
+     data-type="normal"
+     data-src="https://dl.dropboxusercontent.com/scl/fi/st96bbnuc568mhg7r1945/01.jpg?rlkey=xxgfpmqpsbh5lwn76xyshevbn&st=tp049s8o&dl=0"
+     data-xr="https://dahyunss.github.io/Portfolio/assets/project/Package_slidevacuummug/Package_slidevacuummug_XR.4.html">
+  <!-- 슬라이드 진공 머그컵 패키지 - 썸네일 -->
+  <img src="https://dl.dropboxusercontent.com/scl/fi/r3rm39bmesgch84597wyh/Package_slidevacuummug_Thumbnail.jpg?rlkey=6shx0vmzxuvom48rq41evgk4o&st=vo87qv0s&dl=0" alt="슬라이드 진공 머그컵 패키지 썸네일" />
+  <!-- 슬라이드 진공 머그컵 패키지 - 오버레이 -->
+  <div class="project-overlay">
+    <div class="project-overlay-card">
+      <div class="project-title">슬라이드 진공 머그컵 패키지</div>
+      <div class="project-title-divider"></div>
+      <div class="project-desc">
+        디자인 제작<br>
+        기여도 100%
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 에머 비타스텐 패키지 (이미지 1장 + XR) -->
+<div class="project-item"
+     data-category="package"
+     data-type="normal"
+     data-src="https://dl.dropboxusercontent.com/scl/fi/y70u01yvlbzmr3u6csscm/01.jpg?rlkey=cvdfbfewejn7pzuu2aahwqaj0&st=eep75n17&dl=0"
+     data-xr="https://dahyunss.github.io/Portfolio/assets/project/Package_ermervitastain/Package_ermervitaSten_XR.5.html">
+  <!-- 에머 비타스텐 패키지 - 썸네일 -->
+  <img src="https://dl.dropboxusercontent.com/scl/fi/qdg8uqvuns6lg53dpextw/Package_ermervitastain_Thumbnail.jpg?rlkey=j99ko4fgdddejmdg57pfw4rvo&st=jolz1pkn&dl=0" alt="에머 비타스텐 패키지 썸네일" />
+  <!-- 에머 비타스텐 패키지 - 오버레이 -->
+  <div class="project-overlay">
+    <div class="project-overlay-card">
+      <div class="project-title">에머 비타스텐 패키지</div>
+      <div class="project-title-divider"></div>
+      <div class="project-desc">
+        디자인 제작<br>
+        기여도 100%
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 핸드페인팅 머그 세트 패키지 (이미지 1장 + XR) -->
+<div class="project-item"
+     data-category="package"
+     data-type="normal"
+     data-src="https://dl.dropboxusercontent.com/scl/fi/cdc9psv266hvy5vtgy6gm/01.jpg?rlkey=omc0krruuheq0iucl13guwhwd&st=9xjr8ltf&dl=0"
+     data-xr="https://dahyunss.github.io/Portfolio/assets/project/Package_handpaintingcreammugset/Package_handpaintingcreammugset_XR.3.html">
+  <!-- 핸드페인팅 머그 세트 패키지 - 썸네일 -->
+  <img src="https://dl.dropboxusercontent.com/scl/fi/4xl16ch7gbtoa785kytj8/Package_handpaintingcreammugset_Thumbnail.jpg?rlkey=a8ryzzfjlob6ktteekg00m78t&st=l39vusre&dl=0" alt="핸드페인팅 머그 세트 패키지 썸네일" />
+  <!-- 핸드페인팅 머그 세트 패키지 - 오버레이 -->
+  <div class="project-overlay">
+    <div class="project-overlay-card">
+      <div class="project-title">핸드페인팅 머그 세트 패키지</div>
+      <div class="project-title-divider"></div>
+      <div class="project-desc">
+        디자인 제작<br>
+        기여도 100%
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 스텐 절구 패키지 (이미지 1장 + XR) -->
+<div class="project-item"
+     data-category="package"
+     data-type="normal"
+     data-src="https://dl.dropboxusercontent.com/scl/fi/orzj0kq1mamt6zln3bajx/01.jpg?rlkey=9x3slh2ufyyjkr3n43iajs99p&st=nofzeg8x&dl=0"
+     data-xr="https://dahyunss.github.io/Portfolio/assets/project/Package_stainmortar/Package_stainmortar_XR.5.html">
+  <!-- 스텐 절구 패키지 - 썸네일 -->
+  <img src="https://dl.dropboxusercontent.com/scl/fi/me3f7nx72ed4p4irevlza/Package_stainmortar_Thumbnail.jpg?rlkey=xyocrmtbrwjtl4zdz6p4mihzf&st=g4g4ufr1&dl=0" alt="스텐 절구 패키지 썸네일" />
+  <!-- 스텐 절구 패키지 - 오버레이 -->
+  <div class="project-overlay">
+    <div class="project-overlay-card">
+      <div class="project-title">스텐 절구 패키지</div>
+      <div class="project-title-divider"></div>
+      <div class="project-desc">
+        디자인 제작<br>
+        기여도 100%
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 쉐테른 패키지 (이미지 1장 + XR) -->
+<div class="project-item"
+     data-category="package"
+     data-type="normal"
+     data-src="https://dl.dropboxusercontent.com/scl/fi/hiwdan8416xr8u1ecm6y3/01.jpg?rlkey=y2f67ncvifs1nahmdnjws5xob&st=4ufmy5ij&dl=0"
+     data-xr="https://dahyunss.github.io/Portfolio/assets/project/Package_stern/Package_stern_XR.3.html">
+  <!-- 쉐테른 패키지 - 썸네일 -->
+  <img src="https://dl.dropboxusercontent.com/scl/fi/f70ogxfxnpd1p5hfe7kmm/Package_stern_Thumbnail.jpg?rlkey=o0e11sei54o5jlhvmd6voi5m7&st=8vc1kdjr&dl=0" alt="쉐테른 패키지 썸네일" />
+  <!-- 쉐테른 패키지 - 오버레이 -->
+  <div class="project-overlay">
+    <div class="project-overlay-card">
+      <div class="project-title">쉐테른 패키지</div>
+      <div class="project-title-divider"></div>
+      <div class="project-desc">
+        디자인 제작<br>
+        기여도 100%
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 클리어 유리포트 패키지 (이미지 1장 + XR) -->
+<div class="project-item"
+     data-category="package"
+     data-type="normal"
+     data-src="https://dl.dropboxusercontent.com/scl/fi/9ahnhrn2e1j8149wzhf67/01.jpg?rlkey=nwe49dlkba895vjf44k0p1zc7&st=tyrqjgn0&dl=0"
+     data-xr="https://dahyunss.github.io/Portfolio/assets/project/Package_clearglasskettle/Package_clearglasskettle_XR.4.html">
+  <!-- 클리어 유리포트 패키지 - 썸네일 -->
+  <img src="https://dl.dropboxusercontent.com/scl/fi/btyvollksm4uo3wzlfovt/Package_clearglasskettle_Thumbnail.jpg?rlkey=m9lb07zappgz54r2wqnjxg91p&st=ghvi5at7&dl=0" alt="클리어 유리포트 패키지 썸네일" />
+  <!-- 클리어 유리포트 패키지 - 오버레이 -->
+  <div class="project-overlay">
+    <div class="project-overlay-card">
+      <div class="project-title">클리어 유리포트 패키지</div>
+      <div class="project-title-divider"></div>
+      <div class="project-desc">
+        디자인 제작<br>
+        기여도 100%
       </div>
     </div>
   </div>
@@ -970,14 +1169,6 @@ body.modal-open {
 
 
   <script>
-
-const XR_360_ICON = `
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="87px" height="60px">
-  <image x="0px" y="0px" width="87px" height="60px"
-    xlink:href="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFcAAAA8CAQAAAC58u5+AAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QA/4ePzL8AAAAHdElNRQfpDA8OMjc/X8HJAAAGqk..."/>
-</svg>
-`;
-
     // === 필터 pill 위치/크기 계산 ===
     function updateFilterPill(targetBtn) {
       const pill = document.getElementById('filterPill');
@@ -1078,6 +1269,13 @@ const XR_360_ICON = `
 <path fill-rule="evenodd" stroke="rgb(235, 29, 29)" stroke-width="1px" fill="rgb(235, 29, 29)"
  d="M28.956,13.659 L29.717,14.421 L14.485,29.651 L13.723,28.890 L28.956,13.659 Z"/>
 </svg>`;
+
+const XR360_ICON = `
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="87px" height="60px">
+  <image x="0px" y="0px" width="87px" height="60px"
+    xlink:href="data:img/png;base64,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" />
+</svg>`;
+
 
 function closeModal() {
   modal.classList.remove('open');
@@ -1218,25 +1416,23 @@ modal.classList.add('open');
 }
 
 
-function openNormalModal(src, xrUrl = null) {
+function openNormalModal(src, xrUrl) {
   modal.innerHTML = `
     <div class="modal-frame normal">
-      
+
+      ${xrUrl ? `
+        <button class="xr-btn" type="button" aria-label="360도 보기">
+          ${XR360_ICON}
+        </button>
+      ` : ''}
+
       <button class="modal-close-btn" aria-label="닫기">
         ${CLOSE_ICON}
       </button>
 
-      ${xrUrl ? `
-        <button class="xr-btn" type="button" data-xr="${xrUrl}" aria-label="360도 보기">
-          ${XR_360_ICON}
-        </button>
-      ` : ""}
-
-      <img src="${src}" alt="프로젝트 이미지" class="modal-image">
+      <img src="${src}" class="modal-image">
     </div>
   `;
-}
-
 
 
 
@@ -1276,8 +1472,19 @@ items.forEach(item => {
 
       openDetailModal(detailList); // 배열 넘기기
     } else {
-      const src = item.dataset.full || item.querySelector('img').src;
-      openNormalModal(src);
+const src = item.dataset.src || item.dataset.full || item.querySelector('img').src;
+
+const xrUrl = item.dataset.xr || '';
+openNormalModal(src, xrUrl);
+
+  const xrBtn = modal.querySelector('.xr-btn');
+  if (xrBtn && xrUrl) {
+    xrBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      window.open(xrUrl, '_blank', 'noopener');
+    });
+  }
+
     }
   });
 });
