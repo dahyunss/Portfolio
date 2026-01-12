@@ -689,6 +689,55 @@ body.modal-open {
   cursor: pointer;
 }
 
+.project-nav {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  z-index: 10000;
+}
+
+
+/* 기본은 숨김 */
+.project-nav { 
+  display: none;
+  z-index: 10001; /* modal(9999)보다 위 */
+}
+
+/* 모달 열렸을 때만 노출 */
+body.modal-open .project-nav {
+  display: block;
+}
+
+
+.project-nav.prev {
+  left: 60px;
+}
+
+.project-nav.next {
+  right: 60px;
+}
+
+.project-nav svg {
+  display: block;
+}
+
+
+.project-footer {
+  margin-top: 40px;
+  margin-bottom: 0px;
+  text-align: center;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight: 200;
+  font-size: 12pt;
+  color: #121212;
+  line-height: 1.6;
+}
+
+
   </style>
 </head>
 
@@ -732,12 +781,12 @@ body.modal-open {
 
 <!-- 여기서부터 프로젝트 등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록 -->
 
-<!-- 리빙아트 회사소개서 리디자인 (이미지 1장) -->
+
+<!-- 리빙아트 회사소개서 리디자인 (썸네일 + 대표 이미지 1장) -->
 <div class="project-item"
      data-category="concept"
-     data-type="detail"
-     data-detail="
-       https://dl.dropboxusercontent.com/scl/fi/2qo2izte7v9a9qqjkvhtj/01.jpg?rlkey=e7q3qv2bbqye1nnfqj37z1jc7&st=upg5dzmh&dl=0">
+     data-type="normal"
+     data-src="https://dl.dropboxusercontent.com/scl/fi/2qo2izte7v9a9qqjkvhtj/01.jpg?rlkey=e7q3qv2bbqye1nnfqj37z1jc7&st=upg5dzmh&dl=0">
   <!-- 리빙아트 회사소개서 리디자인 - 썸네일 -->
   <img src="https://dl.dropboxusercontent.com/scl/fi/x72vg53wk3bhin3kh1dh8/Concept_companyintroduction_Thumbnail.jpg?rlkey=ngwut8x9l7pqo2prphprslpzj&st=jdigqi6e&dl=0" alt="리빙아트 회사소개서 리디자인 썸네일"/>
   <!-- 리빙아트 회사소개서 리디자인 - 오버레이 -->
@@ -1552,13 +1601,36 @@ body.modal-open {
 
 <!-- 여기서부터 프로젝트 마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리 -->
 
+
+
       </div>
+
+<footer class="project-footer">
+  Son Dahyun– Design Portfolio<br>
+  Crafting Product Stories Through Design, Photography &amp; 3D Visualization
+</footer>
+
     </div>
   </main>
 
   <!-- 모달 (내용은 JS에서 채움) -->
   <div class="modal-overlay" id="modal"></div>
 
+<button class="project-nav prev" aria-label="이전 프로젝트">
+  <!-- 왼쪽 -->
+  <svg xmlns="http://www.w3.org/2000/svg" width="13.5px" height="23.5px">
+    <path fill="none" stroke="#ffffff" stroke-width="1"
+      d="M11.875,21.500 L1.875,11.500 L11.875,1.500"/>
+  </svg>
+</button>
+
+<button class="project-nav next" aria-label="다음 프로젝트">
+  <!-- 오른쪽 -->
+  <svg xmlns="http://www.w3.org/2000/svg" width="14.5px" height="24.5px">
+    <path fill="none" stroke="#ffffff" stroke-width="1"
+      d="M1.527,1.527 L12.320,12.320 L1.527,23.113"/>
+  </svg>
+</button>
 
   <script>
     // === 필터 pill 위치/크기 계산 ===
@@ -1598,48 +1670,115 @@ body.modal-open {
     }
 
     // === 필터 기능 ===
-    (function () {
-      const filterButtons = document.querySelectorAll('.filter-btn');
-      const items = document.querySelectorAll('.project-item');
+   (function () {
+  const filterButtons = document.querySelectorAll('.filter-btn');
+  const items = document.querySelectorAll('.project-item');
 
-      function applyFilter(filter) {
-        items.forEach(item => {
-          const category = item.getAttribute('data-category');
-          if (filter === 'all' || category === filter) {
-            item.style.display = '';
-          } else {
-            item.style.display = 'none';
-          }
-        });
+  function applyFilter(filter) {
+    items.forEach(item => {
+      const category = item.getAttribute('data-category');
+      if (filter === 'all' || category === filter) {
+        item.style.display = '';
+      } else {
+        item.style.display = 'none';
       }
+    });
+  }
 
-      filterButtons.forEach(btn => {
-        btn.addEventListener('click', () => {
-          filterButtons.forEach(b => b.classList.remove('active'));
-          btn.classList.add('active');
+  filterButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterButtons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
 
-          updateFilterPill(btn);
+      updateFilterPill(btn);
 
-          const filter = btn.getAttribute('data-filter');
-          applyFilter(filter);
-        });
-      });
+      const filter = btn.getAttribute('data-filter');
+      applyFilter(filter);
+    });
+  });
 
-      window.addEventListener('load', () => {
-        const initialBtn = document.querySelector('.filter-btn.active');
-        if (initialBtn) updateFilterPill(initialBtn);
-      });
+  window.addEventListener('load', () => {
+    const initialBtn = document.querySelector('.filter-btn.active');
+    if (initialBtn) updateFilterPill(initialBtn);
+  });
 
-      window.addEventListener('resize', () => {
-        const activeBtn = document.querySelector('.filter-btn.active');
-        if (activeBtn) updateFilterPill(activeBtn);
-      });
+  window.addEventListener('resize', () => {
+    const activeBtn = document.querySelector('.filter-btn.active');
+    if (activeBtn) updateFilterPill(activeBtn);
+  });
+
+})(); // ✅ 필터 IIFE 닫기
+
+// ✅ 프로젝트 랜덤 정렬 (페이지 진입 시 1회)
+(function shuffleProjects() {
+  const grid = document.getElementById('projectsGrid');
+  if (!grid) return;
+
+  const children = Array.from(grid.children);
+
+  for (let i = children.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [children[i], children[j]] = [children[j], children[i]];
+  }
+
+  children.forEach(el => grid.appendChild(el));
+})();
+
+
+// === 프로젝트 랜덤 정렬 (페이지 진입 시 1회) ===
+(function shuffleProjects() {
+  const grid = document.getElementById('projectsGrid');
+  if (!grid) return;
+
+  const items = Array.from(grid.children);
+
+  for (let i = items.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [items[i], items[j]] = [items[j], items[i]];
+  }
+
+  items.forEach(item => grid.appendChild(item));
+
     })();
 
     // === 모달(썸네일 크게 보기) – 상세/일반 분리 ===
     (function () {
-      const modal = document.getElementById('modal');
-      const items = document.querySelectorAll('.project-item');
+const modal = document.getElementById('modal');
+const items = document.querySelectorAll('.project-item');
+
+/* 🔽🔽🔽 여기부터 추가 🔽🔽🔽 */
+
+// === 좌우 네비게이션 상태 ===
+let currentIndex = -1;
+
+function getVisibleItems() {
+  return Array.from(document.querySelectorAll('.project-item'))
+    .filter(el => el.style.display !== 'none');
+}
+
+function openByIndex(nextIndex) {
+  const list = getVisibleItems();
+  if (!list.length) return;
+
+  const safeIndex = (nextIndex + list.length) % list.length;
+  currentIndex = safeIndex;
+
+  const item = list[safeIndex];
+  const type = item.dataset.type || (item.dataset.category === 'detail' ? 'detail' : 'normal');
+
+  if (type === 'detail') {
+    const raw = item.dataset.detail || item.querySelector('img').src;
+    const detailList = raw.split(',').map(s => s.trim()).filter(Boolean);
+    openDetailModal(detailList);
+  } else {
+    const src = item.dataset.src || item.dataset.full || item.querySelector('img').src;
+    const xrUrl = item.dataset.xr || '';
+    openNormalModal(src, xrUrl);
+  }
+}
+
+/* 🔼🔼🔼 여기까지 추가 🔼🔼🔼 */
+
 
       // 아이콘 SVG들 (그대로 복붙)
       const PC_ICON = `
@@ -1850,6 +1989,10 @@ modal.classList.add('open');
       // 썸네일 클릭 핸들러
 items.forEach(item => {
   item.addEventListener('click', () => {
+
+const list = getVisibleItems();
+currentIndex = list.indexOf(item);
+
     const type = item.dataset.type || (item.dataset.category === 'detail' ? 'detail' : 'normal');
 
     if (type === 'detail') {
@@ -1881,9 +2024,29 @@ openNormalModal(src, xrUrl);
   });
 });
 
+const prevBtn = document.querySelector('.project-nav.prev');
+const nextBtn = document.querySelector('.project-nav.next');
+
+prevBtn?.addEventListener('click', (e) => {
+  e.stopPropagation();
+  if (!modal.classList.contains('open')) return;
+  openByIndex(currentIndex - 1);
+});
+
+nextBtn?.addEventListener('click', (e) => {
+  e.stopPropagation();
+  if (!modal.classList.contains('open')) return;
+  openByIndex(currentIndex + 1);
+});
+
     })();
 
+
   </script>
+
+
 </body>
+
+
 </html>
 
