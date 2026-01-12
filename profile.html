@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>손다현 포트폴리오 - 프로필</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@200;400&display=swap" rel="stylesheet">
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    a { text-decoration: none; color: inherit; }
+
+    /* ✅ 하단 여백 120px 고정 */
+    body {
+      padding: 40px 60px 120px 60px;
+      background: #ffffff;
+      font-family: 'Noto Sans KR', sans-serif;
+      color: #121212;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 40px;
+      background: #ffffff;
+    }
+
+    .left-header { display: flex; align-items: center; }
+    .left-header .name { font-weight: 400; font-size: 22pt; }
+    .left-header .divider { width: 1px; height: 12px; background: #121212; margin: 0 22px; }
+    .left-header .role { font-weight: 200; font-size: 14pt; }
+
+    .nav { display: flex; align-items: center; font-size: 14pt; }
+    .nav a { margin-left: 22px; font-weight: 200; color: #121212; transition: color 0.2s ease; }
+    .nav a:hover { color: #eb1d1d; }
+    .nav a.active { font-weight: 200; color: #eb1d1d; }
+
+    main {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 160px;
+      width: 100%;
+    }
+
+    .profile-title {
+      font-weight: 400; font-size: 22pt;
+      color: #121212;
+      letter-spacing: 0.05em;
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .profile-hero {
+      font-weight: 200; font-size: 40pt;
+      color: #121212;
+      line-height: 1.4;
+      text-align: center;
+      white-space: pre-line;
+      /* ✅ 1. 소개문구와 이미지/회색틀 사이 여백을 150px로 설정 */
+      margin-bottom: 150px; 
+    }
+
+    .split {
+      width: 100vw;
+      margin-left: calc(50% - 50vw);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      /* ✅ 3. 이미지(660px)와 회색틀의 높이를 완벽하게 일치 */
+      height: 660px; 
+      overflow: hidden;
+    }
+
+    .photo {
+      background: #adc0d8;
+      height: 100%;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      padding-right: clamp(16px, 4vw, 60px);
+      padding-left: clamp(16px, 4vw, 60px);
+    }
+
+    .photo img {
+      width: 500px;
+      height: 660px;
+      max-width: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .panel {
+      background: #e8e8e8;
+      height: 100%;
+      display: flex;
+      /* ✅ 위아래 여백이 똑같이 줄어들도록 세로 중앙 정렬 */
+      align-items: center; 
+    }
+
+    .panel-inner {
+      /* ✅ 2. 기본 여백 150px / 화면 작아지면 유연하게 축소(clamp 사용) */
+      padding: clamp(80px, 12vh, 150px) 60px; 
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .panel-title {
+      font-weight: 400; font-size: 22pt;
+      color: #121212;
+      line-height: 1.35;
+      white-space: pre-line;
+      margin-bottom: 40px;
+    }
+
+    .panel-body {
+      font-weight: 200; font-size: 14pt;
+      color: #121212;
+      line-height: 1.5;
+      white-space: pre-line;
+    }
+
+    .footer {
+      margin-top: 40px;
+      text-align: center;
+      font-weight: 200;
+      color: #121212;
+      font-size: clamp(10px, 0.9vw, 12pt);
+      line-height: 1.5;
+      white-space: pre-line;
+    }
+
+    /* 반응형 설정 */
+    @media (max-width: 1100px) {
+      body { padding: 24px 20px 80px 20px; }
+      .profile-hero { font-size: 28pt; margin-bottom: 80px; }
+      .split { height: auto; grid-template-columns: 1fr; }
+      .photo, .panel { height: auto; }
+      .panel-inner { padding: 80px 40px; }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="left-header">
+      <div class="name">손다현</div>
+      <div class="divider"></div>
+      <div class="role">디자이너</div>
+    </div>
+    <nav class="nav">
+      <a href="index.html">홈</a>
+      <a href="profile.html" class="active">프로필</a>
+      <a href="projects.html">프로젝트</a>
+      <a href="contact.html">연락</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="profile-title">BEYOND VISUAL: THE WAY I WORK</div>
+
+    <div class="profile-hero">디자인의 결과물이 실무 현장에서 제대로 쓰이도록,
+스스로 기준을 세우고 과정을 정리하며 일해온
+책임지는 디자이너 손다현입니다.</div>
+
+    <section class="split">
+      <div class="photo">
+        <img src="https://dl.dropboxusercontent.com/scl/fi/rad0gt7ph3t6jn9m4vveo/Profileimage_500x660.jpg?rlkey=gh5na0tn3drgppoyhkfo4p1qs&st=qj1mhu9t" alt="손다현 프로필 이미지">
+      </div>
+
+      <div class="panel">
+        <div class="panel-inner">
+          <div class="panel-title">비효율을 효율로 바꾸는정리의 힘을 믿습니다.</div>
+          <div class="panel-body">실무 현장에서 다양한 업무를 동시에 수행하며 ‘일이 되게 만드는 방식’을 익혀왔습니다. 자료가 부족할 때는 해외 자료와 논문을 찾아 기획의 근거를 직접 정리했고, 촬영부터 핸들링까지 전 과정에 참여하며 결과물의 완성도를 높여왔습니다.
+
+특히 500여 종의 제품 데이터를 정리하고 공유 폴더 시스템을 구축한 경험은 제가 일하는 방식을 분명하게 보여줍니다. 파일을 넘기는 데서 끝내지 않고, 여러 팀이 함께 사용할 수 있는 기준을 만들어 업무 흐름과 소통 비용을 줄였습니다.
+
+반복되는 수작업은 더 나은 방법이 없는지 고민했고, 필요한 경우 파이썬을 활용한 자동화도 시도했습니다. 저는 주어진 범위에만 머물기보다, 작업의 뒤처리까지 정리되어야 비로소 일이 끝났다고 생각합니다.</div>
+        </div>
+      </div>
+    </section>
+
+    <div class="footer">Son Dahyun– Design Portfolio
+Crafting Product Stories Through Design, Photography &amp; 3D Visualization</div>
+    
+    </main>
+</body>
+</html>
