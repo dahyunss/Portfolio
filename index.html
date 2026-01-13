@@ -2,10 +2,10 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
-  <title>손다현 포트폴리오</title>
+  <title>손다현 포트폴리오 – 프로젝트</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!-- 🔒 검색 엔진에 노출 안 되게 -->
+  <!-- 검색 노출 방지 -->
   <meta name="robots" content="noindex, nofollow" />
 
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@200;400&display=swap" rel="stylesheet">
@@ -22,10 +22,10 @@
 
     a { text-decoration: none; color: inherit; }
 
-    /* 🔝 항상 상단에 고정되는 헤더 */
+    /* 고정 헤더 */
     header {
-      top: 40px;         /* 위 여백 40px 유지 */
-      left: 60px;        /* 좌우 여백 60px */
+      top: 40px;
+      left: 60px;
       right: 60px;
       display: flex;
       justify-content: space-between;
@@ -35,7 +35,6 @@
       z-index: 100;
     }
 
-    /* 왼쪽 헤더 */
     .left-header {
       display: flex;
       align-items: center;
@@ -58,8 +57,7 @@
       font-size: 14pt;
     }
 
-    /* 오른쪽 네비 */
- .nav {
+.nav {
   display: flex;
   align-items: center;
   font-size: 14pt;
@@ -72,91 +70,674 @@
   transition: color 0.2s ease;
 }
 
-/* 마우스 올렸을 때는 살짝 진하게(빨간색) */
+/* 마우스 올렸을 때는 살짝 진하게만 */
 .nav a:hover {
   color: #eb1d1d;
 }
 
 /* 선택된 페이지(현재 페이지)는 빨간색으로 표시 */
 .nav a.active {
-  font-weight: 200;
+  font-weight: 200;   /* 더 두꺼워지지 않게 유지 */
   color: #eb1d1d;
 }
 
 
-    /* 헤더가 fixed라서, 그 아래 컨텐츠와 간격 보정 */
     main {
       display: flex;
       flex-direction: column;
       align-items: center;
-      margin-top: 160px; /* 원래 120이었는데 헤더 빠진 만큼 +40 보정 */
+      margin-top: 160px; /* 헤더 보정 */
     }
 
     .section-title {
       font-weight: 400;
       font-size: 22pt;
-      letter-spacing: 0.2em;
+      letter-spacing: 0.2em; /* 글자 간격 200 */
     }
 
-    /* 슬라이더 */
-    .slider-wrapper {
-      margin-top: 40px;
-      position: relative;
-      width: 860px;
-      height: 532px;
-    }
-
-    .slider {
-      position: relative;
+    /* 전체 프로젝트 컨테이너 (필터바 + 썸네일 공통) */
+    .projects-container {
       width: 100%;
-      height: 100%;
-      overflow: hidden;
-      background: #e0e0e0;
+      max-width: 1300px; /* 420*3 + 20*2 = 1300 */
+      margin: 40px auto 0; /* 제목에서 아래로 40px */
     }
 
-    .slide {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      opacity: 0;
-      transition: opacity 0.6s ease-in-out;
-    }
-
-    .slide.active { opacity: 1; }
-
-.arrow-btn {
-  position: fixed; /* 페이지 기준 가로 위치 잡기 위해 fixed */
-  background: none;
-  border: none;
-  font-size: 34px;
-  font-weight: 200;
-  cursor: pointer;
-  padding: 12px;
-  line-height: 1;
-  color: #121212;
-  opacity: 0.7;
-  transition: opacity 0.2s ease;
-  z-index: 1000;
+    /* ===== 필터 바 ===== */
+ .filter-bar {
+  position: relative;
+  height: 30px;
+  background: #eeeeee;
+  border-radius: 15px;
+  display: inline-flex;      /* 내용 길이에 맞춰 자동 폭 */
+  align-items: center;
+  overflow: hidden;
 }
 
-.arrow-btn:hover {
+/* 버튼들을 담는 래퍼: 좌우 14px, 항목 간 28px */
+.filter-inner {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 26px;
+  margin: 0 14px;   /* 전체보기 왼쪽 14px, 컨셉 오른쪽 14px */
+  gap: 28px;        /* 항목 간 간격 28px */
+}
+
+
+    /* 검정 선택 바 */
+    .filter-pill {
+      position: absolute;
+      top: 2px;          /* 바 높이 30px → 위/아래 2px 남기고 26px */
+      left: 2px;         /* 전체보기 선택 시, 바 왼쪽으로부터 2px */
+      height: 26px;
+      width: 0;
+      background: #000000;
+      border-radius: 13px;
+      z-index: 0;
+      transition: left 0.25s ease, width 0.25s ease;
+    }
+
+    .filter-btn {
+      position: relative;
+      z-index: 1;
+      border: none;
+      background: none;
+      cursor: pointer;
+      padding: 0;              /* 글자 폭 그대로 사용 */
+      height: 26px;
+ line-height: 26px;   /* ⭐ 글자를 정확히 중앙에 맞춤 */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 14pt;
+      font-weight: 200;
+      color: #121212;
+      white-space: nowrap;
+    }
+
+ .filter-btn.active {
+  font-weight: 300;
+  color: #ffffff;  /* 검은 바 위에서 보이게 흰색으로 */
+}
+
+.projects-grid {
+  margin-top: 40px;
+  column-width: 420px;   /* ✅ 한 컬럼 목표 폭 */
+  column-gap: 20px;
+}
+
+.project-item {
+  break-inside: avoid;  /* 항목이 중간에서 잘리지 않게 */
+  margin-bottom: 20px;  /* 각 썸네일 사이 간격 */
+  width: 100%;
+}
+
+@media (max-width: 1200px) {
+  .projects-grid { column-count: 2; }
+}
+
+@media (max-width: 700px) {
+  .projects-grid { column-count: 1; }
+}
+
+
+.project-item {
+  display: inline-block; /* ✅ column 레이아웃에서 필수급 */
+  width: 100%;
+  margin: 0 0 20px;
+  break-inside: avoid;
+  position: relative;
+  overflow: hidden;
+  border-radius: 15px;
+}
+
+.project-item img {
+  width: 100%;           /* ✅ 컬럼 폭에 맞게 줄어듦 */
+  height: auto;
+  display: block;
+  border-radius: 15px;
+}
+
+
+/* 전체 오버레이 */
+.project-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: background 0.25s ease, opacity 0.25s ease;
+}
+
+.project-overlay-card {
+  width: 100%;                /* ✔ 썸네일 가로 끝까지 */
+  max-width: none;            /* ✔ 제한 해제 */
+  height: 210px;              /* ✔ 높이는 유지 */
+  background: rgba(0,0,0,0.6);
+  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 0;           /* ✔ 라운딩 없음 */
+  
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+
+  /* 👉 라운딩 없애기 */
+  border-radius: 0;
+
+  /* 나타날 때 애니메이션용 */
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+/* 제목 */
+.project-title {
+  font-family: 'Noto Sans KR';
+  font-weight: 300;
+  font-size: 22pt;
+  color: #fff;
+  margin-bottom: 20px;
+}
+
+/* 20x1px 선 */
+.project-title-divider {
+  width: 20px;
+  height: 1px;
+  background: #fff;
+  margin-bottom: 20px;
+}
+
+/* 설명 */
+.project-desc {
+  font-family: 'Noto Sans KR';
+  font-weight: 100;
+  font-size: 14pt;
+  line-height: 20pt;
+  color: #fff;
+  text-align: center;
+}
+
+/* === Hover 동작 === */
+.project-item:hover .project-overlay {
+  background: rgba(0,0,0,0.6);
   opacity: 1;
 }
 
-/* 페이지 양끝에서 60px */
-.arrow-prev { left: 60px; }
-.arrow-next { right: 60px; }
+.project-item:hover .project-overlay-card {
+  opacity: 1;
+  transform: translateY(0);
+}
 
-    /* 이미지 아래 캡션 */
-    .caption {
-      margin-top: 40px;
-      font-weight: 200;
-      font-size: 12pt;
-      text-align: center;
-      line-height: 1.5;
+    /* 화면이 좁아질 때: 2열 / 1열로 줄이기 */
+    @media (max-width: 1300px) {
+      .projects-container {
+        padding-right: 0;
+        padding-left: 0;
+      }
     }
+
+
+    @media (max-width: 500px) {
+      .project-item {
+        width: 100%;      /* 화면이 420px보다 작아지면 그때부터 축소 */
+      }
+
+      .filter-bar {
+        transform: scale(0.9); /* 너무 꽉 차면 살짝 줄이기 */
+        transform-origin: left;
+      }
+    }
+
+/* ===== 모달 기본 ===== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.9);
+  display: none;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 230px;   /* 위에서 230px 떨어뜨리기 */
+  overflow-y: auto;     /* 모달이 화면보다 길면 전체 페이지 스크롤 */
+  z-index: 9999; /* ★ 이거 추가 */
+}
+
+/* ✅ 일반 작업(패키지/로고/배너 등)만 15px 라운딩 */
+.modal-frame.normal .modal-image {
+  border-radius: 15px;
+}
+
+
+/* 모바일 화면 안의 이미지는 라운딩 없음 (폰틀이 잘라줌) */
+.modal-image-mo { 
+  border-radius: 0;
+}
+
+
+.modal-overlay.open {
+  display: flex;
+}
+
+/* 공통 회색 틀 */
+.modal-frame {
+  position: relative;
+  background: #e7e7e7;
+  border-radius: 16px;
+  padding: 70px;              /* 왼/오 70px, 위/아래 70px */
+  box-sizing: border-box;
+  margin: 0 auto;             /* 가운데 정렬 */
+}
+
+/* 상세페이지 – PC 보기: 틀 가로 1000px */
+.modal-frame.detail-pc {
+  width: 1000px;
+  max-width: calc(100% - 80px);   /* 화면이 좁아지면 같이 줄어듦 */
+}
+
+/* 상세페이지 MO 틀: 515 x (740+140) = 880 */
+.modal-frame.detail-mo {
+  width: 515px;
+  height: 880px;                  /* 세로 고정 (740 + 140) */
+  padding: 70px;
+  box-sizing: border-box;
+  border-radius: 16px;
+  background: #e7e7e7;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+
+/* PC / MO 각각의 뷰 박스 */
+.detail-pc-view {
+  width: 100%;
+  display: block;
+}
+
+.detail-mo-view {
+  width: 100%;
+  display: none;      /* 처음에는 안 보이게 → MO 버튼 누르면 보이게 */
+}
+
+/* 모바일 화면(기계 화면 크기) */
+.mobile-viewport {
+  width: 375px;
+  height: 740px;      /* 세로 고정 */
+  overflow: hidden;   /* 프레임 밖은 잘라내기 */
+  background: #000;
+  border-radius: 12px;
+}
+
+/* ✅ PC도 모바일처럼 "프레임 안에서만" 스크롤 되게 */
+.pc-viewport {
+  width: 860px;          /* PC 가로 기준 */
+  max-width: 100%;       /* 화면 줄면 같이 줄어듦 */
+  height: min(1040px, calc(100vh - 160px));
+  overflow: hidden;      /* 바깥 잘라내기 */
+  background: #fff;
+  border-radius: 12px;   /* 필요없으면 0으로 */
+}
+
+.pc-scroll {
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;      /* ✅ 스크롤은 여기서만 */
+}
+
+/* PC 안의 이미지: 가로 100%로 박스에 맞춤 */
+.modal-image-pc {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+
+/* 프레임 안에서만 스크롤 */
+.mobile-scroll {
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+}
+
+/* PC용 이미지 */
+.modal-image-pc {
+  width: 100%;
+  max-width: 860px;   /* PC 기준 최대 860px */
+  height: auto;
+  display: block;
+}
+
+/* MO용 이미지 (세로 길어도 됨) */
+.modal-image-mo {
+  width: 100%;        /* 375px에 맞춰 줄어듦 */
+  height: auto;
+  display: block;
+}
+
+
+/* 패키지/로고/배너/컨셉 등 일반 작업: 틀 1300, 안쪽 1160 */
+.modal-frame.normal {
+  width: 1300px;
+  max-width: calc(100% - 80px);   /* 화면 줄어들면 1300 이하로 같이 줄어듦 */
+}
+
+/* 회색 틀 안의 이미지 공통 */
+.modal-image {
+  display: block;
+  width: 100%;                    /* 회색 틀 안에서 가로 꽉 채우고 */
+  height: auto;
+  background: #888888;            /* 테스트용 회색, 실 이미지 넣으면 안 보임 */
+  margin: 0 auto;                 /* 가운데 정렬 */
+  max-width: 1160px;              /* 일반 작업(normal)일 때 최대 1160px */
+}
+
+/* 상세페이지일 때는 최대 860px로 제한 (좌우 여백 70px 유지) */
+.modal-frame.detail-pc .modal-image,
+.modal-frame.detail-mo .modal-image {
+  max-width: 860px;
+}
+
+
+/* ✅ 상세 PC : 이미지 폭 정확히 860px */
+.modal-frame.detail-pc .modal-image {
+  width: 860px;
+  max-width: 100%;
+  height: auto;
+}
+
+/* ✅ 상세 MO : 이미지 375 x 최대 740px */
+.modal-frame.detail-mo .modal-image {
+  width: 375px;
+  max-width: 100%;
+  height: auto;
+  max-height: 740px;
+}
+
+/* ✅ 일반 작업 : 이미지 폭 1160px */
+.modal-frame.normal .modal-image {
+  width: 1160px;
+  max-width: 100%;
+  height: auto;
+}
+
+/* PC / MO 아이콘 영역 */
+.modal-toolbar {
+  position: absolute;
+  top: 40px;
+  left: 40px;
+  display: flex;
+  gap: 40px;
+  align-items: center;
+}
+
+.view-btn {
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  opacity: 0.4;          /* 기본 40% */
+}
+
+.view-btn.active {
+  opacity: 1;            /* 선택된 아이콘은 100% */
+}
+
+/* 닫기 버튼 */
+.modal-close-btn {
+  position: absolute;
+  top: 40px;
+  right: 40px;
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+/* 좁은 화면에서 일반 작업 틀 대응용 */
+@media (max-width: 900px) {
+  .modal-frame.normal {
+    width: 100%;
+    margin: 230px 20px 0 20px;
+  }
+}
+
+
+/* 모드별 이미지 크기 ---------------------- */
+/* 상세페이지 PC : 안쪽 860px */
+.modal-frame.detail-pc .modal-image {
+  width: 860px;
+  max-width: 860px;
+  height: auto;          /* 세로는 비율대로 */
+}
+
+/* 상세페이지 MO : 375 x 740 */
+.modal-frame.detail-mo .modal-image {
+  width: 375px;
+  height: 740px;         /* 고정 높이 */
+}
+
+/* 일반 작업(패키지/로고/배너/컨셉) 이미지 */
+.modal-frame.normal .modal-image {
+  width: 100%;
+  max-width: 1160px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+
+/* PC / MO 아이콘 : 회색 틀 기준 왼쪽에 맞추고, 위로 40px 띄우기 */
+.modal-toolbar {
+  position: absolute;
+  /* 아이콘 높이 60px, 틀 위에서 40px 떨어지게 하기 위해 -100px */
+  top: -100px;        /* 아이콘 아랫부분이 회색 틀 윗선보다 40px 위에 옴 */
+  left: 0;            /* 회색 틀의 왼쪽에 딱 맞춤 */
+  display: flex;
+  gap: 40px;          /* PC–MO 사이 간격 40px */
+  align-items: center;
+}
+
+.view-btn {
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  opacity: 0.4;           /* 기본 40% */
+}
+
+.view-btn.active {
+  opacity: 1;             /* 선택된 건 100% */
+}
+
+/* 닫기 버튼 : 회색 틀 오른쪽으로 40px 바깥에 나오게 */
+.modal-close-btn {
+  position: absolute;
+  top: 0;          /* 회색 틀 윗선 근처에 정렬 */
+  right: -80px;    /* 틀의 오른쪽에서 40px 밖으로 나가게 */
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+
+/* 화면 좁을 때 일반 작업 틀 반응형 */
+@media (max-width: 900px) {
+  .modal-frame.normal {
+    width: 100%;
+    margin: 230px 20px 0 20px;
+  }
+}
+
+
+
+/* 썸네일 라운딩 */
+.project-item img {
+  border-radius: 15px;
+  display: block;
+}
+
+/* 오버레이 전체 */
+.project-item {
+  position: relative;
+  overflow: hidden;
+  border-radius: 15px;
+}
+
+.project-item .overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0); /* 기본 0% */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.25s ease;
+}
+
+.project-item:hover .overlay {
+  background: rgba(0,0,0,0.6);
+}
+
+/* 가운데 검정 박스 */
+.overlay-inner {
+  background: rgba(0, 0, 0, 0.6);
+  width: 420px;
+  max-width: 90%;
+  height: 210px;
+  border-radius: 10px;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  padding: 30px 20px;
+}
+
+.project-item:hover .overlay-inner {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* 텍스트 스타일 */
+.project-title {
+  font-family: 'Noto Sans KR';
+  font-weight: 300;
+  font-size: 22pt;
+  color: #ffffff;
+  margin-bottom: 20px;
+}
+
+.line {
+  width: 20px;
+  height: 1px;
+  background: #ffffff;
+  margin: 0 auto 20px auto;
+}
+
+.project-desc {
+  font-family: 'Noto Sans KR';
+  font-weight: 100;
+  font-size: 14pt;
+  color: #ffffff;
+  line-height: 20pt;
+}
+
+/* 상세페이지 PC 이미지 */
+.modal-frame.detail-pc .modal-image-pc {
+  width: 100%;
+  max-width: 860px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+
+.modal-frame.detail-mo .modal-image-mo {
+  width: 100%;
+  max-width: 375px;
+  height: auto;
+}
+
+.modal-frame {
+  margin-bottom: 230px; /* 회색틀 아래 여백 */
+}
+
+/* ✅ 모달 열리면 뒤(썸네일 페이지) 스크롤 잠금 */
+body.modal-open {
+  overflow: hidden;
+}
+
+/* 360 XR 아이콘 버튼 (회색 틀 기준 왼쪽 정렬 + 위로 20px 띄움) */
+.xr-btn{
+  position: absolute;
+  left: 0;
+  top: -80px;           /* 60px(아이콘) + 20px(간격) */
+  width: 87px;
+  height: 60px;
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.project-nav {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  z-index: 10000;
+}
+
+
+/* 기본은 숨김 */
+.project-nav { 
+  display: none;
+  z-index: 10001; /* modal(9999)보다 위 */
+}
+
+/* 모달 열렸을 때만 노출 */
+body.modal-open .project-nav {
+  display: block;
+}
+
+
+.project-nav.prev {
+  left: 60px;
+}
+
+.project-nav.next {
+  right: 60px;
+}
+
+.project-nav svg {
+  display: block;
+}
+
+
+.project-footer {
+  margin-top: 40px;
+  margin-bottom: 0px;
+  text-align: center;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight: 200;
+  font-size: 12pt;
+  color: #121212;
+  line-height: 1.6;
+}
+
+
   </style>
 </head>
 
@@ -168,97 +749,1361 @@
       <div class="role">디자이너</div>
     </div>
 
-    <!-- 🔗 파일 이름 그대로 연결 + 홈 페이지라 홈에 active 클래스 -->
     <nav class="nav">
-      <a href="index.html" class="active">홈</a>
+      <a href="index.html">홈</a>
       <a href="profile.html">프로필</a>
-      <a href="projects.html">프로젝트</a>
+      <a href="projects.html" class="active">프로젝트</a>
       <a href="contact.html">연락</a>
     </nav>
   </header>
 
-  <main id="home">
-    <h1 class="section-title">포트폴리오</h1>
+  <main>
+    <h1 class="section-title">프로젝트</h1>
 
-    <div class="slider-wrapper">
-      <div class="slider" id="slider">
+    <div class="projects-container">
+      <!-- 필터 바 -->
+      <div class="filter-bar" id="filterBar">
+        <div class="filter-pill" id="filterPill"></div>
 
-        <img class="slide active"
-             src="https://dl.dropboxusercontent.com/scl/fi/24cwrkrnw4jlgkyqu9zrh/1_home_mainimage01_860x532px.jpg?rlkey=5cqh8k006x8ahi6zg0oy4cgnn&st=fblad150&dl=0"
-             alt="메인 이미지 1">
+        <div class="filter-inner" id="filterInner">
+          <button class="filter-btn active" data-filter="all">전체보기</button>
+          <button class="filter-btn" data-filter="detail">상세페이지</button>
+          <button class="filter-btn" data-filter="package">패키지</button>
+          <button class="filter-btn" data-filter="logo">로고</button>
+          <button class="filter-btn" data-filter="banner">배너</button>
+          <button class="filter-btn" data-filter="concept">컨셉</button>
+        </div>
+      </div>
 
-        <img class="slide"
-             src="https://dl.dropboxusercontent.com/scl/fi/day3yq1vpebptuir4pw6j/1_home_mainimage02_860x532px.jpg?rlkey=aqebit6lovoyd70dcriagx106&st=kuc711o7&dl=0"
-             alt="메인 이미지 2">
+      <!-- 썸네일 영역 -->
+      <div class="projects-grid" id="projectsGrid">
+        <!-- 긴 썸네일: 상세페이지 예시 (420 x 700) -->
 
-        <img class="slide"
-             src="https://dl.dropboxusercontent.com/scl/fi/pm130emn8ahilmdeyvkwd/1_home_mainimage03_860x532px.jpg?rlkey=cwjmesyf42s6zgrhq9iadw4pv&st=ggbicrrd&dl=0"
-             alt="메인 이미지 3">
+<!-- 여기서부터 프로젝트 등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록 -->
+
+
+
+
+<!-- 리빙아트 회사소개서 리디자인 (썸네일 + 대표 이미지 1장) -->
+<div class="project-item"
+     data-category="concept"
+     data-type="normal"
+     data-src="https://dl.dropboxusercontent.com/scl/fi/2qo2izte7v9a9qqjkvhtj/01.jpg?rlkey=e7q3qv2bbqye1nnfqj37z1jc7&st=upg5dzmh&dl=0">
+  <img src="https://dl.dropboxusercontent.com/scl/fi/x72vg53wk3bhin3kh1dh8/Concept_companyintroduction_Thumbnail.jpg?rlkey=ngwut8x9l7pqo2prphprslpzj&st=jdigqi6e&dl=0" alt="리빙아트 회사소개서 리디자인 썸네일"/>
+  <div class="project-overlay">
+    <div class="project-overlay-card">
+      <div class="project-title">리빙아트 회사소개서 리디자인</div>
+      <div class="project-title-divider"></div>
+      <div class="project-desc">
+        콘텐츠 구성 · 멘트 작성 · 이미지 편집 · 디자인 제작<br>
+        기여도 100%
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- LG 사은품 냄비 색상 제안 (썸네일 + 대표 이미지 1장) -->
+<div class="project-item"
+     data-category="concept"
+     data-type="normal"
+     data-src="https://dl.dropboxusercontent.com/scl/fi/dzierv98jktqx2n7gg1a0/01.jpg?rlkey=4b3x2aiz4pofjsjtkmf0fzj2k&st=oazjc8ss&dl=0">
+  <img src="https://dl.dropboxusercontent.com/scl/fi/99gpzdnxolgo7pa5zam93/Concept_LGgiftcolor_Thumbnail.jpg?rlkey=r27dyt8h3ah0myda238dy0g52&st=gs36ke3v&dl=0" alt="LG 사은품 냄비 색상 제안 썸네일"/>
+  <div class="project-overlay">
+    <div class="project-overlay-card">
+      <div class="project-title">LG 사은품 냄비 색상 제안</div>
+      <div class="project-title-divider"></div>
+      <div class="project-desc">
+        색상 디자인 기획 · 3D 모델링 · 렌더링 디자인<br>
+        기여도 100%
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 베르마스터 냄비 손잡이 제안 (썸네일 + 대표 이미지 1장) -->
+<div class="project-item"
+     data-category="concept"
+     data-type="normal"
+     data-src="https://dl.dropboxusercontent.com/scl/fi/fyctszcescjv6e81iusmw/01.jpg?rlkey=aoimcgl667854sjs6hzbugytf&st=qqhl65ru&dl=0">
+  <img src="https://dl.dropboxusercontent.com/scl/fi/z6zdtf0mu9zpcnofdmh5s/Concept_potthandle_Thumbnail.jpg?rlkey=2zhpyznluqemg2loyj5j5b65i&st=u5vwmzzt&dl=0" alt="베르마스터 냄비 손잡이 제안 썸네일"/>
+  <div class="project-overlay">
+    <div class="project-overlay-card">
+      <div class="project-title">베르마스터 냄비 손잡이 제안</div>
+      <div class="project-title-divider"></div>
+      <div class="project-desc">
+        형상 디자인 기획 · 3D 모델링 · 렌더링 디자인<br>
+        기여도 100%
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 동진 냄비 색상 제안 (썸네일 + 대표 이미지 1장) -->
+<div class="project-item"
+     data-category="concept"
+     data-type="normal"
+     data-src="https://dl.dropboxusercontent.com/scl/fi/ph8five89w2j9f2c6c5xm/01.jpg?rlkey=j7k1uss2ba6pbzhle1eubypck&st=4vgw9z99&dl=0">
+  <img src="https://dl.dropboxusercontent.com/scl/fi/yxj4i896sefvsvtouc0u1/Concept_dongjinpotcolor_Thumbnail.jpg?rlkey=zddkl5iex98sypmlcep52lht7&st=dexlrsnf&dl=0" alt="동진 냄비 색상 제안 썸네일"/>
+  <div class="project-overlay">
+    <div class="project-overlay-card">
+      <div class="project-title">동진 냄비 색상 제안</div>
+      <div class="project-title-divider"></div>
+      <div class="project-desc">
+        색상 디자인 기획 · 3D 모델링 · 렌더링 디자인<br>
+        기여도 100%
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+<!-- 쉐테른 로고 (이미지 1장) -->
+<div class="project-item"
+     data-category="logo"
+     data-type="normal"
+     data-src="https://dl.dropboxusercontent.com/scl/fi/akx1x61w6m8ec27t2dyis/01.jpg?rlkey=ro3zgdcyjuupmewy69b84boss&st=66p3r599&dl=0">
+  <!-- 쉐테른 로고 - 썸네일 -->
+  <img src="https://dl.dropboxusercontent.com/scl/fi/njbvf9gc4v2g32p0jmpji/rogo_stern_Thumbnail.jpg?rlkey=7pb8a5bmyw18ok8be9fnoq552&st=ax19vlv9&dl=0" alt="쉐테른 로고 썸네일" />
+  <!-- 쉐테른 로고 - 오버레이 -->
+  <div class="project-overlay">
+    <div class="project-overlay-card">
+      <div class="project-title">쉐테른 로고</div>
+      <div class="project-title-divider"></div>
+      <div class="project-desc">
+        로고 기획 · 디자인 제작<br>
+        기여도 100%
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 레브 로고 (이미지 1장) -->
+<div class="project-item"
+     data-category="logo"
+     data-type="normal"
+     data-src="https://dl.dropboxusercontent.com/scl/fi/yuv3fx83iksvo8yytb4da/01.jpg?rlkey=xf8i67n042dmpeskbcoccwuj1&st=xemnm4u7&dl=0">
+  <!-- 레브 로고 - 썸네일 -->
+  <img src="https://dl.dropboxusercontent.com/scl/fi/68zpdqam9yszl0wyubw21/rogo_reve_Thumbnail.jpg?rlkey=w9192pqs6b2ra6u4catywsw3k&st=kouuw13u&dl=0" alt="레브 로고 썸네일" />
+  <!-- 레브 로고 - 오버레이 -->
+  <div class="project-overlay">
+    <div class="project-overlay-card">
+      <div class="project-title">레브 로고</div>
+      <div class="project-title-divider"></div>
+      <div class="project-desc">
+        로고 기획 · 디자인 제작<br>
+        기여도 100%
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 크리스탈 실버 로고 (이미지 1장) -->
+<div class="project-item"
+     data-category="logo"
+     data-type="normal"
+     data-src="https://dl.dropboxusercontent.com/scl/fi/dkoe1tnii0d34cfutlm4f/01.jpg?rlkey=ximz0x4hqu5ndnvh4q5fk8yva&st=m2wb0s2e&dl=0">
+  <!-- 크리스탈 실버 로고 - 썸네일 -->
+  <img src="https://dl.dropboxusercontent.com/scl/fi/l3ek7lx26fjcaowyk189x/rogo_crystalsilver_Thumbnail.jpg?rlkey=ijqcxa4ttk7xupse6xr5aeagx&st=6ci3y5ir&dl=0" alt="크리스탈 실버 로고 썸네일" />
+  <!-- 크리스탈 실버 로고 - 오버레이 -->
+  <div class="project-overlay">
+    <div class="project-overlay-card">
+      <div class="project-title">크리스탈 실버 로고</div>
+      <div class="project-title-divider"></div>
+      <div class="project-desc">
+        로고 기획 · 디자인 제작<br>
+        기여도 100%
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 크레마우디 로고 (이미지 1장) -->
+<div class="project-item"
+     data-category="logo"
+     data-type="normal"
+     data-src="https://dl.dropboxusercontent.com/scl/fi/8q9aac9rln04e6azcmnuw/01.jpg?rlkey=k56zipuhbbcuaa36ocwauahpp&st=k98edlmt&dl=0">
+  <!-- 크레마우디 로고 - 썸네일 -->
+  <img src="https://dl.dropboxusercontent.com/scl/fi/n5plnsjylcyur60tcd66d/rogo_cremawoody_Thumbnail.jpg?rlkey=9hh77ow2ul2zv20eb8348ndt8&st=lgbgzlu4&dl=0" alt="크레마우디 로고 썸네일" />
+  <!-- 크레마우디 로고 - 오버레이 -->
+  <div class="project-overlay">
+    <div class="project-overlay-card">
+      <div class="project-title">크레마우디 로고</div>
+      <div class="project-title-divider"></div>
+      <div class="project-desc">
+        로고 기획 · 디자인 제작<br>
+        기여도 100%
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 코비 로고 (이미지 1장) -->
+<div class="project-item"
+     data-category="logo"
+     data-type="normal"
+     data-src="https://dl.dropboxusercontent.com/scl/fi/mvqv0ujmj76b0o944o7x6/01.jpg?rlkey=rydlorgkjoa76rxvxqn2dl1fb&st=0wtvcm5i&dl=0">
+  <!-- 코비 로고 - 썸네일 -->
+  <img src="https://dl.dropboxusercontent.com/scl/fi/u4tb3aen8qig3rwlago13/rogo_covee_Thumbnail.jpg?rlkey=c4lxns4t8n9dy0ibptofzcjby&st=sevff5sq&dl=0" alt="코비 로고 썸네일" />
+  <!-- 코비 로고 - 오버레이 -->
+  <div class="project-overlay">
+    <div class="project-overlay-card">
+      <div class="project-title">코비 로고</div>
+      <div class="project-title-divider"></div>
+      <div class="project-desc">
+        로고 기획 · 디자인 제작<br>
+        기여도 100%
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 씨엘로 로고 (이미지 1장) -->
+<div class="project-item"
+     data-category="logo"
+     data-type="normal"
+     data-src="https://dl.dropboxusercontent.com/scl/fi/izldvmjdg25s1rhyhr6d2/01.jpg?rlkey=yxuwo9e9e14mlfvoqxx3qpzjt&st=3a6t61r3&dl=0">
+  <!-- 씨엘로 로고 - 썸네일 -->
+  <img src="https://dl.dropboxusercontent.com/scl/fi/j9qcmarktr2pyq3bf8mni/rogo_clelo_Thumbnail.jpg?rlkey=rwb5v3z1i7zuo15ulzufbgrnf&st=o5eibsr2&dl=0" alt="씨엘로 로고 썸네일" />
+  <!-- 씨엘로 로고 - 오버레이 -->
+  <div class="project-overlay">
+    <div class="project-overlay-card">
+      <div class="project-title">씨엘로 로고</div>
+      <div class="project-title-divider"></div>
+      <div class="project-desc">
+        로고 기획 · 디자인 제작<br>
+        기여도 100%
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- 아이린도 공식판매처 배너 (이미지 1장) -->
+<div class="project-item"
+     data-category="banner"
+     data-type="normal"
+     data-src="https://dl.dropboxusercontent.com/scl/fi/6fr4893wpnuaa3rh6z3t1/01.gif?rlkey=zbw5mgj6ywzrxp8m93jjsw0ww&st=m6yygq5i&dl=0">
+  <!-- 아이린도 공식판매처 배너 - 썸네일 -->
+  <img src="https://dl.dropboxusercontent.com/scl/fi/t13dgwc3brsycjsss9ff8/banner_airindoofficialseller_Thumbnail.jpg?rlkey=cbe64zave5tv4oqqbtfm7gxv6&st=jsxrtlcy&dl=0" alt="아이린도 공식판매처 배너 썸네일" />
+  <!-- 아이린도 공식판매처 배너 - 오버레이 -->
+  <div class="project-overlay">
+    <div class="project-overlay-card">
+      <div class="project-title">아이린도 공식판매처 배너</div>
+      <div class="project-title-divider"></div>
+      <div class="project-desc">
+        디자인 제작<br>
+        기여도 100%
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- 아이린도 홈페이지 화이완리 배너 (이미지 1장) -->
+<div class="project-item"
+     data-category="banner"
+     data-type="normal"
+     data-src="https://dl.dropboxusercontent.com/scl/fi/66lizy0fb6330nn8vvz19/01.jpg?rlkey=pzm3rgtzg5u21goo8qkaqn47w&st=7alpb7om&dl=0">
+  <!-- 아이린도 홈페이지 화이완리 배너 - 썸네일 -->
+  <img src="https://dl.dropboxusercontent.com/scl/fi/7v84ip5e95qdvzof9nj23/banner_airindohomepagehwaiwanli_Thumbnail.jpg?rlkey=7wcp5y6tg6k03m3hayhhq17ed&st=2r5i91d4&dl=0" alt="아이린도 홈페이지 화이완리 배너 썸네일" />
+  <!-- 아이린도 홈페이지 화이완리 배너 - 오버레이 -->
+  <div class="project-overlay">
+    <div class="project-overlay-card">
+      <div class="project-title">아이린도 홈페이지 화이완리 배너</div>
+      <div class="project-title-divider"></div>
+      <div class="project-desc">
+        디자인 제작<br>
+        기여도 100%
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 아이린도 네이버 배너 (이미지 1장) -->
+<div class="project-item"
+     data-category="banner"
+     data-type="normal"
+     data-src="https://dl.dropboxusercontent.com/scl/fi/wgqodop0aqgixrkxjivwx/01.jpg?rlkey=lptkoy3b2i1y7anpu3k8idrir&st=cakc5swg&dl=0">
+  <!-- 아이린도 네이버 배너 - 썸네일 -->
+  <img src="https://dl.dropboxusercontent.com/scl/fi/sm3bacrx3pwvbvsmfft0y/banner_airindonaver_Thumbnail.jpg?rlkey=sf5k6e6i7fvtpericwu60b5qc&st=5mlqlxul&dl=0" alt="아이린도 네이버 배너 썸네일" />
+  <!-- 아이린도 네이버 배너 - 오버레이 -->
+  <div class="project-overlay">
+    <div class="project-overlay-card">
+      <div class="project-title">아이린도 네이버 배너</div>
+      <div class="project-title-divider"></div>
+      <div class="project-desc">
+        디자인 제작<br>
+        기여도 100%
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 리빙아트 공식판매처 배너 (이미지 1장) -->
+<div class="project-item"
+     data-category="banner"
+     data-type="normal"
+     data-src="https://dl.dropboxusercontent.com/scl/fi/q0bs9adoz3qohe2dtn4re/01.gif?rlkey=fpuepdpnl7yjxdy6qs16wh1su&st=vd4n1wj9&dl=0">
+  <!-- 리빙아트 공식판매처 배너 - 썸네일 -->
+  <img src="https://dl.dropboxusercontent.com/scl/fi/qptbklk1i8jagp4nedwom/banner_livingartofficialseller_Thumbnail.jpg?rlkey=bwyt3cylyh2mbcrtrxepen82q&st=6rnnd5pt&dl=0" alt="리빙아트 공식판매처 배너 썸네일" />
+  <!-- 리빙아트 공식판매처 배너 - 오버레이 -->
+  <div class="project-overlay">
+    <div class="project-overlay-card">
+      <div class="project-title">리빙아트 공식판매처 배너</div>
+      <div class="project-title-divider"></div>
+      <div class="project-desc">
+        디자인 제작<br>
+        기여도 100%
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 휴무 안내 배너 (이미지 1장) -->
+<div class="project-item"
+     data-category="banner"
+     data-type="normal"
+     data-src="https://dl.dropboxusercontent.com/scl/fi/p2h912i1ujt4kf58km8ye/01.jpg?rlkey=ybvlitz6t3qlj4hkjiv4axe53&st=h5p3i4ei&dl=0">
+  <!-- 휴무 안내 배너 - 썸네일 -->
+  <img src="https://dl.dropboxusercontent.com/scl/fi/yf6rlnhu7tirwujhxliw6/banner_closingnotice_Thumbnail.jpg?rlkey=9p9yd1outwa1e79yr22n8h14v&st=qlzftuij&dl=0" alt="휴무 안내 배너 썸네일" />
+  <!-- 휴무 안내 배너 - 오버레이 -->
+  <div class="project-overlay">
+    <div class="project-overlay-card">
+      <div class="project-title">휴무 안내 배너</div>
+      <div class="project-title-divider"></div>
+      <div class="project-desc">
+        디자인 제작<br>
+        기여도 100%
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 네이버 할인 배너 (이미지 1장) -->
+<div class="project-item"
+     data-category="banner"
+     data-type="normal"
+     data-src="https://dl.dropboxusercontent.com/scl/fi/x2qhzqmxjpzk7xcnklfrc/01.jpg?rlkey=upf2f2byeu4x3rjdtpbgvm5iu&st=4jleo65h&dl=0">
+  <!-- 네이버 할인 배너 - 썸네일 -->
+  <img src="https://dl.dropboxusercontent.com/scl/fi/nm6sl6oy8k8456wral3fq/banner_discount_Thumbnail.jpg?rlkey=k9i4rtz4jog2vob5xe05ntt6j&st=0hyvaiz9&dl=0" alt="네이버 할인 배너 썸네일" />
+  <!-- 네이버 할인 배너 - 오버레이 -->
+  <div class="project-overlay">
+    <div class="project-overlay-card">
+      <div class="project-title">네이버 할인 배너</div>
+      <div class="project-title-divider"></div>
+      <div class="project-desc">
+        디자인 제작<br>
+        기여도 100%
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 리빙아트 네이버 배너 (이미지 1장) -->
+<div class="project-item"
+     data-category="banner"
+     data-type="normal"
+     data-src="https://dl.dropboxusercontent.com/scl/fi/ll1vx0p2knxq97l4q8pa2/01.jpg?rlkey=ajw1jnifrks457i1rfo71io7a&st=qnycfeo3&dl=0">
+  <!-- 리빙아트 네이버 배너 - 썸네일 -->
+  <img src="https://dl.dropboxusercontent.com/scl/fi/45xmaplq84vrl93ofa5ad/banner_livingartnaver_Thumbnail.jpg?rlkey=ip0atjvd7v8a7iae2r2di2xb9&st=wjbak5bs&dl=0" alt="리빙아트 네이버 배너 썸네일" />
+  <!-- 리빙아트 네이버 배너 - 오버레이 -->
+  <div class="project-overlay">
+    <div class="project-overlay-card">
+      <div class="project-title">리빙아트 네이버 배너</div>
+      <div class="project-title-divider"></div>
+      <div class="project-desc">
+        디자인 제작<br>
+        기여도 100%
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 리빙아트 네이버 플로웨어 배너 (이미지 1장) -->
+<div class="project-item"
+     data-category="banner"
+     data-type="normal"
+     data-src="https://dl.dropboxusercontent.com/scl/fi/07beyjry93wawl1aoi464/01.jpg?rlkey=esg1p6lnc00lf6fygkazmurni&st=ibda6tyk&dl=0">
+  <!-- 리빙아트 네이버 플로웨어 배너 - 썸네일 -->
+  <img src="https://dl.dropboxusercontent.com/scl/fi/6sc3uj1zo3xsush6h1alc/banner_livingartfloware_Thumbnail.jpg?rlkey=ph35ykjxre8dxzhcquhqgzgm4&st=d8c88v80&dl=0" alt="리빙아트 네이버 플로웨어 배너 썸네일" />
+  <!-- 리빙아트 네이버 플로웨어 배너 - 오버레이 -->
+  <div class="project-overlay">
+    <div class="project-overlay-card">
+      <div class="project-title">리빙아트 네이버 플로웨어 배너</div>
+      <div class="project-title-divider"></div>
+      <div class="project-desc">
+        디자인 제작<br>
+        기여도 100%
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- 스텐 절구 상세페이지 (이미지 1장) -->
+<div class="project-item"
+     data-category="detail"
+     data-type="detail"
+     data-detail="
+       https://dl.dropboxusercontent.com/scl/fi/myjqojqh2h3n90emug25g/01.jpg?rlkey=lmpjkeebdd3mftdnwrt4njy76&st=mldr4o61&dl=0">
+  <!-- 스텐 절구 상세페이지 - 썸네일 -->
+  <img src="https://dl.dropboxusercontent.com/scl/fi/o8wqpksnadxr1zsr5p171/DetailPage_stainmortar_Thumbnail.jpg?rlkey=4wshmr6hp3qbokpnyk3ts89z9&st=o0lb1oie&dl=0" alt="스텐 절구 상세페이지 썸네일"/>
+  <!-- 스텐 절구 상세페이지 - 오버레이 -->
+  <div class="project-overlay">
+    <div class="project-overlay-card">
+      <div class="project-title">스텐 절구 상세페이지</div>
+      <div class="project-title-divider"></div>
+      <div class="project-desc">
+        촬영 기획 · 현장 핸들링 · 제품 리서치<br>
+        상세페이지 기획 · 디자인 제작<br>
+        기여도 100%
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 씨엘로 무연마 팬 상세페이지 (이미지 72장) -->
+<div class="project-item"
+     data-category="detail"
+     data-type="detail"
+     data-detail="
+       https://dl.dropboxusercontent.com/scl/fi/txsgbw6jxeqeqresyw4tf/01.jpg?rlkey=b7hhyailmt7zxeeltg3p4xa7a&st=o1c4hzof&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/5jg638j3r56s69ntdjxf3/02_400px.gif?rlkey=8r9a2u4wcm5ale6mekdu6cb59&st=gli4r422&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/bbid64lcjnv7o2yg3bv7f/03_700px.gif?rlkey=90dm8zwkhbk18nm3405xnzijr&st=2mts9fwm&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/5nntw9qdhl6miehh2v97l/04.jpg?rlkey=63o5aojc8x53sugucspyt0v8b&st=alfo0v37&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/vgvkgmgpj0lg2bte2hss6/05_500px.gif?rlkey=g8kll1t88aot1h7fljc174p8b&st=blq9ld41&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/alasvtoh91dajnoemh186/06.jpg?rlkey=bvlwi6dg07c7sktcsbfdgqbz7&st=vqjwfcjt&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/b3lkpbwkjff5jq4mrgnfl/07_700px.gif?rlkey=ucn6lfyaj45a6en8lcfsrdvhc&st=s0cmcw7h&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/yxpln8i0lkcw72qtuv6zy/08.jpg?rlkey=b616q64ljrvrn7crzmarf9835&st=q5856ahp&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/trqhv974u153hrskvteku/09_700px.gif?rlkey=89lomxe1m4w4q2ngosfobue3k&st=dlmf41t3&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/nvo5umsywaeok3oksx7cz/10.jpg?rlkey=m067ojoa96he2zsyejjq55k4g&st=nnrib0ke&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/jxnhfabyf61gtij2hr811/11_700px.gif?rlkey=f6adgkvo9whwgzqxq824172vp&st=t84nw69n&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/b32cukz4kcszke7wh3ajf/12.jpg?rlkey=4rjxlv9zge8jy4lk8udh760jl&st=yjpht6s8&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/pnoiuvmi045wrc8eojjmh/13_700px.gif?rlkey=ar6xi7ylg6w6nn3ubydbr37bd&st=62k6zcsa&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/f8kgi55c2rg3r2yhuo276/14.jpg?rlkey=5xlcf7np0braek3p19wywz7z1&st=oihjk3nm&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/u7myd9z63kcpnjjh95ydb/15_400px.gif?rlkey=kog4fcnqa14xfvjuabb04hda0&st=nrswbk7j&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/bcofys2obistqd4ig9x6k/16.jpg?rlkey=g5joeco7cnkzzbj1hiwfls7i9&st=j3x6db52&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/uocox6dlnogr1j6y6qmno/17_700px.gif?rlkey=qw0i87hecf6zt0yyrus4033dm&st=2lu8y7bw&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/x997vv1a6qfatao23uzhu/18.jpg?rlkey=7mmr43m6d6hy16acd384kgyos&st=ojiii8mn&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/wnc9gyk6qt21a8zvfmi68/19_400px.gif?rlkey=t1s81eximt2kt3oz1vd8lti0p&st=lfe61x26&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/v79scdhocgoksq5dr2517/20_700px.gif?rlkey=bag61w1rh39m7lyp0vhq2amlx&st=oooekg34&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/zdoeg868ymofwfn11bi70/21.jpg?rlkey=6hy54a6qbp0i4zx7lsv9pae1g&st=8uff43hl&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/czfvnfe6q4pabc3bzhx1p/22.jpg?rlkey=ynljpcjxaryzdexk7godpjcxo&st=v1cbao1v&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/tz94hdy8xvas0inec1ry0/23.jpg?rlkey=cji05871cfrm6tol4uev3ibb1&st=h0xebrdf&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/45pbz54vlsodvis34n7y2/24_400px.gif?rlkey=uz7a0y1a7kmg1j64io3xosw0a&st=buh8r7vb&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/2nvcmyo197tju50h52bff/25.jpg?rlkey=l15n14c4xzoe7shoqwwtvuxz6&st=f6js5n43&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/ncm17os7uxn3m00fk3ji1/26_400px.gif?rlkey=fjaepp30uf8gyo7gie3q5q1co&st=suubl6fp&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/y3k6hjxkr2lyeqqhwb2vb/27.jpg?rlkey=0wfrckvdmy1gghrf3gw5f2mgw&st=pw26psks&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/8rdmizgccv9frg5fe1jhd/28_400px.gif?rlkey=5n8pmvfk2lu8t3737wvaax647&st=3tj615lm&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/msrtn4dvv98vrzfdu59n7/29.jpg?rlkey=q71tnjdydk9fr4d6sdfqvs2kk&st=sk2dox8m&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/to5ybalirsivyndckmywi/30_400px.gif?rlkey=1uvjerj3dkrserjpk3moajjl9&st=un9ejpn0&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/uat5vpwyx6ng6ayh78v8p/31.jpg?rlkey=dctud38gkeqpkmvwmzoi6bsfd&st=w4v5oh6z&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/kinchmh62tk35ey80mler/32_700px.gif?rlkey=9mzwvc5j351px0m4z9u6sexi6&st=7fpm5iw8&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/2hloktgnlpjq65n2t8lc8/33_400px.gif?rlkey=1tn42qnrx6h2q577uefktqp4c&st=dbba9mwr&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/6yqau0eq2k0yiacj53a58/34.jpg?rlkey=zxgp02n2fh4owq71xzw2u8z83&st=bi75loji&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/zbvilebb1jjvfeij413pu/35_700px.gif?rlkey=1ykrb994u7a80xkiwxi5jex7b&st=igylgslt&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/4qb9bbpdj33ik4hhfdz4z/36.jpg?rlkey=z7pidkjq7vtyp4p37ykhq8zjo&st=qu0vki4c&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/e1zu9erch8vmbx22m32df/37_400px.gif?rlkey=pwfv4zds07mxawovz2ue5gvgo&st=b5y2rs9d&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/vjl99ucn15617hqxleizl/38.jpg?rlkey=r6ipe3mbbm4v0yoyenlp0osdx&st=83eevced&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/rirf1hm94ma7c4txige8t/39_400px.gif?rlkey=51qaaxug6jvx90mjegnaifr31&st=ls53sn02&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/gqguxt2ixf8iqbhe5sx2p/40.jpg?rlkey=whgf51je5e7e1r9xlikswb0fl&st=0cmtcmf2&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/nhoz5s8an9zw2au5a7agm/41_400px.gif?rlkey=lpx30q19dz43zzjuaxbxoygmb&st=2fpbutvm&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/f8s8tte2is6q4fx4braff/42.jpg?rlkey=ldqihppyelpr9eovhxmqtp6ap&st=rej5jgwv&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/tedrovk8dl3t1eeyl51vg/43_400px.gif?rlkey=rfanqbz310fne1fihcvksajbv&st=1qcgdsch&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/216r0b43ky5yzzaqqhtvs/44.jpg?rlkey=xnocefznc1fp96exxsugfd5w6&st=1zy79tso&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/1chukk6pma8rlro3w77fs/45_700px.gif?rlkey=a7apfa0xi1q0bcbn1pkb0wk54&st=pfsq0tu8&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/hnwdvij49qhlszidruh4e/46.jpg?rlkey=jqtgdkdwkl3sne5x40o2535nc&st=x9yfu750&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/p78lhbzi2aagwe6m7bpm7/47_400px.gif?rlkey=32b7b0zb7rsbkygzb17qbnkjp&st=irw0cqku&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/24gusn04lpsfvwge1mvvx/48_700px.gif?rlkey=4jsfy2itrcqb13mzi27rphlvo&st=tfzxqei8&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/yfqfrua1k5ypn025ogib9/49.jpg?rlkey=9v4hvyiazl8aoio4p8yj4nn76&st=iyvsy998&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/6g8oznj9sr38gcebo3yif/50_400px.gif?rlkey=czzthjumcg1pxfvk8fmyl8fhg&st=zvvogyty&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/ymnv0emqpglw5slmjn2xe/51.jpg?rlkey=dech1i87aq65z3vnjy4rzd3vr&st=atm7ldty&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/094qqcozfkfgfhih8rpq7/52_700px.gif?rlkey=oqn4sbldrksqvmehchmpw7sk3&st=uhnce6sp&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/0lhwm1ga3mscjk6u5xeb6/53_400px.gif?rlkey=mvoez8643ohapiudz3gu3rq0n&st=un7sq52s&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/y5e31aut5i94s5hxlvg4g/54_700px.gif?rlkey=qiueln5m2nnkw0dwanq8jhlvc&st=313djau7&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/22kyotqe6k264noknhc48/55_400px.gif?rlkey=j89xy5ektwtj7ps4fkijhb7rd&st=nrna3bu2&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/020m80flvdld59ckm33dv/56.jpg?rlkey=fjqptcut69qg0nouvnk39q1zv&st=ogp60sv8&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/dyt4jtsecgbc93i0u17pm/57_400px.gif?rlkey=t7dbghd97ssr9iyjldbf4zosf&st=ewnp0i7i&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/pfuomjosj0o3j1kr62h7r/58.jpg?rlkey=x6wacpdx1qa51df69zt64hvos&st=eo8yyu6w&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/om22qz0vgcxrzhe5os2gi/59_500px.gif?rlkey=w3pap8z708u5cmxc04qxrb57e&st=c5larpmw&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/6fj40hiojlval59a31c4y/60.jpg?rlkey=nmufd55vzx71zjzgx5a0g1yyh&st=qhvss10h&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/eqkl014wcv7xahzvassrz/61_500px.gif?rlkey=5ka0o2tl0z68r7y2k6r1xefgf&st=3qs07n59&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/fd4errgeof5i8ajfrd1mj/62.jpg?rlkey=b6oy1xzdt8wx3s3gthrntgmyn&st=6hfqibkj&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/u785rrylutz5onvnq542z/63_500px.gif?rlkey=i9c525tdcqngsjnghiu1svnei&st=4pnt2aza&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/xkla3434fa9wkcgka6g8l/64.jpg?rlkey=uua9f4dt7ur2xy5vtiwrhlu43&st=1bxblb4v&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/uki23dj2e4pex9onjbqao/65_500px.gif?rlkey=g39syw6tqv1xqnjedsw644s5c&st=w06rg6px&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/kbfkr0foqoz07jmxba1ao/66.jpg?rlkey=5qafntymzgt7s75sjejkibxpb&st=3feaepgb&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/aeq9tq5douz59kcp305o0/67.jpg?rlkey=jn7hjjjebs90q984blu1v8etj&st=zoral2mi&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/birn1ehmsqw6eo9yhujko/68_500px.gif?rlkey=fwmbgkh86qrazw0ztnkfy96gn&st=uaedkwsm&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/iqp17fhf01l7w2yo88cj6/69_400px.gif?rlkey=vqrt3nydejkbym7oa573itvxh&st=4u27y79x&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/qgvwh3zqxt8wa81oddxpd/70.jpg?rlkey=xbi6e1klbcp12uzgy89r02j4m&st=si9b7c5s&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/pliy4mv7pe0hoa4dauu46/71_700px.gif?rlkey=ujj8kpp6t5av338ltrdstxovr&st=zj6bes8h&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/k09wuklo1386e5i1skgfz/72.jpg?rlkey=i4ygftbw5nk6tlk0ur3qh9uvn&st=ppl0w8m3&dl=0">
+  <!-- 씨엘로 무연마 팬 상세페이지 - 썸네일 -->
+  <img src="https://dl.dropboxusercontent.com/scl/fi/724c0vj8lpr707e1kskoq/DetailPage_clelo_Thumbnail.jpg?rlkey=hgdo8z6by38h3ectgp1nwiyr9&st=dm50itbo&dl=0" alt="씨엘로 무연마 팬 상세페이지 썸네일"/>
+  <!-- 씨엘로 무연마 팬 상세페이지 - 오버레이 -->
+  <div class="project-overlay">
+    <div class="project-overlay-card">
+      <div class="project-title">씨엘로 무연마 팬 상세페이지</div>
+      <div class="project-title-divider"></div>
+      <div class="project-desc">
+        촬영 기획 · 현장 핸들링 · 제품 리서치<br>
+        상세페이지 기획 · 디자인 제작<br>
+        기여도 100%
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 레브 - 상세페이지 (이미지 45장) -->
+<div class="project-item"
+     data-category="detail"
+     data-type="detail"
+     data-detail="
+       https://dl.dropboxusercontent.com/scl/fi/jaznqe3mmupw8dm5puc6p/01.jpg?rlkey=07go3wg8jgwwncdkqr4ppakvh&st=8bcpvzmk&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/iyvaa3tg17htx9ehy44kq/02_500px.gif?rlkey=ybkuazefrt3k8h58sftob1y02&st=wk11fmnd&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/psgetxnxswlzk42vbvroy/03.jpg?rlkey=wtdc75zp47qbwzqjrhd4tmj5w&st=vdr5385y&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/ephlhbvgd9ek1q7gc8hqu/04_400px.gif?rlkey=3b44tl6679e0cfjhvki937rv9&st=ycwhl44n&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/uekir82d6naxi8gfblmxe/05.jpg?rlkey=qza451labvy0mt38n59igsmwe&st=i263uomp&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/dfysz8lisiu4m05vjcwop/06.gif?rlkey=519rx0hqvc5j860nqd4te5vxe&st=4nkyfm19&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/hge1txfxn7uwcqfexqct7/07.jpg?rlkey=m6gytfubqu3tgil0qff8ykep8&st=gyf4crk0&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/2pzm4p8uw63ei6fsq4dac/08.gif?rlkey=3ekbeqhglzbxnw8590195kqos&st=diiv4my6&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/qpugtdrkqu9dzz57pp297/09.jpg?rlkey=vamjsllv3rcnleh333mqr1j5u&st=2rk9umc3&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/7ah0vg1etz1i7qifovzuo/10_500px.gif?rlkey=ge9wsj06llwafoc90zohuudt1&st=c9r8oj4p&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/vup7b7mi2bihntt50o68z/11.jpg?rlkey=qk0ptota5t4hs3auo14yqmz8v&st=up4fdyqt&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/71dq7j1ac5b6xdsl4oi8n/12_500px.gif?rlkey=jlzx0jj8q14cgobanm35pssuo&st=fmq1otj0&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/145j3vpbanaabozxagc21/13.jpg?rlkey=5vslwto3n85onfpzb8oxsu4l2&st=ng9e8mhj&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/t3girl43g9l4ei9vvz5se/14_500px.gif?rlkey=kng5j48nf20kh9487somd9jen&st=k6hnz34i&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/ff86zdreh80y90yi1iko8/15.jpg?rlkey=l2t2hm49p7i9pxj545zr7noc2&st=7qpu9apr&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/0x4w7m7ia8niu0le660as/16.jpg?rlkey=bcdbfq43c206v1orllv7ngs9j&st=kxwvi0bh&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/72kqybsja6ofbefz49wlk/17_500px.gif?rlkey=8eclx58tunytdp29xhfk0oegs&st=dxdxgne4&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/n92qo7vc87571shpzzmym/18.jpg?rlkey=8c9f5otp1bt792g7btdlwztub&st=njanpghl&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/mnz2tvroot6h16fn3ettb/19_500px.gif?rlkey=jy07bp1kylgfe8fae22haxqbh&st=9ew5jopm&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/l2f30xqbrlpvapi69anqj/20.jpg?rlkey=dbnivplb745175djf1qltx8at&st=drzn5v5s&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/kiavpp1xwdbhd0nw25bo6/21_500px.gif?rlkey=droa0bu4h2xjmmfjsmk333hb3&st=1hn26t0c&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/0njfd2h4cxo4b5se8ytvo/22.jpg?rlkey=g5f5vanwou2buk9lpy7n321pe&st=jm0jn0xc&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/gmf24mx1fubizsgy82tkq/23_500px.gif?rlkey=4g3iiu626v7xvglpt3ren3p1l&st=f5aqdzef&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/v48u4eb6fqf9tt81hx28j/24.jpg?rlkey=gzl0xeueu9a3yrz2xgwztmf08&st=px1977su&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/c69gwty2adve9fno03ckg/25_500px.gif?rlkey=d8eeytjyk5wb3xhosn61pwi2y&st=r283c65b&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/s9c8of563lf8f1891qfhj/26.jpg?rlkey=mw3rcx2f7e6t22dn7bz2zuf4z&st=g115m7ki&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/j0u0krkmexug7uz538b82/27_500px.gif?rlkey=bk77r4jboxp2td7j6p13v7w77&st=ghnu1kfh&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/zqkbhcz6i1dmg65q9s1l1/28.jpg?rlkey=kozu88wc9koi05kph2lf9pn1t&st=ka9s9co8&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/ieh965dwugnhjifmh8jfq/29_500px.gif?rlkey=or5mxim7zmpgf9tr6w9zj0lvu&st=e42xdo97&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/4co86x6qbrz71nr99an4t/30.jpg?rlkey=s4kelqxcj5pt9hc2a65xe40mv&st=69v4e5vp&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/mrniskzeh9gxiph5tebee/31_400px.gif?rlkey=txmglfbv4o31wh2s8wem5047f&st=5fwt5iov&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/yn27fkpw56ft281mwz98i/32.jpg?rlkey=to6r7wsovde3w84adensee4mu&st=igmfin2b&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/gd8omdue9vf0xdhahwup3/33_400px.gif?rlkey=ekl30mlgv79zwvtueo7p5zc8w&st=9vg9jxib&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/qosx9datly9tquw8ud0xl/34.jpg?rlkey=j8qui3aox7f5n8qrvg49c11em&st=5m1wo9md&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/pb92aor60b1avel8se1o4/35_500px.gif?rlkey=1tz1nt8ah4ud9kdyr0b5vlsib&st=chf2dque&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/kt4hnfv9yzyrjl8q5jt6w/36.jpg?rlkey=d61i4fcgs9smwkadtml98f94e&st=3wok56e0&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/ak0rkso0u1xzyxgqw3ti7/37_500px.gif?rlkey=eczjru6prwdipifgsastkd81v&st=f3a60jif&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/y11q9dk2c5l378zyqvjc0/38.jpg?rlkey=duuzax5s0ubx6hgjm8uki6w01&st=he2r36xr&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/1etl66shkfujm0zpqzpwf/39_500px.gif?rlkey=yaus22003wksuvh4bofjq26h5&st=vs8nn0vj&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/po0bmfbtmtbsqm16p7lyw/40.jpg?rlkey=bint8y6yabca7fn589qgkrygx&st=xdwb4mxd&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/l8kijglxck1j45v1vf7tu/41_500px.gif?rlkey=c52k6vufsildms314uq95l9re&st=k4yyzlmk&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/v5x0den46deklajcprgoy/41.jpg?rlkey=8eaedaf7znk8o2oaxp6gbozd6&st=cufyct5l&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/b0xtla3utusgk1qtisphq/42.jpg?rlkey=jaolsf3jkboavm45gjq36od70&st=up142zhx&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/1cavivsjjchkow3qf3una/43.jpg?rlkey=uz69lvrehnzu1njp5rjahia1w&st=fnmuwiet&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/rgbccer3f1lzxs6tlxnvv/44.jpg?rlkey=bm11ymkiagv6p2pmehweixrgc&st=od9b864g&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/5u28koc4uw9es6vki21zc/45.jpg?rlkey=9zcr1dlo7hssz8po1mpeje5kq&st=urx1l9l8&dl=0">
+  <!-- 레브 - 썸네일 -->
+  <img src="https://dl.dropboxusercontent.com/scl/fi/ut83r3nqjhb0yrxpddvvf/Thumbnail.jpg?rlkey=jie7ve59pm08c0y0u41erzjom&st=4ri4q6c5&dl=0" alt="레브 - 상세페이지 썸네일"/>
+  <!-- 레브 - 오버레이 -->
+  <div class="project-overlay">
+    <div class="project-overlay-card">
+      <div class="project-title">레브 상세페이지</div>
+      <div class="project-title-divider"></div>
+      <div class="project-desc">
+        촬영 기획 · 현장 핸들링 · 제품 리서치<br>
+        상세페이지 기획 · 디자인 제작<br>
+        기여도 100%
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- 프린트 - 상세페이지 (이미지 2장) -->
+<div class="project-item"
+     data-category="detail"
+     data-type="detail"
+     data-detail="
+       https://dl.dropboxusercontent.com/scl/fi/rr44ng8h3cwgfjx2gkvzx/01.jpg?rlkey=stjahd4l6khnft668r0dvji6n&st=nqekxl6v&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/84lkgpc81y6xbe6l7y87f/02.jpg?rlkey=mtiw1r0oegbviw122fxayhp9n&st=q6kr4c7y&dl=0 ">
+  <!-- 프린트 - 썸네일 -->
+  <img src="https://dl.dropboxusercontent.com/scl/fi/kpkpazr0ulvc7c7bf7046/Thumbnail.jpg?rlkey=iqveqita7wwl71ec0kta3hv6m&st=zmsfo9ab&dl=0" alt="프린트 - 상세페이지 썸네일"/>
+  <!-- 프린트 - 오버레이 -->
+  <div class="project-overlay">
+    <div class="project-overlay-card">
+      <div class="project-title">프린트 상세페이지</div>
+      <div class="project-title-divider"></div>
+      <div class="project-desc">
+        제품 리서치 · 상세페이지 기획 · 디자인 제작<br>
+        기여도 100% 
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- 화이완리 - 상세페이지 (이미지 2장) -->
+<div class="project-item"
+     data-category="detail"
+     data-type="detail"
+     data-detail="
+       https://dl.dropboxusercontent.com/scl/fi/v94ucd3kspjzdz1ztueyk/01.jpg?rlkey=w7nkivsax3xtl0ylkvv6b8cas&st=k9fbhgej&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/x5zq4dz5hpsoqvlqwknhw/02.jpg?rlkey=6n5o6wnmo50xfzh20ikjc8kxg&st=fm2a8wce&dl=0 ">
+  <!-- 화이완리 - 썸네일 -->
+  <img src="https://dl.dropboxusercontent.com/scl/fi/92w0d2uzcxfh1xqtcyntw/Thumbnail.jpg?rlkey=h50uobay0yxcsjvktpan8syq7&st=r8qci625&dl=0" alt="화이완리 - 상세페이지 썸네일" />
+  <!-- 화이완리 - 오버레이 -->
+  <div class="project-overlay">
+    <div class="project-overlay-card">
+      <div class="project-title">화이완리 상세페이지</div>
+      <div class="project-title-divider"></div>
+      <div class="project-desc">
+        제품 리서치 · 상세페이지 기획 · 디자인 제작<br>
+        기여도 100% 
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- 고양이와 일요일 - 상세페이지 (이미지 2장) -->
+<div class="project-item"
+     data-category="detail"
+     data-type="detail"
+     data-detail="
+       https://dl.dropboxusercontent.com/scl/fi/majmzq473y8rp8p3llgyv/01.jpg?rlkey=8end4ihkgl6bkq9kzys7yd74x&st=m7nggxly&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/2mfsa3c69w1qmg99vwvqh/02.jpg?rlkey=hn1syqxb89k8f9ycxer6zbwy0&st=e7dro47w&dl=0 ">
+  <!-- 고양이와 일요일 - 썸네일 -->
+  <img src="https://dl.dropboxusercontent.com/scl/fi/zes4fgnrs5sfwryhojam7/Thumbnail.jpg?rlkey=94bh9gchkwt8ftuvnr6pit5yo&st=wyfortde&dl=0" alt="고양이와 일요일 - 상세페이지 썸네일" />
+  <!-- 고양이와 일요일 - 오버레이 -->
+  <div class="project-overlay">
+    <div class="project-overlay-card">
+      <div class="project-title">고양이와 일요일 상세페이지</div>
+      <div class="project-title-divider"></div>
+      <div class="project-desc">
+        제품 리서치 · 상세페이지 기획 · 디자인 제작<br>
+        기여도 100% 
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- 아이린도 린카접시 - 상세페이지 (이미지 7장) -->
+<div class="project-item"
+     data-category="detail"
+     data-type="detail"
+     data-detail="
+       https://dl.dropboxusercontent.com/scl/fi/diqzmlwc5fb9dc0sx3igr/01.jpg?rlkey=pb8emdocw2q1vdvo3p7h6pggh&st=8kd35dvf&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/sck659y5u6jdvvx2ei4mx/02_860px.gif?rlkey=4drjebje92cknpkl7aif3sb19&st=wpmodsdw&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/h2eyje18vydoqu9b07e4q/03.jpg?rlkey=xblzezwqhustsyzv9ab72u575&st=fipm54sa&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/2q3roo11jjo6gv47cgq30/04.jpg?rlkey=6701r86unw9kj6sg67kkstrw3&st=zz0j0uz6&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/uhkdjj4glmtwpj2p3sflj/05_600px.gif?rlkey=2i2i43yhtmchn8f89rlfjc963&st=7lwt24oa&dl=0,
+       https://dl.dropboxusercontent.com/scl/fi/fupu0uf848m6eyhftfq9q/06.jpg?rlkey=lds8njjqxm68dqwvoianbl8dd&st=0sxnheng&dl=0 ">
+  <!-- 아이린도 린카접시 - 썸네일 -->
+  <img src="https://dl.dropboxusercontent.com/scl/fi/eu3xxrwg3g6rwuikcyydh/Thumbnail.jpg?rlkey=i0sb71tka8dt90ahd7a5hkdj6&st=t4dc0luz&dl=0" alt="아이린도 린카접시 - 상세페이지 썸네일"/>
+  <!-- 아이린도 린카접시 - 오버레이 -->
+  <div class="project-overlay">
+    <div class="project-overlay-card">
+      <div class="project-title">린카접시 상세페이지</div>
+      <div class="project-title-divider"></div>
+      <div class="project-desc">
+        제품 리서치 · 상세페이지 기획 · 디자인 제작<br>
+        기여도 100% 
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- 아이린도 택배 패키지 (이미지 1장 + XR) -->
+<div class="project-item"
+     data-category="package"
+     data-type="normal"
+     data-src="https://dl.dropboxusercontent.com/scl/fi/pn8bapfepxgktg0j3b03d/01.jpg?rlkey=533f35t3p5hwcbqwqcwhiq98v&st=zukpk0jw&dl=0"
+     data-xr="https://dahyunss.github.io/Portfolio/assets/project/Package_airindodeliverybox/Package_airindodeliverybox_XR.5.html">
+  <!-- 아이린도 택배 패키지 - 썸네일 -->
+  <img src="https://dl.dropboxusercontent.com/scl/fi/b3hhwn15ri8l8n6p1c7rg/Package_airindodeliverybox_Thumbnail.jpg?rlkey=y28aqi2gahbhyls79ydc4p3d9&st=kkuga7ad&dl=0" alt="아이린도 택배 패키지 썸네일" />
+  <!-- 아이린도 택배 패키지 - 오버레이 -->
+  <div class="project-overlay">
+    <div class="project-overlay-card">
+      <div class="project-title">아이린도 택배 패키지</div>
+      <div class="project-title-divider"></div>
+      <div class="project-desc">
+        디자인 제작<br>
+        기여도 100%
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 아이린도 포장 패키지 (이미지 1장 + XR) -->
+<div class="project-item"
+     data-category="package"
+     data-type="normal"
+     data-src="https://dl.dropboxusercontent.com/scl/fi/mws3lryhpn5n5ktll6xnk/01.jpg?rlkey=91fw8822a4omnqisim376v9cg&st=vx7u63qv&dl=0"
+     data-xr="https://dahyunss.github.io/Portfolio/assets/project/Package_airindoinbox/Package_airindoinbox_XR.3.html">
+  <!-- 아이린도 포장 패키지 - 썸네일 -->
+  <img src="https://dl.dropboxusercontent.com/scl/fi/qyefyu4l83od1tslq03sf/Package_airindoinbox_Thumbnail.jpg?rlkey=3ft7nleaj8sikkoknx441u3cd&st=4nl1oekn&dl=0" alt="아이린도 포장 패키지 썸네일" />
+  <!-- 아이린도 포장 패키지 - 오버레이 -->
+  <div class="project-overlay">
+    <div class="project-overlay-card">
+      <div class="project-title">아이린도 포장 패키지</div>
+      <div class="project-title-divider"></div>
+      <div class="project-desc">
+        디자인 제작<br>
+        기여도 100%
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 씨엘로 패키지 (이미지 1장 + XR) -->
+<div class="project-item"
+     data-category="package"
+     data-type="normal"
+     data-src="https://dl.dropboxusercontent.com/scl/fi/s3fwm31v90lnmfpifrogs/01.jpg?rlkey=44kj2zqjhb7opzwg54h7s5hdd&st=tr73y8oz&dl=0"
+     data-xr="https://dahyunss.github.io/Portfolio/assets/project/Package_clelo/clelo_XR_XR.1.html">
+  <!-- 씨엘로 패키지 - 썸네일 -->
+  <img src="https://dl.dropboxusercontent.com/scl/fi/j6mj8i5w7fqaxff9ufm9v/Package_clelo_Thumbnail.jpg?rlkey=gvhjaw3r6thfn83l8x9abglx0&st=4j02lq4z&dl=0" alt="씨엘로 패키지 썸네일" />
+  <!-- 씨엘로 패키지 - 오버레이 -->
+  <div class="project-overlay">
+    <div class="project-overlay-card">
+      <div class="project-title">씨엘로 패키지</div>
+      <div class="project-title-divider"></div>
+      <div class="project-desc">
+        디자인 제작<br>
+        기여도 100%
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 레브 패키지 (이미지 1장 + XR) -->
+<div class="project-item"
+     data-category="package"
+     data-type="normal"
+     data-src="https://dl.dropboxusercontent.com/scl/fi/jlklce0kyw4ee41c23r0p/01.jpg?rlkey=gtr1t9k8d7bcqzf7plurt8ago&st=8b2hktcy&dl=0"
+     data-xr="https://dahyunss.github.io/Portfolio/assets/project/Package_reve/Package_reve_XR.1.html">
+  <!-- 레브 패키지 - 썸네일 -->
+  <img src="https://dl.dropboxusercontent.com/scl/fi/ot1nv39ltr76rd0cgbvm9/Package_reve_Thumbnail.jpg?rlkey=29jjvxw4h8cu6a82ant2npolb&st=dz3vdha8&dl=0" alt="레브 패키지 썸네일" />
+  <!-- 레브 패키지 - 오버레이 -->
+  <div class="project-overlay">
+    <div class="project-overlay-card">
+      <div class="project-title">레브 패키지</div>
+      <div class="project-title-divider"></div>
+      <div class="project-desc">
+        디자인 제작<br>
+        기여도 100%
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 실리콘 끈 보온병 패키지 (이미지 1장 + XR) -->
+<div class="project-item"
+     data-category="package"
+     data-type="normal"
+     data-src="https://dl.dropboxusercontent.com/scl/fi/8xvm9sxrullvepscbkoml/01.jpg?rlkey=0sx2k2g2yl2q7k4gsalwaqzoe&st=xts0plk1&dl=0"
+     data-xr="https://dahyunss.github.io/Portfolio/assets/project/Package_siliconestringvacuum/Package_siliconestringvacuum_XR.8.html">
+  <!-- 실리콘 끈 보온병 패키지 - 썸네일 -->
+  <img src="https://dl.dropboxusercontent.com/scl/fi/a6n55oa426fr48o986g0t/Package_siliconestringvacuum_Thumbnail.jpg?rlkey=n6ay1gw6q1v8vr94o5wz9ddre&st=qr8egn4e&dl=0" alt="실리콘 끈 보온병 패키지 썸네일" />
+  <!-- 실리콘 끈 보온병 패키지 - 오버레이 -->
+  <div class="project-overlay">
+    <div class="project-overlay-card">
+      <div class="project-title">실리콘 끈 보온병 패키지</div>
+      <div class="project-title-divider"></div>
+      <div class="project-desc">
+        디자인 제작<br>
+        기여도 100%
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 슬라이드 진공 머그컵 패키지 (이미지 1장 + XR) -->
+<div class="project-item"
+     data-category="package"
+     data-type="normal"
+     data-src="https://dl.dropboxusercontent.com/scl/fi/st96bbnuc568mhg7r1945/01.jpg?rlkey=xxgfpmqpsbh5lwn76xyshevbn&st=tp049s8o&dl=0"
+     data-xr="https://dahyunss.github.io/Portfolio/assets/project/Package_slidevacuummug/Package_slidevacuummug_XR.4.html">
+  <!-- 슬라이드 진공 머그컵 패키지 - 썸네일 -->
+  <img src="https://dl.dropboxusercontent.com/scl/fi/r3rm39bmesgch84597wyh/Package_slidevacuummug_Thumbnail.jpg?rlkey=6shx0vmzxuvom48rq41evgk4o&st=vo87qv0s&dl=0" alt="슬라이드 진공 머그컵 패키지 썸네일" />
+  <!-- 슬라이드 진공 머그컵 패키지 - 오버레이 -->
+  <div class="project-overlay">
+    <div class="project-overlay-card">
+      <div class="project-title">슬라이드 진공 머그컵 패키지</div>
+      <div class="project-title-divider"></div>
+      <div class="project-desc">
+        디자인 제작<br>
+        기여도 100%
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 에머 비타스텐 패키지 (이미지 1장 + XR) -->
+<div class="project-item"
+     data-category="package"
+     data-type="normal"
+     data-src="https://dl.dropboxusercontent.com/scl/fi/y70u01yvlbzmr3u6csscm/01.jpg?rlkey=cvdfbfewejn7pzuu2aahwqaj0&st=eep75n17&dl=0"
+     data-xr="https://dahyunss.github.io/Portfolio/assets/project/Package_ermervitastain/Package_ermervitaSten_XR.5.html">
+  <!-- 에머 비타스텐 패키지 - 썸네일 -->
+  <img src="https://dl.dropboxusercontent.com/scl/fi/qdg8uqvuns6lg53dpextw/Package_ermervitastain_Thumbnail.jpg?rlkey=j99ko4fgdddejmdg57pfw4rvo&st=jolz1pkn&dl=0" alt="에머 비타스텐 패키지 썸네일" />
+  <!-- 에머 비타스텐 패키지 - 오버레이 -->
+  <div class="project-overlay">
+    <div class="project-overlay-card">
+      <div class="project-title">에머 비타스텐 패키지</div>
+      <div class="project-title-divider"></div>
+      <div class="project-desc">
+        디자인 제작<br>
+        기여도 100%
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 핸드페인팅 머그 세트 패키지 (이미지 1장 + XR) -->
+<div class="project-item"
+     data-category="package"
+     data-type="normal"
+     data-src="https://dl.dropboxusercontent.com/scl/fi/cdc9psv266hvy5vtgy6gm/01.jpg?rlkey=omc0krruuheq0iucl13guwhwd&st=9xjr8ltf&dl=0"
+     data-xr="https://dahyunss.github.io/Portfolio/assets/project/Package_handpaintingcreammugset/Package_handpaintingcreammugset_XR.3.html">
+  <!-- 핸드페인팅 머그 세트 패키지 - 썸네일 -->
+  <img src="https://dl.dropboxusercontent.com/scl/fi/4xl16ch7gbtoa785kytj8/Package_handpaintingcreammugset_Thumbnail.jpg?rlkey=a8ryzzfjlob6ktteekg00m78t&st=l39vusre&dl=0" alt="핸드페인팅 머그 세트 패키지 썸네일" />
+  <!-- 핸드페인팅 머그 세트 패키지 - 오버레이 -->
+  <div class="project-overlay">
+    <div class="project-overlay-card">
+      <div class="project-title">핸드페인팅 머그 세트 패키지</div>
+      <div class="project-title-divider"></div>
+      <div class="project-desc">
+        디자인 제작<br>
+        기여도 100%
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 스텐 절구 패키지 (이미지 1장 + XR) -->
+<div class="project-item"
+     data-category="package"
+     data-type="normal"
+     data-src="https://dl.dropboxusercontent.com/scl/fi/orzj0kq1mamt6zln3bajx/01.jpg?rlkey=9x3slh2ufyyjkr3n43iajs99p&st=nofzeg8x&dl=0"
+     data-xr="https://dahyunss.github.io/Portfolio/assets/project/Package_stainmortar/Package_stainmortar_XR.5.html">
+  <!-- 스텐 절구 패키지 - 썸네일 -->
+  <img src="https://dl.dropboxusercontent.com/scl/fi/me3f7nx72ed4p4irevlza/Package_stainmortar_Thumbnail.jpg?rlkey=xyocrmtbrwjtl4zdz6p4mihzf&st=g4g4ufr1&dl=0" alt="스텐 절구 패키지 썸네일" />
+  <!-- 스텐 절구 패키지 - 오버레이 -->
+  <div class="project-overlay">
+    <div class="project-overlay-card">
+      <div class="project-title">스텐 절구 패키지</div>
+      <div class="project-title-divider"></div>
+      <div class="project-desc">
+        디자인 제작<br>
+        기여도 100%
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 쉐테른 패키지 (이미지 1장 + XR) -->
+<div class="project-item"
+     data-category="package"
+     data-type="normal"
+     data-src="https://dl.dropboxusercontent.com/scl/fi/hiwdan8416xr8u1ecm6y3/01.jpg?rlkey=y2f67ncvifs1nahmdnjws5xob&st=4ufmy5ij&dl=0"
+     data-xr="https://dahyunss.github.io/Portfolio/assets/project/Package_stern/Package_stern_XR.3.html">
+  <!-- 쉐테른 패키지 - 썸네일 -->
+  <img src="https://dl.dropboxusercontent.com/scl/fi/f70ogxfxnpd1p5hfe7kmm/Package_stern_Thumbnail.jpg?rlkey=o0e11sei54o5jlhvmd6voi5m7&st=8vc1kdjr&dl=0" alt="쉐테른 패키지 썸네일" />
+  <!-- 쉐테른 패키지 - 오버레이 -->
+  <div class="project-overlay">
+    <div class="project-overlay-card">
+      <div class="project-title">쉐테른 패키지</div>
+      <div class="project-title-divider"></div>
+      <div class="project-desc">
+        디자인 제작<br>
+        기여도 100%
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 클리어 유리포트 패키지 (이미지 1장 + XR) -->
+<div class="project-item"
+     data-category="package"
+     data-type="normal"
+     data-src="https://dl.dropboxusercontent.com/scl/fi/9ahnhrn2e1j8149wzhf67/01.jpg?rlkey=nwe49dlkba895vjf44k0p1zc7&st=tyrqjgn0&dl=0"
+     data-xr="https://dahyunss.github.io/Portfolio/assets/project/Package_clearglasskettle/Package_clearglasskettle_XR.4.html">
+  <!-- 클리어 유리포트 패키지 - 썸네일 -->
+  <img src="https://dl.dropboxusercontent.com/scl/fi/btyvollksm4uo3wzlfovt/Package_clearglasskettle_Thumbnail.jpg?rlkey=m9lb07zappgz54r2wqnjxg91p&st=ghvi5at7&dl=0" alt="클리어 유리포트 패키지 썸네일" />
+  <!-- 클리어 유리포트 패키지 - 오버레이 -->
+  <div class="project-overlay">
+    <div class="project-overlay-card">
+      <div class="project-title">클리어 유리포트 패키지</div>
+      <div class="project-title-divider"></div>
+      <div class="project-desc">
+        디자인 제작<br>
+        기여도 100%
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- 여기서부터 프로젝트 마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리마무리 -->
+
+
 
       </div>
 
-      <button class="arrow-btn arrow-prev" id="prevBtn">&#8249;</button>
-      <button class="arrow-btn arrow-next" id="nextBtn">&#8250;</button>
-    </div>
+<footer class="project-footer">
+  Son Dahyun– Design Portfolio<br>
+  Crafting Product Stories Through Design, Photography &amp; 3D Visualization
+</footer>
 
-    <p class="caption">
-      Son Dahyun– Design Portfolio<br>
-      Crafting Product Stories Through Design, Photography &amp; 3D Visualization
-    </p>
+    </div>
   </main>
 
+  <!-- 모달 (내용은 JS에서 채움) -->
+  <div class="modal-overlay" id="modal"></div>
+
+<button class="project-nav prev" aria-label="이전 프로젝트">
+  <!-- 왼쪽 -->
+  <svg xmlns="http://www.w3.org/2000/svg" width="13.5px" height="23.5px">
+    <path fill="none" stroke="#ffffff" stroke-width="1"
+      d="M11.875,21.500 L1.875,11.500 L11.875,1.500"/>
+  </svg>
+</button>
+
+<button class="project-nav next" aria-label="다음 프로젝트">
+  <!-- 오른쪽 -->
+  <svg xmlns="http://www.w3.org/2000/svg" width="14.5px" height="24.5px">
+    <path fill="none" stroke="#ffffff" stroke-width="1"
+      d="M1.527,1.527 L12.320,12.320 L1.527,23.113"/>
+  </svg>
+</button>
+
   <script>
-    (function () {
-      const slides = document.querySelectorAll('.slide');
-      const prevBtn = document.getElementById('prevBtn');
-      const nextBtn = document.getElementById('nextBtn');
+    // === 필터 pill 위치/크기 계산 ===
+    function updateFilterPill(targetBtn) {
+      const pill = document.getElementById('filterPill');
+      const bar = document.getElementById('filterBar');
+      const inner = document.getElementById('filterInner');
 
-      let current = 0;
-      const stayTime = 5000;
-      let timer = null;
+      const barRect = bar.getBoundingClientRect();
+      const innerRect = inner.getBoundingClientRect();
+      const btnRect = targetBtn.getBoundingClientRect();
 
-      function showSlide(index) {
-        slides[current].classList.remove('active');
-        current = (index + slides.length) % slides.length;
-        slides[current].classList.add('active');
+      const barWidth = barRect.width;
+      const textWidth = btnRect.width; // 패딩 0이라 거의 글자 폭
+
+      const filter = targetBtn.getAttribute('data-filter');
+      let left;
+      let width;
+
+      if (filter === 'all') {
+        // 전체보기: 바 왼쪽에서 2px 떨어져 시작
+        left = 2;
+        width = textWidth + 28; // 글자 + 좌우 14px
+      } else if (filter === 'concept') {
+        // 컨셉: 바 오른쪽에서 2px 남기고 끝나도록
+        width = textWidth + 28;
+        left = barWidth - 2 - width;
+      } else {
+        // 가운데 항목들: 글자 기준 좌우 14px
+        const textLeftInBar = btnRect.left - barRect.left;
+        left = textLeftInBar - 14;
+        width = textWidth + 28;
       }
 
-      function nextSlide() { showSlide(current + 1); }
-      function prevSlide() { showSlide(current - 1); }
+      pill.style.left = left + 'px';
+      pill.style.width = width + 'px';
+    }
 
-      function startAutoPlay() {
-        stopAutoPlay();
-        timer = setInterval(nextSlide, stayTime);
+    // === 필터 기능 ===
+   (function () {
+  const filterButtons = document.querySelectorAll('.filter-btn');
+  const items = document.querySelectorAll('.project-item');
+
+  function applyFilter(filter) {
+    items.forEach(item => {
+      const category = item.getAttribute('data-category');
+      if (filter === 'all' || category === filter) {
+        item.style.display = '';
+      } else {
+        item.style.display = 'none';
       }
+    });
+  }
 
-      function stopAutoPlay() {
-        if (timer) clearInterval(timer);
-      }
+  filterButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterButtons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
 
-      nextBtn.addEventListener('click', () => { nextSlide(); startAutoPlay(); });
-      prevBtn.addEventListener('click', () => { prevSlide(); startAutoPlay(); });
+      updateFilterPill(btn);
 
-      startAutoPlay();
+      const filter = btn.getAttribute('data-filter');
+      applyFilter(filter);
+    });
+  });
+
+  window.addEventListener('load', () => {
+    const initialBtn = document.querySelector('.filter-btn.active');
+    if (initialBtn) updateFilterPill(initialBtn);
+  });
+
+  window.addEventListener('resize', () => {
+    const activeBtn = document.querySelector('.filter-btn.active');
+    if (activeBtn) updateFilterPill(activeBtn);
+  });
+
+})(); // ✅ 필터 IIFE 닫기
+
+// ✅ 프로젝트 랜덤 정렬 (페이지 진입 시 1회)
+(function shuffleProjects() {
+  const grid = document.getElementById('projectsGrid');
+  if (!grid) return;
+
+  const children = Array.from(grid.children);
+
+  for (let i = children.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [children[i], children[j]] = [children[j], children[i]];
+  }
+
+  children.forEach(el => grid.appendChild(el));
+})();
+
+
+// === 프로젝트 랜덤 정렬 (페이지 진입 시 1회) ===
+(function shuffleProjects() {
+  const grid = document.getElementById('projectsGrid');
+  if (!grid) return;
+
+  const items = Array.from(grid.children);
+
+  for (let i = items.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [items[i], items[j]] = [items[j], items[i]];
+  }
+
+  items.forEach(item => grid.appendChild(item));
+
     })();
 
-function updateArrowPosition() {
-  const slider = document.querySelector('.slider-wrapper');
-  const rect = slider.getBoundingClientRect(); 
-  const middleY = rect.top + rect.height / 2;
+    // === 모달(썸네일 크게 보기) – 상세/일반 분리 ===
+    (function () {
+const modal = document.getElementById('modal');
+const items = document.querySelectorAll('.project-item');
 
-  // 화살표 세로 위치 조정
-  document.querySelector('.arrow-prev').style.top = middleY + 'px';
-  document.querySelector('.arrow-next').style.top = middleY + 'px';
+/* 🔽🔽🔽 여기부터 추가 🔽🔽🔽 */
+
+// === 좌우 네비게이션 상태 ===
+let currentIndex = -1;
+
+function getVisibleItems() {
+  return Array.from(document.querySelectorAll('.project-item'))
+    .filter(el => el.style.display !== 'none');
 }
 
-// 첫 로딩 시 적용
-updateArrowPosition();
+function openByIndex(nextIndex) {
+  const list = getVisibleItems();
+  if (!list.length) return;
 
-// 창 크기 바뀌면 자동 재계산
-window.addEventListener('resize', updateArrowPosition);
-window.addEventListener('scroll', updateArrowPosition);
+  const safeIndex = (nextIndex + list.length) % list.length;
+  currentIndex = safeIndex;
+
+  const item = list[safeIndex];
+  const type = item.dataset.type || (item.dataset.category === 'detail' ? 'detail' : 'normal');
+
+  if (type === 'detail') {
+    const raw = item.dataset.detail || item.querySelector('img').src;
+    const detailList = raw.split(',').map(s => s.trim()).filter(Boolean);
+    openDetailModal(detailList);
+  } else {
+    const src = item.dataset.src || item.dataset.full || item.querySelector('img').src;
+    const xrUrl = item.dataset.xr || '';
+    openNormalModal(src, xrUrl);
+  }
+}
+
+/* 🔼🔼🔼 여기까지 추가 🔼🔼🔼 */
+
+
+      // 아이콘 SVG들 (그대로 복붙)
+      const PC_ICON = `
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="70px" height="60px">
+<image x="0px" y="0px" width="70px" height="60px" xlink:href="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEYAAAA8CAMAAADsSTwRAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAACFlBMVEX19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//////hmBbaAAAAsHRSTlMAAy5QV1VWSRlMxtu9vr/B6ZSc0IxUWVq0x7WIGECwqnIznnodO6KrbAYlm6a7n4+QrqTf3MnOzcvn0ahfQUdGQ0R3sm4UBBUQeRwxi3EIOhcNKSEynZckUbfTdmZ0eGpldTmt5eHd3ujy7vHiEzQ/NaWHOOBpNz4BBTARYe1CG8C2CewK14ESymPqxD3kLV0OJkUHhSKs9GDzayrmDAJohnvZfH1+mf0PS/n16/r8768iMsUAAAABYktHRLE0Y55SAAAAB3RJTUUH6QwEDgoYVBDHagAAAfxJREFUWMNjYGRiZmGlCLCxczAycHJx8/DyUQB4+QUEORmEhEVExcQpAGJsEpJCDFLSMgwUAlk5KQZ5BQ5KjVFUkmeQV1ah1BhVtVFjRo0ZNWbUmFFjRo0ZNWbUmEFkjLqGJqXGaGmrM+jo6unjBwYGBBQY8uswGBmbmJrhA+YWFnjlzSwsrYwYrJVsbO3wAXsHR7zydg5OztYM8i6u+H3u5u5BIGyYhIAx5emFX5G3j68ffhX+oJhSCMCvKDAomIBrQkLVGaTCwimN8IhIKQaDKCOXaCdsQCPGBURFx8YCybjY+ASFOGzKEmO5+A0YkpJTUtPSsQDujEwBhERaalZ2DlZ16Tk5ykkMDLl5DrL5WEBBYVqRP5xXLGpYUlpWjkWdrG0QKB9UuFViBRVqFlUIKbfqmto6RuwqGfEFXH1DYxNKtDa7tJAR/r6tbSh8GV4eRdJNae9oyEMRqOzs8qwk1ZQWXwFPVJGK3G4uWxJNYezpde5DF+xPTZ5AmjETeUsmYUTAZH2BKSSZMnXa9BlYosWrcOYsEkyZXZhW6obVkWrGGk1EGMAYmOuRq2o9x8Bvrkc1JphX1p0eN3uCR3vTPLzGhM9fsHBK1IZFi30XL8EES51ily3f4Ky8ZCnzCrzGrORa1bx6Q2bvnFqsIGtNiuXaddnru0LRaiUAiYQdtw6IMCYAAAAASUVORK5CYII=" />
+</svg>`;
+
+      const MO_ICON = `
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="34px" height="60px">
+<image x="0px" y="0px" width="34px" height="60px" xlink:href="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAACIAAAA8CAMAAAA0RZgbAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAABC1BMVEX19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19/////9arr+NAAAAWHRSTlMAOrPt6+nMUhe3u4JgZ2bJr3PzexMBBQR6xa7uVlC2tOpkA1xjDQsPHx4gEhZpCHHf2NXX5IgKKycCMGJfYWVdWFG1svV0cMSxw2tHT05NvH1Mvebc294hD8udVAAAAAFiS0dEWO21xI4AAAAHdElNRQfpDAQOCgEwe2+qAAAAuElEQVRIx+3VxxbBUBSF4UN00UWIFkQneolEi9477/8mwlpG3OsF7j/+BmePDuj0lMGIjDKZLWC12WkHKqfT5faA1+dnAsjYYIiDcARwRWNx4BNJHElZOeCFD0mmM0w2l9cqFBGkVKbFSrVWrzeaLfY3aXe6Uk+WFaU/0DG/ySuGfe+QAE3+nEsIIYQQQggh3wT/+IYaoUY4AWN1AtOZiCPzxRJW+vVmi2q3P6hHOJ0vV2S3e014PAHoEkeE3ICOfgAAAABJRU5ErkJggg==" />
+</svg>`;
+
+      const CLOSE_ICON = `
+<svg xmlns="http://www.w3.org/2000/svg" width="43.5px" height="43.5px">
+<path fill-rule="evenodd" stroke="rgb(255, 255, 255)" stroke-width="1px" fill="none"
+ d="M1.500,1.500 L41.500,1.500 L41.500,41.500 L1.500,41.500 L1.500,1.500 Z"/>
+<path fill-rule="evenodd" stroke="rgb(235, 29, 29)" stroke-width="1px" fill="rgb(235, 29, 29)"
+ d="M13.926,14.421 L14.688,13.659 L29.920,28.890 L29.159,29.651 L13.926,14.421 Z"/>
+<path fill-rule="evenodd" stroke="rgb(235, 29, 29)" stroke-width="1px" fill="rgb(235, 29, 29)"
+ d="M28.956,13.659 L29.717,14.421 L14.485,29.651 L13.723,28.890 L28.956,13.659 Z"/>
+</svg>`;
+
+const XR360_ICON = `
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="87px" height="60px">
+  <image x="0px" y="0px" width="87px" height="60px"
+    xlink:href="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFcAAAA8CAQAAAC58u5+AAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QA/4ePzL8AAAAHdElNRQfpDA8OMjc/X8HJAAAGqklEQVRo3s2ZbXBU5RXHf3c3m83uBggvCUxEIQIGX5hhsGLNtFTGGcYqtqVUOzU0lKIEoi21U1Em2tIXBEtrp/WlahGnYlXqMI0dGIrtDC3VAaYWUqAGEhggTaKQmFBkY3Y3u/9+yHLNZu/e7E223pzzYZ+X8zznf8895zx3z4MYAbxIB9WuZv1K4+wl3QaK0GJFtUVf0mqd1i4FRzbcPB3T88n2HHWo0k7ag9tUyni2JdsHeZdP2wm7D7cbUZps5zOWC7bSrjsDqtNRlSlfhXpE53TTyPZddKUO65x26F/q1IP2sobcdgaA8dRwHefZzpv2giMDbtbkfqg5ojyH8mXcRwAI4SdIgDjv8xhNyUf/AUWIIAECBPEhuvgurQAEWMMN5AMF+AiTABrZxJn/J1wfl1FEDAMwiAJ3cpSfAzCJB2ikFQ9gkCCCF8NcOZolRDgNxAAQQarZ6wzu8OP6iB5ItmarXbdmlBuj4/pCysg4HdYyZ9py4bvh5G8hBn5bydTZELGkpbOmXMCNJH8DtrtFiVuMOkxMw4drUGC27CgvF6bJhXUvveKwra3y8QyYF16n+ocPV+QnWxESdNs8lNdipc+ZMqeJbDRzCZIw+72MNuF24+Uz+PqZwOBD3k6Gky8NLuRZjOUU7lSeoNiM5zgTCZgW6qaAR2kjnvRi4WMUC9gHWDuDz6l+O/EKvsoVLKez39hJqvCaasV0nidgwk3wIr82bS9K2Mo1Sbh+C10J8830USGbaeMN9maKAmu4Ib7CSmbgYSsXU2bC1Kf0D/ETMzPECPMG7/SbHUsnRcm2DyMNhAb4bg8N3MUS2nmVLbSlA0sPtRJWUc9PifAQ01hNdNA3dEllOC2zBvCY6c1v6aepcHv5IbP5Oqf4Nk2sZ6o93AIq2cd6/s7t3MwLdA0KNZWiNpnGKmlpgDMAxNjNQj7P76imgfsZkwnu9bzOyxzgNr6Z8kqdwHVKmY6Wf7KChfyeJ6njRiu432AH13AHd7PfkUJZHq5WcunhY5gHuBXtZym3UsIOlg2Eu5bn+AsV7HBonVEE+h0NhWmpyjBnu+lNewDvgEBOp93cTB3Psqav25cZHmIdP+LxtA3T6UpqGU8ckUBEuY4raEnO+QlRS6WZ6ESIabyXnL1AnO9zt7lTglFM5YNBNbazkkZ+TIxf9MG9nY08yvqsrGngZyxeovTQQy/17Df/DnbzNHOYlDzXRC8RtplR0MKrzKXUzA+9xNjCgSx0xtmEWM+77Ebj1Kjt8rv+992e8/SKjqgIVatL5a7DGZyn6KzuNfQ3WqjMyhHcpt8w3cM03nIbR5a0l3IPQdrdxpEldRLy0M0Et3FkSeOIejjGPLdxZEmf5SSq0nnNcj3uB+dytes+VKSDqlO+63Ds2dDLOqYShObrI22Ux3VIdvywenTbpXJ0lWL6mf2dS1ZcoFmalfMH9+phJbRCfFw9r1JMf9TMYW07Wa+pUx/oJc3NIdhSvSBpVV/v4+H5alRz3zMMkV/RWS3Rcv1bF/RUjg72u3REHVp0qd9/6jI9rZj26JYhOsIZfU8ITdJqtatZm1Q8LKjztFMR/aH/gw/0kgr9VR3arQUKOdw8qBO60+xN1Aad13taq6IhAA1pgXaqU8e1KPVb0Ur4i9qjTtVrlWY6CL+gTuielJEy/VYdatUKTch6l4DKVaMGXdQh3Zv+WZtp2S3arFO6qF1aqbkaMyS4CFVou6R6fVneQdYX6kbVaKciatVrWizDSspugzJV63W9rws6oCe1VHNsHcQaLkJ36E1JdfpchpXXaql+qbfUpXParvt1dWYtg19UXcXV3MR8ppOglWaO0kATJ+gYIBfkMBvZbLlHIQtZRymPsdEcu5yZzGYOZUzBw0n2sI9GTvQrF1pQtvdqYyjmKj7F9cykhAg9hGnlNGf4Dy200YKXg2zIABdgAl+jlkM0UMxEJhPEz1mOU88/OEUH/80GhtNrQC8+RjODcsqZwmQmkk8eXjyEKeUettqufpw1HKGJJpo4RhMfZrgCyEhOC6Zx4vRwjrfNkfGUUEIxl1M7aLW2kHe4waHGVBpCVszEjVppMztWtQrbSmTBTq2bmYJ4zNJpOlXyHWbwIM8OT0lu74StC3QV7GILbczjmeEqyJ11reFfyyMsoIXF/Nm2fDcC4JZTwzKaWcOLzuL/k4BrYPQDNZ3lVHOatTyXRaHQBbhRPBQCEKKGb/ER69jquP7+icGN8SeqOY+fKop4gm1mqTSXlMO8W6SX1KWz2qDJOdw1hf8HhTrRiG1bN3wAAAAASUVORK5CYII=" />
+</svg>`;
+
+
+function closeModal() {
+  modal.classList.remove('open');
+  modal.innerHTML = '';
+  unlockBodyScroll();   // ✅ 추가
+}
+
+
+function lockBodyScroll() {
+  const scrollY = window.scrollY || document.documentElement.scrollTop;
+  document.body.dataset.scrollY = String(scrollY);
+
+  document.body.classList.add('modal-open');
+  document.body.style.position = 'fixed';
+  document.body.style.top = `-${scrollY}px`;
+  document.body.style.left = '0';
+  document.body.style.right = '0';
+  document.body.style.width = '100%';
+}
+
+function unlockBodyScroll() {
+  const scrollY = parseInt(document.body.dataset.scrollY || '0', 10);
+
+  document.body.classList.remove('modal-open');
+  document.body.style.position = '';
+  document.body.style.top = '';
+  document.body.style.left = '';
+  document.body.style.right = '';
+  document.body.style.width = '';
+  delete document.body.dataset.scrollY;
+
+  window.scrollTo(0, scrollY);
+}
+
+
+// 상세페이지용 모달
+function openDetailModal(detailSrcList) {
+  // 혹시 문자열이 넘어오면 배열로 변환
+  if (!Array.isArray(detailSrcList)) {
+    detailSrcList = [detailSrcList];
+  }
+
+  // PC용 이미지들 HTML
+  const pcImagesHtml = detailSrcList
+    .map(src => `<img src="${src}" alt="상세페이지" class="modal-image-pc">`)
+    .join('');
+
+  // MO용 이미지들 HTML
+  const moImagesHtml = detailSrcList
+    .map(src => `<img src="${src}" alt="상세페이지 모바일" class="modal-image-mo">`)
+    .join('');
+
+  modal.innerHTML = `
+    <div class="modal-frame detail-pc">
+      <div class="modal-toolbar">
+        <button class="view-btn view-pc active" title="PC 화면 기준으로 보기">
+          ${PC_ICON}
+        </button>
+        <button class="view-btn view-mo" title="모바일 화면 기준으로 보기">
+          ${MO_ICON}
+        </button>
+      </div>
+
+      <button class="modal-close-btn" aria-label="닫기">
+        ${CLOSE_ICON}
+      </button>
+
+<!-- PC 모드 뷰 : 모바일처럼 "고정 박스 + 내부 스크롤" -->
+<div class="detail-pc-view">
+  <div class="pc-viewport">
+    <div class="pc-scroll">
+      ${pcImagesHtml}
+    </div>
+  </div>
+</div>
+
+
+      <!-- MO 모드 뷰 : 여러 장을 세로로 쭉, 안에서 스크롤 -->
+      <div class="detail-mo-view">
+        <div class="mobile-viewport">
+          <div class="mobile-scroll">
+            ${moImagesHtml}
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+
+lockBodyScroll();  // ✅ 추가
+modal.classList.add('open');
+
+
+  const frame     = modal.querySelector('.modal-frame');
+  const pcBtn     = modal.querySelector('.view-pc');
+  const moBtn     = modal.querySelector('.view-mo');
+  const closeBtn  = modal.querySelector('.modal-close-btn');
+  const pcView    = modal.querySelector('.detail-pc-view');
+  const moView    = modal.querySelector('.detail-mo-view');
+
+  function setPC() {
+    frame.classList.add('detail-pc');
+    frame.classList.remove('detail-mo');
+    pcBtn.classList.add('active');
+    moBtn.classList.remove('active');
+    pcView.style.display = 'block';
+    moView.style.display = 'none';
+  }
+
+  function setMO() {
+    frame.classList.add('detail-mo');
+    frame.classList.remove('detail-pc');
+    moBtn.classList.add('active');
+    pcBtn.classList.remove('active');
+    pcView.style.display = 'none';
+    moView.style.display = 'block';
+  }
+
+  pcBtn.addEventListener('click', setPC);
+  moBtn.addEventListener('click', setMO);
+  closeBtn.addEventListener('click', closeModal);
+
+  // 배경 클릭 시 닫기
+  modal.addEventListener(
+    'click',
+    function onBg(e) {
+      if (e.target === modal) closeModal();
+    },
+    { once: true }
+  );
+
+  // ESC 닫기
+  window.addEventListener('keydown', function onEsc(e) {
+    if (e.key === 'Escape') {
+      closeModal();
+      window.removeEventListener('keydown', onEsc);
+    }
+  });
+}
+
+
+function openNormalModal(src, xrUrl) {
+  modal.innerHTML = `
+    <div class="modal-frame normal">
+
+      ${xrUrl ? `
+        <button class="xr-btn" type="button" aria-label="360도 보기">
+          ${XR360_ICON}
+        </button>
+      ` : ''}
+
+      <button class="modal-close-btn" aria-label="닫기">
+        ${CLOSE_ICON}
+      </button>
+
+      <img src="${src}" class="modal-image">
+    </div>
+  `;
+
+
+
+lockBodyScroll();  // ✅ 추가
+modal.classList.add('open');
+
+
+        const closeBtn = modal.querySelector('.modal-close-btn');
+        closeBtn.addEventListener('click', closeModal);
+
+        modal.addEventListener('click', function onBg(e) {
+          if (e.target === modal) closeModal();
+        }, { once: true });
+
+        window.addEventListener('keydown', function onEsc(e) {
+          if (e.key === 'Escape') {
+            closeModal();
+            window.removeEventListener('keydown', onEsc);
+          }
+        });
+      }
+
+      // 썸네일 클릭 핸들러
+items.forEach(item => {
+  item.addEventListener('click', () => {
+
+const list = getVisibleItems();
+currentIndex = list.indexOf(item);
+
+    const type = item.dataset.type || (item.dataset.category === 'detail' ? 'detail' : 'normal');
+
+    if (type === 'detail') {
+      // 1) data-detail 읽기
+      const raw = item.dataset.detail || item.querySelector('img').src;
+
+      // 2) 콤마로 나눠서 배열로 만들기 (공백 제거)
+      const detailList = raw
+        .split(',')
+        .map(s => s.trim())
+        .filter(s => s.length > 0);
+
+      openDetailModal(detailList); // 배열 넘기기
+    } else {
+const src = item.dataset.src || item.dataset.full || item.querySelector('img').src;
+
+const xrUrl = item.dataset.xr || '';
+openNormalModal(src, xrUrl);
+
+  const xrBtn = modal.querySelector('.xr-btn');
+  if (xrBtn && xrUrl) {
+    xrBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      window.open(xrUrl, '_blank', 'noopener');
+    });
+  }
+
+    }
+  });
+});
+
+const prevBtn = document.querySelector('.project-nav.prev');
+const nextBtn = document.querySelector('.project-nav.next');
+
+prevBtn?.addEventListener('click', (e) => {
+  e.stopPropagation();
+  if (!modal.classList.contains('open')) return;
+  openByIndex(currentIndex - 1);
+});
+
+nextBtn?.addEventListener('click', (e) => {
+  e.stopPropagation();
+  if (!modal.classList.contains('open')) return;
+  openByIndex(currentIndex + 1);
+});
+
+    })();
 
 
   </script>
+
+
 </body>
+
+
 </html>
