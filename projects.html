@@ -128,9 +128,13 @@
       gap: 10px;
     }
 
-    .filter-pill {
+.filter-pill {
       position: absolute;
-      top: 2px; bottom: 2px;
+      /* top, bottom 기존 코드 대신 아래 코드로 변경 추천 */
+      top: 50%; 
+      transform: translateY(-50%); /* 정확히 수직 중앙 정렬 */
+      height: 36px; /* 버튼 높이와 동일하게 */
+      
       background: #121212;
       border-radius: 18px;
       transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
@@ -322,8 +326,7 @@
       font-weight: 300; font-size: 0.8rem; color: #888; line-height: 1.6;
     }
 
-
-    /* =========================================
+/* =========================================
        8. 반응형 (모바일 대응) 핵심 수정
        ========================================= */
     @media (max-width: 1200px) { .projects-grid { column-count: 2; } }
@@ -339,28 +342,24 @@
 
         .projects-grid { column-count: 1; } 
 
-        /* 필터 바: 한눈에 보이게 수정 (스크롤 X, 줄바꿈 O) */
+        /* 필터 바: 한눈에 보이게 수정 */
         .filter-bar {
             background: transparent;
             height: auto;
             width: 100%;
             display: flex;
-            flex-wrap: wrap; /* 줄바꿈 허용 */
-            justify-content: center; /* 가운데 정렬 */
+            flex-wrap: wrap;
+            justify-content: center;
             gap: 8px;
             border-radius: 0;
             margin-bottom: 30px;
         }
         
-        .filter-inner {
-            display: contents; /* 부모 flex 설정을 따름 */
-        }
-        
-        /* 모바일에서는 슬라이딩 효과(검은알약) 숨기고, 버튼 자체 스타일링 */
+        .filter-inner { display: contents; }
         #filterPill { display: none !important; }
 
         .filter-btn {
-            background: #f4f4f4; /* 회색 배경 */
+            background: #f4f4f4;
             border-radius: 20px;
             padding: 6px 16px;
             height: 32px;
@@ -369,23 +368,23 @@
             margin: 0;
             font-weight: 400;
         }
-        
-        /* 선택된 버튼 스타일 */
         .filter-btn.active {
             background: #121212;
             color: #fff;
             font-weight: 500;
         }
 
-        /* 모달 (상세페이지): 전체화면 & 회색박스 제거 */
+/* 모달 (상세페이지): 전체화면 */
         .modal-overlay {
-            padding: 0; /* 여백 제거 */
-            background: #fff; /* 배경 흰색 */
-            align-items: flex-start; /* 위에서부터 시작 */
+            padding: 0;
+            background: #fff;
+            align-items: flex-start;
+            /* [중요] 모바일에서 고정 버튼이 스크롤 따라가는 문제 해결을 위해 필터 제거 */
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
         }
 
         .modal-frame, 
-        .modal-frame.gallery,
         .modal-frame.detail-pc, 
         .modal-frame.detail-mo {
             width: 100% !important;
@@ -394,13 +393,31 @@
             min-height: 100vh;
             margin: 0 !important;
             padding: 0 !important;
-            background: #fff !important; /* 회색 제거 */
+            background: #fff !important;
             box-shadow: none !important;
             border-radius: 0 !important;
-            display: block; /* Flex 해제하고 블록으로 */
+            display: block;
         }
 
-        /* 뷰포트 초기화 */
+        /* [수정] 갤러리(단일 이미지) 모드는 수직 중앙 정렬 */
+        .modal-frame.gallery {
+            width: 100% !important;
+            max-width: 100% !important;
+            height: auto !important;
+            min-height: 100vh;
+            margin: 0 !important;
+            padding: 0 !important;
+            background: #fff !important;
+            box-shadow: none !important;
+            border-radius: 0 !important;
+            
+            /* 핵심: 플렉스로 바꾸고 중앙 정렬 */
+            display: flex !important; 
+            flex-direction: column;
+            justify-content: center; 
+            align-items: center;
+        }
+
         .pc-viewport, .mobile-viewport {
             width: 100% !important;
             height: auto !important;
@@ -411,36 +428,73 @@
             box-shadow: none !important;
         }
         
-        /* 스크롤바 영역 제거 */
-        .pc-scroll, .mobile-scroll {
-            width: 100%;
-            height: auto;
-            overflow: visible;
-        }
+        .pc-scroll, .mobile-scroll { width: 100%; height: auto; overflow: visible; }
 
-        /* 모달 닫기 버튼: 우측 상단 고정 */
+        /* [수정] 모바일 컨트롤 바 (XR 버튼 + 닫기 버튼 감싸는 통) */
         .modal-controls {
             position: fixed;
             top: 0; right: 0; left: auto;
             width: auto;
             z-index: 10002;
             padding: 15px;
+            display: flex; /* 버튼들 가로 배치 */
+            align-items: center;
+            gap: 10px; /* 버튼 사이 간격 */
         }
         
+        /* 닫기 버튼 */
         .close-btn-fixed {
-            color: #121212; /* 배경이 흰색이므로 검은색 */
-            background: rgba(255,255,255,0.8);
+            color: #121212;
+            background: rgba(255,255,255,0.9);
             border-radius: 50%;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             width: 40px; height: 40px;
             display: flex; align-items: center; justify-content: center;
+            border: 1px solid #eee;
         }
+
+/* [수정] 모바일용 360도 버튼 스타일 (닫기 버튼과 동일하게 변경) */
+        .xr-btn-mobile {
+            background: rgba(255,255,255,0.9); /* 흰색 배경 */
+            color: #121212; /* 검은 글씨 */
+            border: 1px solid #eee; /* 테두리 추가 */
+            border-radius: 20px;
+            padding: 0 16px;
+            height: 40px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            pointer-events: auto;
+            cursor: pointer;
+        }
+
+/* [수정] 모바일 네비게이션: 효과 없이 심플하게 */
+        .project-nav {
+            display: none; /* JS로 제어 */
+            background: none !important; /* 배경 제거 */
+            border: none !important;    /* 테두리 제거 */
+            box-shadow: none !important; /* ★ 그림자 완전 제거 */
+            filter: none !important;     /* 기타 효과 제거 */
+            padding: 10px; /* 터치 영역은 유지 */
+            opacity: 1;
+        }
+        
+        /* 닫기 버튼(X)과 동일한 크기(24px)와 두께(2px)로 맞춤 */
+        .project-nav svg {
+            stroke: #bcbcbc !important; /* 은은한 회색 */
+            stroke-width: 2px !important; /* 두께 고정 */
+            width: 24px !important; height: 24px !important; /* 닫기 버튼 아이콘과 동일 크기 */
+        }
+        
+        /* 위치: 화면 양 끝 */
+        .project-nav.prev { left: 5px !important; }
+        .project-nav.next { right: 5px !important; }
 
         /* PC/Mobile 전환 버튼 그룹 숨김 */
         .control-group { display: none !important; }
-        
-        /* 화살표 네비 숨김 */
-        .project-nav { display: none !important; }
         
         /* 이미지 스타일 */
         .modal-frame img, .pc-viewport img {
@@ -449,16 +503,17 @@
             border-radius: 0 !important;
         }
     }
+   
   </style>
 </head>
 
 <body>
-  <header>
-    <div class="left-header">
+<header>
+    <a href="index.html" class="left-header">
       <div class="name">손다현</div>
       <div class="divider"></div>
       <div class="role">디자이너</div>
-    </div>
+    </a>
     
     <nav class="nav">
       <a href="index.html">홈</a>
@@ -1486,18 +1541,15 @@
       const pill = document.getElementById('filterPill');
       const items = document.querySelectorAll('.project-item');
 
-      // PC용 필터 알약 위치
-      function updatePill(btn) {
-        if(!btn || window.innerWidth <= 768) return; // 모바일이면 실행 안 함
-        const btnRect = btn.getBoundingClientRect();
-        // filterInner가 기준점
-        const parent = document.getElementById('filterInner');
-        const parentRect = parent.getBoundingClientRect();
+// [수정됨] PC용 필터 알약 위치 정확하게 잡기
+    function updatePill(btn) {
+        if(!btn || window.innerWidth <= 768) return; 
         
-        pill.style.width = `${btnRect.width}px`;
-        // 부모 기준 left 계산 (pill은 absolute)
-        pill.style.left = `${btn.offsetLeft}px`; 
-      }
+        const inner = document.getElementById('filterInner');
+        // 버튼의 너비 + 부모 요소(inner)의 시작 위치를 고려하여 정확한 중앙 좌표 계산
+        pill.style.width = `${btn.offsetWidth}px`;
+        pill.style.left = `${btn.offsetLeft + inner.offsetLeft}px`; 
+    }
 
       function filterItems(category) {
         items.forEach(item => {
@@ -1550,14 +1602,13 @@
       let visibleItems = [];
       let scrollPosition = 0;
 
-      function lockScroll() {
+ function lockScroll() {
         scrollPosition = window.pageYOffset;
         document.body.classList.add('modal-open');
-        // PC에서만 화살표 보이기
-        if(window.innerWidth > 768) {
-          prevBtn.style.display = 'block';
-          nextBtn.style.display = 'block';
-        }
+        
+        // [수정] 모바일/PC 구분 없이 항상 화살표 보이기 (조건문 제거)
+        prevBtn.style.display = 'block';
+        nextBtn.style.display = 'block';
       }
 
       function unlockScroll() {
@@ -1571,7 +1622,7 @@
         return Array.from(document.querySelectorAll('.project-item')).filter(el => el.style.display !== 'none');
       }
 
-      function openModal(index) {
+ function openModal(index) {
         visibleItems = getVisibleItems();
         if (index < 0) index = visibleItems.length - 1;
         if (index >= visibleItems.length) index = 0;
@@ -1579,6 +1630,7 @@
         currentIdx = index;
         const item = visibleItems[index];
         const type = item.dataset.type || 'normal';
+        const xrUrl = item.dataset.xr;
         const isMobile = window.innerWidth <= 768;
 
         // 닫기 버튼 HTML
@@ -1588,20 +1640,20 @@
             </button>
         `;
 
-        // 컨트롤 바 (PC용)
-        const xrUrl = item.dataset.xr;
+        // PC Controls
         const pcControls = `
             <div class="modal-controls">
                 <div class="control-group">
-                    ${xrUrl ? `<button onclick="window.open('${xrUrl}', '_blank')" class="icon-btn">XR View</button>` : ''}
+                    ${xrUrl ? `<button onclick="window.open('${xrUrl}', '_blank')" class="icon-btn">360° 보기</button>` : ''}
                 </div>
                 ${closeBtnHtml}
             </div>
         `;
         
-        // 모바일은 컨트롤 바 없이 닫기 버튼만 우측 상단 고정
+        // Mobile Controls
         const mobileControls = `
             <div class="modal-controls">
+                ${xrUrl ? `<button onclick="window.open('${xrUrl}', '_blank')" class="xr-btn-mobile">360° 보기</button>` : ''}
                 ${closeBtnHtml}
             </div>
         `;
@@ -1614,7 +1666,7 @@
           const imgHtml = images.map(src => `<img src="${src}">`).join('');
           
           if (isMobile) {
-            // 모바일: 그냥 이미지만 쭉 나열 (회색박스/버튼 없음)
+            // [중요] 모바일: 컨트롤바를 modal-frame 밖으로 빼서 스크롤 영향 받지 않게 함
             contentHtml = `
                 ${mobileControls}
                 <div class="modal-frame detail-pc">
@@ -1624,7 +1676,7 @@
                 </div>
             `;
           } else {
-            // PC: 뷰어 모드 토글
+            // PC
             contentHtml = `
               <div class="modal-frame detail-pc" id="detailFrame">
                  <div class="modal-controls" style="top: -50px;">
@@ -1642,14 +1694,25 @@
           }
 
         } else {
-          // 일반 이미지
+          // 일반 이미지 (패키지 등)
           const src = item.dataset.src || item.querySelector('img').src;
-          contentHtml = `
-            <div class="modal-frame gallery">
-              ${isMobile ? mobileControls : pcControls}
-              <img src="${src}">
-            </div>
-          `;
+          
+          if (isMobile) {
+             // [중요] 모바일 갤러리 모드에서도 컨트롤바를 프레임 밖으로 분리
+             contentHtml = `
+                ${mobileControls}
+                <div class="modal-frame gallery">
+                   <img src="${src}">
+                </div>
+             `;
+          } else {
+             contentHtml = `
+                <div class="modal-frame gallery">
+                   ${pcControls}
+                   <img src="${src}">
+                </div>
+             `;
+          }
         }
 
         modal.innerHTML = contentHtml;
@@ -1658,7 +1721,7 @@
 
         document.getElementById('modalCloseBtn')?.addEventListener('click', closeModal);
 
-        // PC 상세페이지 뷰어 전환 이벤트 (모바일 아닐 때만 존재)
+        // PC 뷰어 전환 이벤트
         if (!isMobile && type === 'detail') {
             const btnPC = document.getElementById('viewPC');
             const btnMO = document.getElementById('viewMO');
@@ -1680,7 +1743,7 @@
                 });
             }
         }
-      }
+    }
 
       function closeModal() {
         modal.classList.remove('open');
