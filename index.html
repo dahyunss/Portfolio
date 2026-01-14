@@ -4,158 +4,153 @@
   <meta charset="UTF-8" />
   <title>손다현 포트폴리오</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <!-- 🔒 검색 엔진에 노출 안 되게 -->
   <meta name="robots" content="noindex, nofollow" />
-
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@200;400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
 
   <style>
+    /* 1. 기본 초기화 */
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
-      padding: 40px 60px 120px 60px;
       background: #ffffff;
       font-family: 'Noto Sans KR', sans-serif;
       color: #121212;
+      overflow-x: hidden; 
     }
 
     a { text-decoration: none; color: inherit; }
 
-    /* 🔝 항상 상단에 고정되는 헤더 */
+    /* 2. 헤더 스타일 */
     header {
-      top: 40px;         /* 위 여백 40px 유지 */
-      left: 60px;        /* 좌우 여백 60px */
-      right: 60px;
+      position: static;
+      top: 0; left: 0; right: 0;
+      height: 80px;
+      padding: 0 60px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      height: 40px;
-      background: #ffffff;
-      z-index: 100;
+      background: rgba(255, 255, 255, 0.95);
+      z-index: 1000;
     }
 
-    /* 왼쪽 헤더 */
-    .left-header {
+    .left-header { display: flex; align-items: center; }
+    .left-header .name { font-weight: 500; font-size: 1.8rem; white-space: nowrap; }
+    .left-header .divider { width: 1px; height: 16px; background: #121212; margin: 0 20px; }
+    .left-header .role { font-weight: 300; font-size: 1.1rem; white-space: nowrap; }
+
+    /* PC용 네비게이션 */
+    .nav { display: flex; align-items: center; font-size: 1.1rem; }
+    .nav a { margin-left: 24px; font-weight: 300; transition: color 0.2s; }
+    .nav a:hover, .nav a.active { color: #eb1d1d; font-weight: 400; }
+
+    /* 3. 모바일 전용 요소 */
+    /* 햄버거 버튼 (헤더에 위치) */
+    .menu-toggle-btn { display: none; background: none; border: none; cursor: pointer; padding: 10px; z-index: 1001; }
+    
+    /* 사이드바 메뉴 */
+    .mobile-sidebar {
+      position: fixed;
+      top: 0; right: 0; bottom: 0;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.98);
+      backdrop-filter: blur(10px);
+      z-index: 2000; /* 헤더보다 위에 */
       display: flex;
+      flex-direction: column;
+      justify-content: center;
       align-items: center;
+      transform: translateX(100%); /* 평소엔 화면 밖에 숨김 */
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .mobile-sidebar.open { transform: translateX(0); }
+
+    /* 메뉴 안쪽 닫기(X) 버튼 (새로 추가됨) */
+    .mobile-close-btn {
+      position: absolute;
+      top: 20px;   /* 헤더 높이/여백 고려 */
+      right: 20px; /* 우측 여백 */
+      background: none; 
+      border: none; 
+      cursor: pointer; 
+      padding: 10px;
     }
 
-    .left-header .name {
-      font-weight: 400;
-      font-size: 22pt;
+    .mobile-nav-link {
+      font-size: 1.1rem; /* PC와 동일한 크기 */
+      font-weight: 300;
+      letter-spacing: 0.05em;
+      margin: 20px 0;
+      color: #999;
+      transition: all 0.3s;
+    }
+    
+    .mobile-nav-link:hover { color: #121212; }
+    .mobile-nav-link.active { 
+      font-weight: 400; 
+      color: #eb1d1d; 
+      transform: scale(1.05);
     }
 
-    .left-header .divider {
-      width: 1px;
-      height: 12px;
-      background: #121212;
-      margin: 0 22px;
-    }
-
-    .left-header .role {
-      font-weight: 200;
-      font-size: 14pt;
-    }
-
-    /* 오른쪽 네비 */
- .nav {
-  display: flex;
-  align-items: center;
-  font-size: 14pt;
-}
-
-.nav a {
-  margin-left: 22px;
-  font-weight: 200;
-  color: #121212;
-  transition: color 0.2s ease;
-}
-
-/* 마우스 올렸을 때는 살짝 진하게(빨간색) */
-.nav a:hover {
-  color: #eb1d1d;
-}
-
-/* 선택된 페이지(현재 페이지)는 빨간색으로 표시 */
-.nav a.active {
-  font-weight: 200;
-  color: #eb1d1d;
-}
-
-
-    /* 헤더가 fixed라서, 그 아래 컨텐츠와 간격 보정 */
+    /* 4. 메인 레이아웃 */
     main {
+      padding-top: 60px;
+      padding-bottom: 100px;
+      padding-left: 20px; 
+      padding-right: 20px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      margin-top: 160px; /* 원래 120이었는데 헤더 빠진 만큼 +40 보정 */
+      min-height: 100vh;
     }
 
     .section-title {
       font-weight: 400;
-      font-size: 22pt;
+      font-size: 1.8rem;
       letter-spacing: 0.2em;
-    }
-
-    /* 슬라이더 */
-    .slider-wrapper {
-      margin-top: 40px;
-      position: relative;
-      width: 860px;
-      height: 532px;
-    }
-
-    .slider {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-      background: #e0e0e0;
-    }
-
-    .slide {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      opacity: 0;
-      transition: opacity 0.6s ease-in-out;
-    }
-
-    .slide.active { opacity: 1; }
-
-.arrow-btn {
-  position: fixed; /* 페이지 기준 가로 위치 잡기 위해 fixed */
-  background: none;
-  border: none;
-  font-size: 34px;
-  font-weight: 200;
-  cursor: pointer;
-  padding: 12px;
-  line-height: 1;
-  color: #121212;
-  opacity: 0.7;
-  transition: opacity 0.2s ease;
-  z-index: 1000;
-}
-
-.arrow-btn:hover {
-  opacity: 1;
-}
-
-/* 페이지 양끝에서 60px */
-.arrow-prev { left: 60px; }
-.arrow-next { right: 60px; }
-
-    /* 이미지 아래 캡션 */
-    .caption {
-      margin-top: 40px;
-      font-weight: 200;
-      font-size: 12pt;
+      margin-bottom: 40px;
       text-align: center;
-      line-height: 1.5;
+    }
+
+    /* 슬라이더 스타일 */
+    .slider-wrapper {
+      position: relative;
+      width: 100%;
+      max-width: 900px;
+      aspect-ratio: 16 / 10; 
+      margin: 0 auto;
+    }
+
+    .slider { width: 100%; height: 100%; overflow: hidden; background: #f4f4f4; }
+    .slide { width: 100%; height: 100%; object-fit: cover; display: none; animation: fadeEffect 0.8s; }
+    .slide.active { display: block; }
+    @keyframes fadeEffect { from {opacity: 0.4} to {opacity: 1} }
+
+    .arrow-btn {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      background: transparent; border: none; font-size: 2.5rem; color: #121212;
+      cursor: pointer; padding: 20px; opacity: 0.5; transition: opacity 0.3s; z-index: 10;
+    }
+    .arrow-btn:hover { opacity: 1; }
+    .arrow-prev { left: -60px; }
+    .arrow-next { right: -60px; }
+
+    .caption {
+      margin-top: 40px; font-weight: 300; font-size: 0.8rem;
+      text-align: center; line-height: 1.6; color: #555;
+    }
+
+    /* 5. 반응형 (모바일) 설정 */
+    @media (max-width: 768px) {
+        header { padding: 0 20px; height: 60px; }
+        .left-header .name { font-size: 1.2rem; }
+        .left-header .role { font-size: 0.9rem; }
+        .left-header .divider { height: 12px; margin: 0 12px; }
+
+        .nav { display: none; } /* PC메뉴 숨김 */
+        .menu-toggle-btn { display: block; } /* 햄버거 버튼 보임 */
+
+        .slider-wrapper { max-width: 100%; aspect-ratio: 1/1; }
+        .arrow-prev, .arrow-next { display: none; }
     }
   </style>
 </head>
@@ -168,52 +163,80 @@
       <div class="role">디자이너</div>
     </div>
 
-    <!-- 🔗 파일 이름 그대로 연결 + 홈 페이지라 홈에 active 클래스 -->
     <nav class="nav">
       <a href="index.html" class="active">홈</a>
       <a href="profile.html">프로필</a>
       <a href="projects.html">프로젝트</a>
       <a href="contact.html">연락</a>
     </nav>
+
+    <button class="menu-toggle-btn" id="menuOpenBtn">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#121212" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="3" y1="12" x2="21" y2="12"></line>
+        <line x1="3" y1="6" x2="21" y2="6"></line>
+        <line x1="3" y1="18" x2="21" y2="18"></line>
+      </svg>
+    </button>
   </header>
 
+  <div class="mobile-sidebar" id="mobileSidebar">
+    
+    <button class="mobile-close-btn" id="menuCloseBtn">
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#121212" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+    
+    <a href="index.html" class="mobile-nav-link active">홈</a>
+    <a href="profile.html" class="mobile-nav-link">프로필</a>
+    <a href="projects.html" class="mobile-nav-link">프로젝트</a>
+    <a href="contact.html" class="mobile-nav-link">연락</a>
+  </div>
+
   <main id="home">
-    <h1 class="section-title">포트폴리오</h1>
+    <h1 class="section-title">PORTFOLIO</h1>
 
     <div class="slider-wrapper">
-<div class="slider" id="slider">
-
-  <img class="slide active"
-       src="https://dl.dropboxusercontent.com/scl/fi/iqhsecjdisj6yq947nbc7/THINK.jpg?rlkey=x0gynuypsyumer22wm9zcvxqo"
-       alt="THINK">
-
-  <img class="slide"
-       src="https://dl.dropboxusercontent.com/scl/fi/azuf15sqdaj1kkyn170vi/SEE.jpg?rlkey=xsytz0pj69j3we4puuo5r063x"
-       alt="SEE">
-
-  <img class="slide"
-       src="https://dl.dropboxusercontent.com/scl/fi/6mb6e58sbzuqfykcpumqq/MAKE.jpg?rlkey=2goc093ibqbc0g17kt3uci0y9"
-       alt="MAKE">
-
-</div>
-
-
+      <div class="slider" id="slider">
+        <img class="slide active" src="https://dl.dropboxusercontent.com/scl/fi/iqhsecjdisj6yq947nbc7/THINK.jpg?rlkey=x0gynuypsyumer22wm9zcvxqo" alt="Think">
+        <img class="slide" src="https://dl.dropboxusercontent.com/scl/fi/azuf15sqdaj1kkyn170vi/SEE.jpg?rlkey=xsytz0pj69j3we4puuo5r063x" alt="See">
+        <img class="slide" src="https://dl.dropboxusercontent.com/scl/fi/6mb6e58sbzuqfykcpumqq/MAKE.jpg?rlkey=2goc093ibqbc0g17kt3uci0y9" alt="Make">
+      </div>
       <button class="arrow-btn arrow-prev" id="prevBtn">&#8249;</button>
       <button class="arrow-btn arrow-next" id="nextBtn">&#8250;</button>
     </div>
 
     <p class="caption">
-      Son Dahyun– Design Portfolio<br>
+      Son Dahyun – Design Portfolio<br>
       Crafting Product Stories Through Design, Photography &amp; 3D Visualization
     </p>
   </main>
 
   <script>
+    // 1. 모바일 메뉴 토글 로직
+    const menuOpenBtn = document.getElementById('menuOpenBtn');
+    const menuCloseBtn = document.getElementById('menuCloseBtn');
+    const sidebar = document.getElementById('mobileSidebar');
+
+    function openMenu() {
+      sidebar.classList.add('open');
+      document.body.style.overflow = 'hidden'; // 스크롤 막기
+    }
+
+    function closeMenu() {
+      sidebar.classList.remove('open');
+      document.body.style.removeProperty('overflow'); // 스크롤 허용
+    }
+
+    menuOpenBtn.addEventListener('click', openMenu);
+    menuCloseBtn.addEventListener('click', closeMenu);
+
+    // 2. 슬라이더 로직
     (function () {
       const slides = document.querySelectorAll('.slide');
       const prevBtn = document.getElementById('prevBtn');
       const nextBtn = document.getElementById('nextBtn');
-
       let current = 0;
       const stayTime = 5000;
       let timer = null;
@@ -231,35 +254,15 @@
         stopAutoPlay();
         timer = setInterval(nextSlide, stayTime);
       }
+      function stopAutoPlay() { if (timer) clearInterval(timer); }
 
-      function stopAutoPlay() {
-        if (timer) clearInterval(timer);
+      if(prevBtn && nextBtn) {
+        nextBtn.addEventListener('click', () => { nextSlide(); startAutoPlay(); });
+        prevBtn.addEventListener('click', () => { prevSlide(); startAutoPlay(); });
       }
-
-      nextBtn.addEventListener('click', () => { nextSlide(); startAutoPlay(); });
-      prevBtn.addEventListener('click', () => { prevSlide(); startAutoPlay(); });
 
       startAutoPlay();
     })();
-
-function updateArrowPosition() {
-  const slider = document.querySelector('.slider-wrapper');
-  const rect = slider.getBoundingClientRect(); 
-  const middleY = rect.top + rect.height / 2;
-
-  // 화살표 세로 위치 조정
-  document.querySelector('.arrow-prev').style.top = middleY + 'px';
-  document.querySelector('.arrow-next').style.top = middleY + 'px';
-}
-
-// 첫 로딩 시 적용
-updateArrowPosition();
-
-// 창 크기 바뀌면 자동 재계산
-window.addEventListener('resize', updateArrowPosition);
-window.addEventListener('scroll', updateArrowPosition);
-
-
   </script>
 </body>
 </html>
