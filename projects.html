@@ -4,137 +4,137 @@
   <meta charset="UTF-8" />
   <title>손다현 포트폴리오 – 프로젝트</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <!-- 검색 노출 방지 -->
   <meta name="robots" content="noindex, nofollow" />
-
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@200;400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
 
   <style>
+    /* 1. 기본 설정 및 폰트 */
     * { margin: 0; padding: 0; box-sizing: border-box; }
-
+    
     body {
-      padding: 40px 60px 120px 60px;
       background: #ffffff;
       font-family: 'Noto Sans KR', sans-serif;
       color: #121212;
+      overflow-x: hidden;
     }
 
     a { text-decoration: none; color: inherit; }
+    button { font-family: inherit; }
 
-    /* 고정 헤더 */
+    /* 2. 헤더 (index_모바일대응.html과 통일) */
     header {
-      top: 40px;
-      left: 60px;
-      right: 60px;
+      top: 0; left: 0; right: 0;
+      height: 80px;
+      padding: 0 60px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      height: 40px;
-      background: #ffffff;
-      z-index: 100;
+      background: rgba(255, 255, 255, 0.95);
+      z-index: 1000;
     }
 
-    .left-header {
+    .left-header { display: flex; align-items: center; }
+    .left-header .name { font-weight: 500; font-size: 1.8rem; white-space: nowrap; }
+    .left-header .divider { width: 1px; height: 16px; background: #121212; margin: 0 20px; }
+    .left-header .role { font-weight: 300; font-size: 1.1rem; white-space: nowrap; }
+
+    /* PC용 네비게이션 */
+    .nav { display: flex; align-items: center; font-size: 1.1rem; }
+    .nav a { margin-left: 24px; font-weight: 300; transition: color 0.2s; }
+    .nav a:hover, .nav a.active { color: #eb1d1d; font-weight: 400; }
+
+    /* 3. 모바일 전용 헤더 요소 (햄버거 메뉴) */
+    .menu-toggle-btn { display: none; background: none; border: none; cursor: pointer; padding: 10px; z-index: 1001; }
+    
+    .mobile-sidebar {
+      position: fixed;
+      top: 0; right: 0; bottom: 0;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.98);
+      backdrop-filter: blur(10px);
+      z-index: 2000;
       display: flex;
+      flex-direction: column;
+      justify-content: center;
       align-items: center;
+      transform: translateX(100%);
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .mobile-sidebar.open { transform: translateX(0); }
+
+    .mobile-close-btn {
+      position: absolute;
+      top: 20px; right: 20px;
+      background: none; border: none; cursor: pointer; padding: 10px;
     }
 
-    .left-header .name {
-      font-weight: 400;
-      font-size: 22pt;
+    .mobile-nav-link {
+      font-size: 1.1rem;
+      font-weight: 300;
+      letter-spacing: 0.05em;
+      margin: 20px 0;
+      color: #999;
+      transition: all 0.3s;
     }
-
-    .left-header .divider {
-      width: 1px;
-      height: 12px;
-      background: #121212;
-      margin: 0 22px;
-    }
-
-    .left-header .role {
-      font-weight: 200;
-      font-size: 14pt;
-    }
-
-.nav {
-  display: flex;
-  align-items: center;
-  font-size: 14pt;
-}
-
-.nav a {
-  margin-left: 22px;
-  font-weight: 200;
-  color: #121212;
-  transition: color 0.2s ease;
-}
-
-/* 마우스 올렸을 때는 살짝 진하게만 */
-.nav a:hover {
-  color: #eb1d1d;
-}
-
-/* 선택된 페이지(현재 페이지)는 빨간색으로 표시 */
-.nav a.active {
-  font-weight: 200;   /* 더 두꺼워지지 않게 유지 */
-  color: #eb1d1d;
-}
+    .mobile-nav-link:hover { color: #121212; }
+    .mobile-nav-link.active { font-weight: 400; color: #eb1d1d; transform: scale(1.05); }
 
 
+    /* 4. 메인 레이아웃 */
     main {
+      padding-top: 60px;
+      padding-bottom: 100px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      margin-top: 160px; /* 헤더 보정 */
+      min-height: 100vh;
     }
 
     .section-title {
       font-weight: 400;
-      font-size: 22pt;
-      letter-spacing: 0.2em; /* 글자 간격 200 */
+      font-size: 1.8rem;
+      letter-spacing: 0.2em;
+      margin-bottom: 40px;
+      text-align: center;
     }
 
-    /* 전체 프로젝트 컨테이너 (필터바 + 썸네일 공통) */
     .projects-container {
       width: 100%;
-      max-width: 1300px; /* 420*3 + 20*2 = 1300 */
-      margin: 40px auto 0; /* 제목에서 아래로 40px */
+      max-width: 1300px;
+      padding: 0 20px;
+      margin: 0 auto;
     }
 
-    /* ===== 필터 바 ===== */
- .filter-bar {
-  position: relative;
-  height: 30px;
-  background: #eeeeee;
-  border-radius: 15px;
-  display: inline-flex;      /* 내용 길이에 맞춰 자동 폭 */
-  align-items: center;
-  overflow: hidden;
-}
+    /* 5. 필터 바 */
+    .filter-bar {
+      position: relative;
+      height: 40px;
+      background: #f4f4f4;
+      border-radius: 20px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
 
-/* 버튼들을 담는 래퍼: 좌우 14px, 항목 간 28px */
-.filter-inner {
-  position: relative;
-  display: flex;
-  align-items: center;
-  height: 26px;
-  margin: 0 14px;   /* 전체보기 왼쪽 14px, 컨셉 오른쪽 14px */
-  gap: 28px;        /* 항목 간 간격 28px */
-}
+    .filter-inner {
+      position: relative;
+      display: flex;
+      align-items: center;
+      height: 36px;
+      margin: 0 4px;
+      gap: 10px;
+    }
 
-
-    /* 검정 선택 바 */
     .filter-pill {
       position: absolute;
-      top: 2px;          /* 바 높이 30px → 위/아래 2px 남기고 26px */
-      left: 2px;         /* 전체보기 선택 시, 바 왼쪽으로부터 2px */
-      height: 26px;
-      width: 0;
-      background: #000000;
-      border-radius: 13px;
+      top: 2px; bottom: 2px;
+      background: #121212;
+      border-radius: 18px;
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
       z-index: 0;
-      transition: left 0.25s ease, width 0.25s ease;
     }
 
     .filter-btn {
@@ -143,601 +143,312 @@
       border: none;
       background: none;
       cursor: pointer;
-      padding: 0;              /* 글자 폭 그대로 사용 */
-      height: 26px;
- line-height: 26px;   /* ⭐ 글자를 정확히 중앙에 맞춤 */
+      padding: 0 20px;
+      height: 36px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-family: 'Noto Sans KR', sans-serif;
-      font-size: 14pt;
-      font-weight: 200;
-      color: #121212;
+      font-size: 1rem;
+      font-weight: 300;
+      color: #555;
+      transition: color 0.3s;
       white-space: nowrap;
     }
 
- .filter-btn.active {
-  font-weight: 300;
-  color: #ffffff;  /* 검은 바 위에서 보이게 흰색으로 */
-}
+    .filter-btn.active { color: #ffffff; font-weight: 400; }
 
-.projects-grid {
-  margin-top: 40px;
-  column-width: 420px;   /* ✅ 한 컬럼 목표 폭 */
-  column-gap: 20px;
-}
+    /* 6. Masonry 그리드 */
+    .projects-grid {
+      column-count: 3;
+      column-gap: 20px;
+      width: 100%;
+    }
 
-.project-item {
-  break-inside: avoid;  /* 항목이 중간에서 잘리지 않게 */
-  margin-bottom: 20px;  /* 각 썸네일 사이 간격 */
-  width: 100%;
-}
+    .project-item {
+      break-inside: avoid;
+      margin-bottom: 20px;
+      position: relative;
+      border-radius: 12px;
+      overflow: hidden;
+      cursor: pointer;
+      backface-visibility: hidden;
+      transition: transform 0.3s ease;
+    }
 
-@media (max-width: 1200px) {
-  .projects-grid { column-count: 2; }
-}
+    .project-item img {
+      width: 100%;
+      height: auto;
+      display: block;
+      transition: transform 0.5s ease;
+    }
+    
+    .project-item:hover { transform: translateY(-4px); }
+    .project-item:hover img { transform: scale(1.03); }
 
-@media (max-width: 700px) {
-  .projects-grid { column-count: 1; }
-}
+    .project-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(2px);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
 
+    .project-item:hover .project-overlay { opacity: 1; }
 
-.project-item {
-  display: inline-block; /* ✅ column 레이아웃에서 필수급 */
-  width: 100%;
-  margin: 0 0 20px;
-  break-inside: avoid;
-  position: relative;
-  overflow: hidden;
-  border-radius: 15px;
-}
+    .project-overlay-card {
+      color: #fff;
+      text-align: center;
+      transform: translateY(20px);
+      transition: transform 0.3s ease;
+    }
 
-.project-item img {
-  width: 100%;           /* ✅ 컬럼 폭에 맞게 줄어듦 */
-  height: auto;
-  display: block;
-  border-radius: 15px;
-}
+    .project-item:hover .project-overlay-card { transform: translateY(0); }
 
+    .project-title { font-size: 1.4rem; font-weight: 400; margin-bottom: 15px; }
+    .project-title-divider { width: 30px; height: 1px; background: #fff; margin: 0 auto 15px; opacity: 0.7; }
+    .project-desc { font-size: 0.95rem; font-weight: 300; line-height: 1.6; opacity: 0.9; }
 
-/* 전체 오버레이 */
-.project-overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(0,0,0,0);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  transition: background 0.25s ease, opacity 0.25s ease;
-}
+    /* 7. 모달 스타일 (PC 기본) */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(5px);
+      z-index: 9999;
+      display: none;
+      align-items: flex-start;
+      justify-content: center;
+      overflow-y: auto;
+      padding: 80px 20px 80px;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
 
-.project-overlay-card {
-  width: 100%;                /* ✔ 썸네일 가로 끝까지 */
-  max-width: none;            /* ✔ 제한 해제 */
-  height: 210px;              /* ✔ 높이는 유지 */
-  background: rgba(0,0,0,0.6);
-  
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+    .modal-overlay.open { display: flex; opacity: 1; }
 
-  border-radius: 0;           /* ✔ 라운딩 없음 */
-  
-  opacity: 0;
-  transform: translateY(10px);
-  transition: opacity 0.25s ease, transform 0.25s ease;
-}
+    .modal-frame {
+      position: relative;
+      background: #fff;
+      border-radius: 12px;
+      padding: 0;
+      width: 100%;
+      max-width: 1200px;
+      margin: auto; 
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+      animation: modalUp 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    }
 
+    @keyframes modalUp {
+      from { transform: translateY(30px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
 
-  /* 👉 라운딩 없애기 */
-  border-radius: 0;
+    .modal-frame.gallery {
+        background: #f0f0f0;
+        padding: 60px 0;
+        display: flex;
+        justify-content: center;
+    }
+    .modal-frame.gallery img { max-width: 1000px; width: 100%; border-radius: 8px; }
 
-  /* 나타날 때 애니메이션용 */
-  opacity: 0;
-  transform: translateY(10px);
-  transition: opacity 0.25s ease, transform 0.25s ease;
-}
+    /* PC 상세페이지 모드 */
+    .modal-frame.detail-pc, .modal-frame.detail-mo {
+        background: #f0f0f0;
+        padding: 60px 0;
+        min-height: 600px;
+        display: flex;
+        justify-content: center;
+    }
 
-/* 제목 */
-.project-title {
-  font-family: 'Noto Sans KR';
-  font-weight: 300;
-  font-size: 22pt;
-  color: #fff;
-  margin-bottom: 20px;
-}
+    .pc-viewport {
+        width: 1000px; max-width: 90vw;
+        height: 80vh;
+        background: #fff;
+        overflow-y: scroll;
+        border-radius: 8px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+    .pc-viewport img { width: 100%; display: block; }
 
-/* 20x1px 선 */
-.project-title-divider {
-  width: 20px;
-  height: 1px;
-  background: #fff;
-  margin-bottom: 20px;
-}
+    .mobile-viewport {
+        width: 375px; height: 640px; max-height: 80vh;
+        background: #fff; border: none; border-radius: 8px;
+        overflow-y: scroll; box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+    }
+    .mobile-viewport img { width: 100%; display: block; }
+    
+    .mobile-scroll::-webkit-scrollbar, .pc-scroll::-webkit-scrollbar { width: 6px; }
+    .mobile-scroll::-webkit-scrollbar-thumb, .pc-scroll::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.2); border-radius: 3px; }
 
-/* 설명 */
-.project-desc {
-  font-family: 'Noto Sans KR';
-  font-weight: 100;
-  font-size: 14pt;
-  line-height: 20pt;
-  color: #fff;
-  text-align: center;
-}
+    /* 컨트롤바 (PC용) */
+    .modal-controls {
+        position: absolute;
+        top: -60px; right: 0; left: 0;
+        display: flex; justify-content: space-between; align-items: center;
+        max-width: 1200px; margin: 0 auto;
+        pointer-events: none;
+    }
+    .control-group { pointer-events: auto; display: flex; gap: 15px; }
 
-/* === Hover 동작 === */
-.project-item:hover .project-overlay {
-  background: rgba(0,0,0,0.6);
-  opacity: 1;
-}
+    .icon-btn {
+        background: none; border: none; cursor: pointer; padding: 8px;
+        opacity: 0.6; transition: opacity 0.2s, transform 0.2s;
+        color: white; font-family: inherit; font-size: 1rem;
+    }
+    .icon-btn:hover { opacity: 1; transform: scale(1.1); }
+    .icon-btn.active { opacity: 1; font-weight: bold; border-bottom: 2px solid white; }
+    
+    .close-btn-fixed { pointer-events: auto; color: white; background: none; border: none; cursor: pointer; }
 
-.project-item:hover .project-overlay-card {
-  opacity: 1;
-  transform: translateY(0);
-}
+    /* 네비게이션 화살표 */
+    .project-nav {
+      position: fixed; top: 50%; transform: translateY(-50%);
+      background: none; border: none; padding: 20px; cursor: pointer;
+      z-index: 10001; opacity: 0.6; transition: opacity 0.2s; display: none;
+    }
+    .project-nav:hover { opacity: 1; }
+    .project-nav.prev { left: 20px; }
+    .project-nav.next { right: 20px; }
 
-    /* 화면이 좁아질 때: 2열 / 1열로 줄이기 */
-    @media (max-width: 1300px) {
-      .projects-container {
-        padding-right: 0;
-        padding-left: 0;
-      }
+    body.modal-open { overflow: hidden; height: 100vh; }
+    
+    .project-footer {
+      margin-top: 60px; text-align: center;
+      font-weight: 300; font-size: 0.8rem; color: #888; line-height: 1.6;
     }
 
 
-    @media (max-width: 500px) {
-      .project-item {
-        width: 100%;      /* 화면이 420px보다 작아지면 그때부터 축소 */
-      }
+    /* =========================================
+       8. 반응형 (모바일 대응) 핵심 수정
+       ========================================= */
+    @media (max-width: 1200px) { .projects-grid { column-count: 2; } }
+    
+    @media (max-width: 768px) { 
+        /* 헤더 & 네비 */
+        header { padding: 0 20px; height: 60px; }
+        .left-header .name { font-size: 1.2rem; }
+        .left-header .role { font-size: 0.9rem; }
+        .left-header .divider { height: 12px; margin: 0 12px; }
+        .nav { display: none; }
+        .menu-toggle-btn { display: block; }
 
-      .filter-bar {
-        transform: scale(0.9); /* 너무 꽉 차면 살짝 줄이기 */
-        transform-origin: left;
-      }
+        .projects-grid { column-count: 1; } 
+
+        /* 필터 바: 한눈에 보이게 수정 (스크롤 X, 줄바꿈 O) */
+        .filter-bar {
+            background: transparent;
+            height: auto;
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap; /* 줄바꿈 허용 */
+            justify-content: center; /* 가운데 정렬 */
+            gap: 8px;
+            border-radius: 0;
+            margin-bottom: 30px;
+        }
+        
+        .filter-inner {
+            display: contents; /* 부모 flex 설정을 따름 */
+        }
+        
+        /* 모바일에서는 슬라이딩 효과(검은알약) 숨기고, 버튼 자체 스타일링 */
+        #filterPill { display: none !important; }
+
+        .filter-btn {
+            background: #f4f4f4; /* 회색 배경 */
+            border-radius: 20px;
+            padding: 6px 16px;
+            height: 32px;
+            font-size: 0.85rem;
+            color: #777;
+            margin: 0;
+            font-weight: 400;
+        }
+        
+        /* 선택된 버튼 스타일 */
+        .filter-btn.active {
+            background: #121212;
+            color: #fff;
+            font-weight: 500;
+        }
+
+        /* 모달 (상세페이지): 전체화면 & 회색박스 제거 */
+        .modal-overlay {
+            padding: 0; /* 여백 제거 */
+            background: #fff; /* 배경 흰색 */
+            align-items: flex-start; /* 위에서부터 시작 */
+        }
+
+        .modal-frame, 
+        .modal-frame.gallery,
+        .modal-frame.detail-pc, 
+        .modal-frame.detail-mo {
+            width: 100% !important;
+            max-width: 100% !important;
+            height: auto !important;
+            min-height: 100vh;
+            margin: 0 !important;
+            padding: 0 !important;
+            background: #fff !important; /* 회색 제거 */
+            box-shadow: none !important;
+            border-radius: 0 !important;
+            display: block; /* Flex 해제하고 블록으로 */
+        }
+
+        /* 뷰포트 초기화 */
+        .pc-viewport, .mobile-viewport {
+            width: 100% !important;
+            height: auto !important;
+            max-width: 100% !important;
+            max-height: none !important;
+            overflow: visible !important;
+            border-radius: 0 !important;
+            box-shadow: none !important;
+        }
+        
+        /* 스크롤바 영역 제거 */
+        .pc-scroll, .mobile-scroll {
+            width: 100%;
+            height: auto;
+            overflow: visible;
+        }
+
+        /* 모달 닫기 버튼: 우측 상단 고정 */
+        .modal-controls {
+            position: fixed;
+            top: 0; right: 0; left: auto;
+            width: auto;
+            z-index: 10002;
+            padding: 15px;
+        }
+        
+        .close-btn-fixed {
+            color: #121212; /* 배경이 흰색이므로 검은색 */
+            background: rgba(255,255,255,0.8);
+            border-radius: 50%;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            width: 40px; height: 40px;
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        /* PC/Mobile 전환 버튼 그룹 숨김 */
+        .control-group { display: none !important; }
+        
+        /* 화살표 네비 숨김 */
+        .project-nav { display: none !important; }
+        
+        /* 이미지 스타일 */
+        .modal-frame img, .pc-viewport img {
+            width: 100% !important;
+            max-width: 100% !important;
+            border-radius: 0 !important;
+        }
     }
-
-/* ===== 모달 기본 ===== */
-.modal-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.9);
-  display: none;
-  align-items: flex-start;
-  justify-content: center;
-  padding-top: 230px;   /* 위에서 230px 떨어뜨리기 */
-  overflow-y: auto;     /* 모달이 화면보다 길면 전체 페이지 스크롤 */
-  z-index: 9999; /* ★ 이거 추가 */
-}
-
-/* ✅ 일반 작업(패키지/로고/배너 등)만 15px 라운딩 */
-.modal-frame.normal .modal-image {
-  border-radius: 15px;
-}
-
-
-/* 모바일 화면 안의 이미지는 라운딩 없음 (폰틀이 잘라줌) */
-.modal-image-mo { 
-  border-radius: 0;
-}
-
-
-.modal-overlay.open {
-  display: flex;
-}
-
-/* 공통 회색 틀 */
-.modal-frame {
-  position: relative;
-  background: #e7e7e7;
-  border-radius: 16px;
-  padding: 70px;              /* 왼/오 70px, 위/아래 70px */
-  box-sizing: border-box;
-  margin: 0 auto;             /* 가운데 정렬 */
-}
-
-/* 상세페이지 – PC 보기: 틀 가로 1000px */
-.modal-frame.detail-pc {
-  width: 1000px;
-  max-width: calc(100% - 80px);   /* 화면이 좁아지면 같이 줄어듦 */
-}
-
-/* 상세페이지 MO 틀: 515 x (740+140) = 880 */
-.modal-frame.detail-mo {
-  width: 515px;
-  height: 880px;                  /* 세로 고정 (740 + 140) */
-  padding: 70px;
-  box-sizing: border-box;
-  border-radius: 16px;
-  background: #e7e7e7;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-}
-
-
-/* PC / MO 각각의 뷰 박스 */
-.detail-pc-view {
-  width: 100%;
-  display: block;
-}
-
-.detail-mo-view {
-  width: 100%;
-  display: none;      /* 처음에는 안 보이게 → MO 버튼 누르면 보이게 */
-}
-
-/* 모바일 화면(기계 화면 크기) */
-.mobile-viewport {
-  width: 375px;
-  height: 740px;      /* 세로 고정 */
-  overflow: hidden;   /* 프레임 밖은 잘라내기 */
-  background: #000;
-  border-radius: 12px;
-}
-
-/* ✅ PC도 모바일처럼 "프레임 안에서만" 스크롤 되게 */
-.pc-viewport {
-  width: 860px;          /* PC 가로 기준 */
-  max-width: 100%;       /* 화면 줄면 같이 줄어듦 */
-  height: min(1040px, calc(100vh - 160px));
-  overflow: hidden;      /* 바깥 잘라내기 */
-  background: #fff;
-  border-radius: 12px;   /* 필요없으면 0으로 */
-}
-
-.pc-scroll {
-  width: 100%;
-  height: 100%;
-  overflow-y: auto;      /* ✅ 스크롤은 여기서만 */
-}
-
-/* PC 안의 이미지: 가로 100%로 박스에 맞춤 */
-.modal-image-pc {
-  width: 100%;
-  height: auto;
-  display: block;
-}
-
-
-/* 프레임 안에서만 스크롤 */
-.mobile-scroll {
-  width: 100%;
-  height: 100%;
-  overflow-y: auto;
-}
-
-/* PC용 이미지 */
-.modal-image-pc {
-  width: 100%;
-  max-width: 860px;   /* PC 기준 최대 860px */
-  height: auto;
-  display: block;
-}
-
-/* MO용 이미지 (세로 길어도 됨) */
-.modal-image-mo {
-  width: 100%;        /* 375px에 맞춰 줄어듦 */
-  height: auto;
-  display: block;
-}
-
-
-/* 패키지/로고/배너/컨셉 등 일반 작업: 틀 1300, 안쪽 1160 */
-.modal-frame.normal {
-  width: 1300px;
-  max-width: calc(100% - 80px);   /* 화면 줄어들면 1300 이하로 같이 줄어듦 */
-}
-
-/* 회색 틀 안의 이미지 공통 */
-.modal-image {
-  display: block;
-  width: 100%;                    /* 회색 틀 안에서 가로 꽉 채우고 */
-  height: auto;
-  background: #888888;            /* 테스트용 회색, 실 이미지 넣으면 안 보임 */
-  margin: 0 auto;                 /* 가운데 정렬 */
-  max-width: 1160px;              /* 일반 작업(normal)일 때 최대 1160px */
-}
-
-/* 상세페이지일 때는 최대 860px로 제한 (좌우 여백 70px 유지) */
-.modal-frame.detail-pc .modal-image,
-.modal-frame.detail-mo .modal-image {
-  max-width: 860px;
-}
-
-
-/* ✅ 상세 PC : 이미지 폭 정확히 860px */
-.modal-frame.detail-pc .modal-image {
-  width: 860px;
-  max-width: 100%;
-  height: auto;
-}
-
-/* ✅ 상세 MO : 이미지 375 x 최대 740px */
-.modal-frame.detail-mo .modal-image {
-  width: 375px;
-  max-width: 100%;
-  height: auto;
-  max-height: 740px;
-}
-
-/* ✅ 일반 작업 : 이미지 폭 1160px */
-.modal-frame.normal .modal-image {
-  width: 1160px;
-  max-width: 100%;
-  height: auto;
-}
-
-/* PC / MO 아이콘 영역 */
-.modal-toolbar {
-  position: absolute;
-  top: 40px;
-  left: 40px;
-  display: flex;
-  gap: 40px;
-  align-items: center;
-}
-
-.view-btn {
-  border: none;
-  background: none;
-  padding: 0;
-  cursor: pointer;
-  opacity: 0.4;          /* 기본 40% */
-}
-
-.view-btn.active {
-  opacity: 1;            /* 선택된 아이콘은 100% */
-}
-
-/* 닫기 버튼 */
-.modal-close-btn {
-  position: absolute;
-  top: 40px;
-  right: 40px;
-  border: none;
-  background: none;
-  padding: 0;
-  cursor: pointer;
-}
-
-/* 좁은 화면에서 일반 작업 틀 대응용 */
-@media (max-width: 900px) {
-  .modal-frame.normal {
-    width: 100%;
-    margin: 230px 20px 0 20px;
-  }
-}
-
-
-/* 모드별 이미지 크기 ---------------------- */
-/* 상세페이지 PC : 안쪽 860px */
-.modal-frame.detail-pc .modal-image {
-  width: 860px;
-  max-width: 860px;
-  height: auto;          /* 세로는 비율대로 */
-}
-
-/* 상세페이지 MO : 375 x 740 */
-.modal-frame.detail-mo .modal-image {
-  width: 375px;
-  height: 740px;         /* 고정 높이 */
-}
-
-/* 일반 작업(패키지/로고/배너/컨셉) 이미지 */
-.modal-frame.normal .modal-image {
-  width: 100%;
-  max-width: 1160px;
-  height: auto;
-  display: block;
-  margin: 0 auto;
-}
-
-
-/* PC / MO 아이콘 : 회색 틀 기준 왼쪽에 맞추고, 위로 40px 띄우기 */
-.modal-toolbar {
-  position: absolute;
-  /* 아이콘 높이 60px, 틀 위에서 40px 떨어지게 하기 위해 -100px */
-  top: -100px;        /* 아이콘 아랫부분이 회색 틀 윗선보다 40px 위에 옴 */
-  left: 0;            /* 회색 틀의 왼쪽에 딱 맞춤 */
-  display: flex;
-  gap: 40px;          /* PC–MO 사이 간격 40px */
-  align-items: center;
-}
-
-.view-btn {
-  border: none;
-  background: none;
-  padding: 0;
-  cursor: pointer;
-  opacity: 0.4;           /* 기본 40% */
-}
-
-.view-btn.active {
-  opacity: 1;             /* 선택된 건 100% */
-}
-
-/* 닫기 버튼 : 회색 틀 오른쪽으로 40px 바깥에 나오게 */
-.modal-close-btn {
-  position: absolute;
-  top: 0;          /* 회색 틀 윗선 근처에 정렬 */
-  right: -80px;    /* 틀의 오른쪽에서 40px 밖으로 나가게 */
-  border: none;
-  background: none;
-  padding: 0;
-  cursor: pointer;
-}
-
-
-/* 화면 좁을 때 일반 작업 틀 반응형 */
-@media (max-width: 900px) {
-  .modal-frame.normal {
-    width: 100%;
-    margin: 230px 20px 0 20px;
-  }
-}
-
-
-
-/* 썸네일 라운딩 */
-.project-item img {
-  border-radius: 15px;
-  display: block;
-}
-
-/* 오버레이 전체 */
-.project-item {
-  position: relative;
-  overflow: hidden;
-  border-radius: 15px;
-}
-
-.project-item .overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(0,0,0,0); /* 기본 0% */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background 0.25s ease;
-}
-
-.project-item:hover .overlay {
-  background: rgba(0,0,0,0.6);
-}
-
-/* 가운데 검정 박스 */
-.overlay-inner {
-  background: rgba(0, 0, 0, 0.6);
-  width: 420px;
-  max-width: 90%;
-  height: 210px;
-  border-radius: 10px;
-  text-align: center;
-  opacity: 0;
-  transform: translateY(10px);
-  transition: opacity 0.25s ease, transform 0.25s ease;
-  padding: 30px 20px;
-}
-
-.project-item:hover .overlay-inner {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* 텍스트 스타일 */
-.project-title {
-  font-family: 'Noto Sans KR';
-  font-weight: 300;
-  font-size: 22pt;
-  color: #ffffff;
-  margin-bottom: 20px;
-}
-
-.line {
-  width: 20px;
-  height: 1px;
-  background: #ffffff;
-  margin: 0 auto 20px auto;
-}
-
-.project-desc {
-  font-family: 'Noto Sans KR';
-  font-weight: 100;
-  font-size: 14pt;
-  color: #ffffff;
-  line-height: 20pt;
-}
-
-/* 상세페이지 PC 이미지 */
-.modal-frame.detail-pc .modal-image-pc {
-  width: 100%;
-  max-width: 860px;
-  height: auto;
-  display: block;
-  margin: 0 auto;
-}
-
-
-.modal-frame.detail-mo .modal-image-mo {
-  width: 100%;
-  max-width: 375px;
-  height: auto;
-}
-
-.modal-frame {
-  margin-bottom: 230px; /* 회색틀 아래 여백 */
-}
-
-/* ✅ 모달 열리면 뒤(썸네일 페이지) 스크롤 잠금 */
-body.modal-open {
-  overflow: hidden;
-}
-
-/* 360 XR 아이콘 버튼 (회색 틀 기준 왼쪽 정렬 + 위로 20px 띄움) */
-.xr-btn{
-  position: absolute;
-  left: 0;
-  top: -80px;           /* 60px(아이콘) + 20px(간격) */
-  width: 87px;
-  height: 60px;
-  border: none;
-  background: none;
-  padding: 0;
-  cursor: pointer;
-}
-
-.project-nav {
-  position: fixed;
-  top: 50%;
-  transform: translateY(-50%);
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-  z-index: 10000;
-}
-
-
-/* 기본은 숨김 */
-.project-nav { 
-  display: none;
-  z-index: 10001; /* modal(9999)보다 위 */
-}
-
-/* 모달 열렸을 때만 노출 */
-body.modal-open .project-nav {
-  display: block;
-}
-
-
-.project-nav.prev {
-  left: 60px;
-}
-
-.project-nav.next {
-  right: 60px;
-}
-
-.project-nav svg {
-  display: block;
-}
-
-
-.project-footer {
-  margin-top: 40px;
-  margin-bottom: 0px;
-  text-align: center;
-  font-family: 'Noto Sans KR', sans-serif;
-  font-weight: 200;
-  font-size: 12pt;
-  color: #121212;
-  line-height: 1.6;
-}
-
-
   </style>
 </head>
 
@@ -748,23 +459,42 @@ body.modal-open .project-nav {
       <div class="divider"></div>
       <div class="role">디자이너</div>
     </div>
-
+    
     <nav class="nav">
       <a href="index.html">홈</a>
       <a href="profile.html">프로필</a>
       <a href="projects.html" class="active">프로젝트</a>
       <a href="contact.html">연락</a>
     </nav>
+
+    <button class="menu-toggle-btn" id="menuOpenBtn">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#121212" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="3" y1="12" x2="21" y2="12"></line>
+        <line x1="3" y1="6" x2="21" y2="6"></line>
+        <line x1="3" y1="18" x2="21" y2="18"></line>
+      </svg>
+    </button>
   </header>
 
+  <div class="mobile-sidebar" id="mobileSidebar">
+    <button class="mobile-close-btn" id="menuCloseBtn">
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#121212" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+    <a href="index.html" class="mobile-nav-link">홈</a>
+    <a href="profile.html" class="mobile-nav-link">프로필</a>
+    <a href="projects.html" class="mobile-nav-link active">프로젝트</a>
+    <a href="contact.html" class="mobile-nav-link">연락</a>
+  </div>
+
   <main>
-    <h1 class="section-title">프로젝트</h1>
+    <h1 class="section-title">PROJECTS</h1>
 
     <div class="projects-container">
-      <!-- 필터 바 -->
       <div class="filter-bar" id="filterBar">
         <div class="filter-pill" id="filterPill"></div>
-
         <div class="filter-inner" id="filterInner">
           <button class="filter-btn active" data-filter="all">전체보기</button>
           <button class="filter-btn" data-filter="detail">상세페이지</button>
@@ -775,9 +505,7 @@ body.modal-open .project-nav {
         </div>
       </div>
 
-      <!-- 썸네일 영역 -->
       <div class="projects-grid" id="projectsGrid">
-        <!-- 긴 썸네일: 상세페이지 예시 (420 x 700) -->
 
 <!-- 여기서부터 프로젝트 등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록등록 -->
 
@@ -1709,451 +1437,277 @@ body.modal-open .project-nav {
 
 
 
+
+
       </div>
 
-<footer class="project-footer">
-  Son Dahyun– Design Portfolio<br>
-  Crafting Product Stories Through Design, Photography &amp; 3D Visualization
-</footer>
+      <footer class="project-footer">
+        Son Dahyun– Design Portfolio<br>
+        Crafting Product Stories Through Design, Photography &amp; 3D Visualization
+      </footer>
 
     </div>
   </main>
 
-  <!-- 모달 (내용은 JS에서 채움) -->
   <div class="modal-overlay" id="modal"></div>
 
-<button class="project-nav prev" aria-label="이전 프로젝트">
-  <!-- 왼쪽 -->
-  <svg xmlns="http://www.w3.org/2000/svg" width="13.5px" height="23.5px">
-    <path fill="none" stroke="#ffffff" stroke-width="1"
-      d="M11.875,21.500 L1.875,11.500 L11.875,1.500"/>
-  </svg>
-</button>
-
-<button class="project-nav next" aria-label="다음 프로젝트">
-  <!-- 오른쪽 -->
-  <svg xmlns="http://www.w3.org/2000/svg" width="14.5px" height="24.5px">
-    <path fill="none" stroke="#ffffff" stroke-width="1"
-      d="M1.527,1.527 L12.320,12.320 L1.527,23.113"/>
-  </svg>
-</button>
+  <button class="project-nav prev" id="modalPrev">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+  </button>
+  <button class="project-nav next" id="modalNext">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+  </button>
 
   <script>
-    // === 필터 pill 위치/크기 계산 ===
-    function updateFilterPill(targetBtn) {
-      const pill = document.getElementById('filterPill');
-      const bar = document.getElementById('filterBar');
-      const inner = document.getElementById('filterInner');
+    // 1. 네비게이션 & 사이드바 로직
+    (function(){
+      const menuOpenBtn = document.getElementById('menuOpenBtn');
+      const menuCloseBtn = document.getElementById('menuCloseBtn');
+      const sidebar = document.getElementById('mobileSidebar');
 
-      const barRect = bar.getBoundingClientRect();
-      const innerRect = inner.getBoundingClientRect();
-      const btnRect = targetBtn.getBoundingClientRect();
-
-      const barWidth = barRect.width;
-      const textWidth = btnRect.width; // 패딩 0이라 거의 글자 폭
-
-      const filter = targetBtn.getAttribute('data-filter');
-      let left;
-      let width;
-
-      if (filter === 'all') {
-        // 전체보기: 바 왼쪽에서 2px 떨어져 시작
-        left = 2;
-        width = textWidth + 28; // 글자 + 좌우 14px
-      } else if (filter === 'concept') {
-        // 컨셉: 바 오른쪽에서 2px 남기고 끝나도록
-        width = textWidth + 28;
-        left = barWidth - 2 - width;
-      } else {
-        // 가운데 항목들: 글자 기준 좌우 14px
-        const textLeftInBar = btnRect.left - barRect.left;
-        left = textLeftInBar - 14;
-        width = textWidth + 28;
+      function openMenu() {
+        sidebar.classList.add('open');
+        document.body.style.overflow = 'hidden';
+      }
+      function closeMenu() {
+        sidebar.classList.remove('open');
+        document.body.style.removeProperty('overflow');
       }
 
-      pill.style.left = left + 'px';
-      pill.style.width = width + 'px';
-    }
-
-    // === 필터 기능 ===
-   (function () {
-  const filterButtons = document.querySelectorAll('.filter-btn');
-  const items = document.querySelectorAll('.project-item');
-
-  function applyFilter(filter) {
-    items.forEach(item => {
-      const category = item.getAttribute('data-category');
-      if (filter === 'all' || category === filter) {
-        item.style.display = '';
-      } else {
-        item.style.display = 'none';
+      if(menuOpenBtn && menuCloseBtn) {
+        menuOpenBtn.addEventListener('click', openMenu);
+        menuCloseBtn.addEventListener('click', closeMenu);
       }
-    });
-  }
-
-  filterButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      filterButtons.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-
-      updateFilterPill(btn);
-
-      const filter = btn.getAttribute('data-filter');
-      applyFilter(filter);
-    });
-  });
-
-  window.addEventListener('load', () => {
-    const initialBtn = document.querySelector('.filter-btn.active');
-    if (initialBtn) updateFilterPill(initialBtn);
-  });
-
-  window.addEventListener('resize', () => {
-    const activeBtn = document.querySelector('.filter-btn.active');
-    if (activeBtn) updateFilterPill(activeBtn);
-  });
-
-})(); // ✅ 필터 IIFE 닫기
-
-// ✅ 프로젝트 랜덤 정렬 (페이지 진입 시 1회)
-(function shuffleProjects() {
-  const grid = document.getElementById('projectsGrid');
-  if (!grid) return;
-
-  const children = Array.from(grid.children);
-
-  for (let i = children.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [children[i], children[j]] = [children[j], children[i]];
-  }
-
-  children.forEach(el => grid.appendChild(el));
-})();
-
-
-// === 프로젝트 랜덤 정렬 (페이지 진입 시 1회) ===
-(function shuffleProjects() {
-  const grid = document.getElementById('projectsGrid');
-  if (!grid) return;
-
-  const items = Array.from(grid.children);
-
-  for (let i = items.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [items[i], items[j]] = [items[j], items[i]];
-  }
-
-  items.forEach(item => grid.appendChild(item));
-
     })();
 
-    // === 모달(썸네일 크게 보기) – 상세/일반 분리 ===
+    // 2. 필터 애니메이션
     (function () {
-const modal = document.getElementById('modal');
-const items = document.querySelectorAll('.project-item');
+      const filterBtns = document.querySelectorAll('.filter-btn');
+      const pill = document.getElementById('filterPill');
+      const items = document.querySelectorAll('.project-item');
 
-/* 🔽🔽🔽 여기부터 추가 🔽🔽🔽 */
+      // PC용 필터 알약 위치
+      function updatePill(btn) {
+        if(!btn || window.innerWidth <= 768) return; // 모바일이면 실행 안 함
+        const btnRect = btn.getBoundingClientRect();
+        // filterInner가 기준점
+        const parent = document.getElementById('filterInner');
+        const parentRect = parent.getBoundingClientRect();
+        
+        pill.style.width = `${btnRect.width}px`;
+        // 부모 기준 left 계산 (pill은 absolute)
+        pill.style.left = `${btn.offsetLeft}px`; 
+      }
 
-// === 좌우 네비게이션 상태 ===
-let currentIndex = -1;
-
-function getVisibleItems() {
-  return Array.from(document.querySelectorAll('.project-item'))
-    .filter(el => el.style.display !== 'none');
-}
-
-function openByIndex(nextIndex) {
-  const list = getVisibleItems();
-  if (!list.length) return;
-
-  const safeIndex = (nextIndex + list.length) % list.length;
-  currentIndex = safeIndex;
-
-  const item = list[safeIndex];
-  const type = item.dataset.type || (item.dataset.category === 'detail' ? 'detail' : 'normal');
-
-  if (type === 'detail') {
-    const raw = item.dataset.detail || item.querySelector('img').src;
-    const detailList = raw.split(',').map(s => s.trim()).filter(Boolean);
-    openDetailModal(detailList);
-  } else {
-    const src = item.dataset.src || item.dataset.full || item.querySelector('img').src;
-    const xrUrl = item.dataset.xr || '';
-    openNormalModal(src, xrUrl);
-  }
-}
-
-/* 🔼🔼🔼 여기까지 추가 🔼🔼🔼 */
-
-
-      // 아이콘 SVG들 (그대로 복붙)
-      const PC_ICON = `
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="70px" height="60px">
-<image x="0px" y="0px" width="70px" height="60px" xlink:href="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEYAAAA8CAMAAADsSTwRAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAACFlBMVEX19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//////hmBbaAAAAsHRSTlMAAy5QV1VWSRlMxtu9vr/B6ZSc0IxUWVq0x7WIGECwqnIznnodO6KrbAYlm6a7n4+QrqTf3MnOzcvn0ahfQUdGQ0R3sm4UBBUQeRwxi3EIOhcNKSEynZckUbfTdmZ0eGpldTmt5eHd3ujy7vHiEzQ/NaWHOOBpNz4BBTARYe1CG8C2CewK14ESymPqxD3kLV0OJkUHhSKs9GDzayrmDAJohnvZfH1+mf0PS/n16/r8768iMsUAAAABYktHRLE0Y55SAAAAB3RJTUUH6QwEDgoYVBDHagAAAfxJREFUWMNjYGRiZmGlCLCxczAycHJx8/DyUQB4+QUEORmEhEVExcQpAGJsEpJCDFLSMgwUAlk5KQZ5BQ5KjVFUkmeQV1ah1BhVtVFjRo0ZNWbUmFFjRo0ZNWbUmEFkjLqGJqXGaGmrM+jo6unjBwYGBBQY8uswGBmbmJrhA+YWFnjlzSwsrYwYrJVsbO3wAXsHR7zydg5OztYM8i6u+H3u5u5BIGyYhIAx5emFX5G3j68ffhX+oJhSCMCvKDAomIBrQkLVGaTCwimN8IhIKQaDKCOXaCdsQCPGBURFx8YCybjY+ASFOGzKEmO5+A0YkpJTUtPSsQDujEwBhERaalZ2DlZ16Tk5ykkMDLl5DrL5WEBBYVqRP5xXLGpYUlpWjkWdrG0QKB9UuFViBRVqFlUIKbfqmto6RuwqGfEFXH1DYxNKtDa7tJAR/r6tbSh8GV4eRdJNae9oyEMRqOzs8qwk1ZQWXwFPVJGK3G4uWxJNYezpde5DF+xPTZ5AmjETeUsmYUTAZH2BKSSZMnXa9BlYosWrcOYsEkyZXZhW6obVkWrGGk1EGMAYmOuRq2o9x8Bvrkc1JphX1p0eN3uCR3vTPLzGhM9fsHBK1IZFi30XL8EES51ily3f4Ky8ZCnzCrzGrORa1bx6Q2bvnFqsIGtNiuXaddnru0LRaiUAiYQdtw6IMCYAAAAASUVORK5CYII=" />
-</svg>`;
-
-      const MO_ICON = `
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="34px" height="60px">
-<image x="0px" y="0px" width="34px" height="60px" xlink:href="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAACIAAAA8CAMAAAA0RZgbAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAABC1BMVEX19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19//19/////9arr+NAAAAWHRSTlMAOrPt6+nMUhe3u4JgZ2bJr3PzexMBBQR6xa7uVlC2tOpkA1xjDQsPHx4gEhZpCHHf2NXX5IgKKycCMGJfYWVdWFG1svV0cMSxw2tHT05NvH1Mvebc294hD8udVAAAAAFiS0dEWO21xI4AAAAHdElNRQfpDAQOCgEwe2+qAAAAuElEQVRIx+3VxxbBUBSF4UN00UWIFkQneolEi9477/8mwlpG3OsF7j/+BmePDuj0lMGIjDKZLWC12WkHKqfT5faA1+dnAsjYYIiDcARwRWNx4BNJHElZOeCFD0mmM0w2l9cqFBGkVKbFSrVWrzeaLfY3aXe6Uk+WFaU/0DG/ySuGfe+QAE3+nEsIIYQQQggh3wT/+IYaoUY4AWN1AtOZiCPzxRJW+vVmi2q3P6hHOJ0vV2S3e014PAHoEkeE3ICOfgAAAABJRU5ErkJggg==" />
-</svg>`;
-
-      const CLOSE_ICON = `
-<svg xmlns="http://www.w3.org/2000/svg" width="43.5px" height="43.5px">
-<path fill-rule="evenodd" stroke="rgb(255, 255, 255)" stroke-width="1px" fill="none"
- d="M1.500,1.500 L41.500,1.500 L41.500,41.500 L1.500,41.500 L1.500,1.500 Z"/>
-<path fill-rule="evenodd" stroke="rgb(235, 29, 29)" stroke-width="1px" fill="rgb(235, 29, 29)"
- d="M13.926,14.421 L14.688,13.659 L29.920,28.890 L29.159,29.651 L13.926,14.421 Z"/>
-<path fill-rule="evenodd" stroke="rgb(235, 29, 29)" stroke-width="1px" fill="rgb(235, 29, 29)"
- d="M28.956,13.659 L29.717,14.421 L14.485,29.651 L13.723,28.890 L28.956,13.659 Z"/>
-</svg>`;
-
-const XR360_ICON = `
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="87px" height="60px">
-  <image x="0px" y="0px" width="87px" height="60px"
-    xlink:href="data:img/png;base64,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" />
-</svg>`;
-
-
-function closeModal() {
-  modal.classList.remove('open');
-  modal.innerHTML = '';
-  unlockBodyScroll();   // ✅ 추가
-}
-
-
-function lockBodyScroll() {
-  const scrollY = window.scrollY || document.documentElement.scrollTop;
-  document.body.dataset.scrollY = String(scrollY);
-
-  document.body.classList.add('modal-open');
-  document.body.style.position = 'fixed';
-  document.body.style.top = `-${scrollY}px`;
-  document.body.style.left = '0';
-  document.body.style.right = '0';
-  document.body.style.width = '100%';
-}
-
-function unlockBodyScroll() {
-  const scrollY = parseInt(document.body.dataset.scrollY || '0', 10);
-
-  document.body.classList.remove('modal-open');
-  document.body.style.position = '';
-  document.body.style.top = '';
-  document.body.style.left = '';
-  document.body.style.right = '';
-  document.body.style.width = '';
-  delete document.body.dataset.scrollY;
-
-  window.scrollTo(0, scrollY);
-}
-
-
-// 상세페이지용 모달
-function openDetailModal(detailSrcList) {
-  // 혹시 문자열이 넘어오면 배열로 변환
-  if (!Array.isArray(detailSrcList)) {
-    detailSrcList = [detailSrcList];
-  }
-
-  // PC용 이미지들 HTML
-  const pcImagesHtml = detailSrcList
-    .map(src => `<img src="${src}" alt="상세페이지" class="modal-image-pc">`)
-    .join('');
-
-  // MO용 이미지들 HTML
-  const moImagesHtml = detailSrcList
-    .map(src => `<img src="${src}" alt="상세페이지 모바일" class="modal-image-mo">`)
-    .join('');
-
-  modal.innerHTML = `
-    <div class="modal-frame detail-pc">
-      <div class="modal-toolbar">
-        <button class="view-btn view-pc active" title="PC 화면 기준으로 보기">
-          ${PC_ICON}
-        </button>
-        <button class="view-btn view-mo" title="모바일 화면 기준으로 보기">
-          ${MO_ICON}
-        </button>
-      </div>
-
-      <button class="modal-close-btn" aria-label="닫기">
-        ${CLOSE_ICON}
-      </button>
-
-<!-- PC 모드 뷰 : 모바일처럼 "고정 박스 + 내부 스크롤" -->
-<div class="detail-pc-view">
-  <div class="pc-viewport">
-    <div class="pc-scroll">
-      ${pcImagesHtml}
-    </div>
-  </div>
-</div>
-
-
-      <!-- MO 모드 뷰 : 여러 장을 세로로 쭉, 안에서 스크롤 -->
-      <div class="detail-mo-view">
-        <div class="mobile-viewport">
-          <div class="mobile-scroll">
-            ${moImagesHtml}
-          </div>
-        </div>
-      </div>
-    </div>
-  `;
-
-lockBodyScroll();  // ✅ 추가
-modal.classList.add('open');
-
-
-  const frame     = modal.querySelector('.modal-frame');
-  const pcBtn     = modal.querySelector('.view-pc');
-  const moBtn     = modal.querySelector('.view-mo');
-  const closeBtn  = modal.querySelector('.modal-close-btn');
-  const pcView    = modal.querySelector('.detail-pc-view');
-  const moView    = modal.querySelector('.detail-mo-view');
-
-  function setPC() {
-    frame.classList.add('detail-pc');
-    frame.classList.remove('detail-mo');
-    pcBtn.classList.add('active');
-    moBtn.classList.remove('active');
-    pcView.style.display = 'block';
-    moView.style.display = 'none';
-  }
-
-  function setMO() {
-    frame.classList.add('detail-mo');
-    frame.classList.remove('detail-pc');
-    moBtn.classList.add('active');
-    pcBtn.classList.remove('active');
-    pcView.style.display = 'none';
-    moView.style.display = 'block';
-  }
-
-  pcBtn.addEventListener('click', setPC);
-  moBtn.addEventListener('click', setMO);
-  closeBtn.addEventListener('click', closeModal);
-
-  // 배경 클릭 시 닫기
-  modal.addEventListener(
-    'click',
-    function onBg(e) {
-      if (e.target === modal) closeModal();
-    },
-    { once: true }
-  );
-
-  // ESC 닫기
-  window.addEventListener('keydown', function onEsc(e) {
-    if (e.key === 'Escape') {
-      closeModal();
-      window.removeEventListener('keydown', onEsc);
-    }
-  });
-}
-
-
-function openNormalModal(src, xrUrl) {
-  modal.innerHTML = `
-    <div class="modal-frame normal">
-
-      ${xrUrl ? `
-        <button class="xr-btn" type="button" aria-label="360도 보기">
-          ${XR360_ICON}
-        </button>
-      ` : ''}
-
-      <button class="modal-close-btn" aria-label="닫기">
-        ${CLOSE_ICON}
-      </button>
-
-      <img src="${src}" class="modal-image">
-    </div>
-  `;
-
-
-
-lockBodyScroll();  // ✅ 추가
-modal.classList.add('open');
-
-
-        const closeBtn = modal.querySelector('.modal-close-btn');
-        closeBtn.addEventListener('click', closeModal);
-
-        modal.addEventListener('click', function onBg(e) {
-          if (e.target === modal) closeModal();
-        }, { once: true });
-
-        window.addEventListener('keydown', function onEsc(e) {
-          if (e.key === 'Escape') {
-            closeModal();
-            window.removeEventListener('keydown', onEsc);
+      function filterItems(category) {
+        items.forEach(item => {
+          if (category === 'all' || item.dataset.category === category) {
+            item.style.display = '';
+            setTimeout(() => item.style.opacity = '1', 50);
+          } else {
+            item.style.display = 'none';
+            item.style.opacity = '0';
           }
         });
       }
 
-      // 썸네일 클릭 핸들러
-items.forEach(item => {
-  item.addEventListener('click', () => {
+      filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelector('.filter-btn.active').classList.remove('active');
+          btn.classList.add('active');
+          updatePill(btn);
+          filterItems(btn.dataset.filter);
+        });
+      });
 
-const list = getVisibleItems();
-currentIndex = list.indexOf(item);
-
-    const type = item.dataset.type || (item.dataset.category === 'detail' ? 'detail' : 'normal');
-
-    if (type === 'detail') {
-      // 1) data-detail 읽기
-      const raw = item.dataset.detail || item.querySelector('img').src;
-
-      // 2) 콤마로 나눠서 배열로 만들기 (공백 제거)
-      const detailList = raw
-        .split(',')
-        .map(s => s.trim())
-        .filter(s => s.length > 0);
-
-      openDetailModal(detailList); // 배열 넘기기
-    } else {
-const src = item.dataset.src || item.dataset.full || item.querySelector('img').src;
-
-const xrUrl = item.dataset.xr || '';
-openNormalModal(src, xrUrl);
-
-  const xrBtn = modal.querySelector('.xr-btn');
-  if (xrBtn && xrUrl) {
-    xrBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      window.open(xrUrl, '_blank', 'noopener');
-    });
-  }
-
-    }
-  });
-});
-
-const prevBtn = document.querySelector('.project-nav.prev');
-const nextBtn = document.querySelector('.project-nav.next');
-
-prevBtn?.addEventListener('click', (e) => {
-  e.stopPropagation();
-  if (!modal.classList.contains('open')) return;
-  openByIndex(currentIndex - 1);
-});
-
-nextBtn?.addEventListener('click', (e) => {
-  e.stopPropagation();
-  if (!modal.classList.contains('open')) return;
-  openByIndex(currentIndex + 1);
-});
-
+      window.addEventListener('load', () => {
+        const active = document.querySelector('.filter-btn.active');
+        updatePill(active);
+      });
+      
+      window.addEventListener('resize', () => {
+         const active = document.querySelector('.filter-btn.active');
+         updatePill(active);
+      });
     })();
 
+    // 3. Masonry 랜덤 정렬
+    (function shuffleGrid() {
+      const grid = document.getElementById('projectsGrid');
+      for (let i = grid.children.length; i >= 0; i--) {
+        grid.appendChild(grid.children[Math.random() * i | 0]);
+      }
+    })();
 
+    // 4. 모달 로직
+    (function () {
+      const modal = document.getElementById('modal');
+      const items = document.querySelectorAll('.project-item');
+      const prevBtn = document.getElementById('modalPrev');
+      const nextBtn = document.getElementById('modalNext');
+      
+      let currentIdx = -1;
+      let visibleItems = [];
+      let scrollPosition = 0;
+
+      function lockScroll() {
+        scrollPosition = window.pageYOffset;
+        document.body.classList.add('modal-open');
+        // PC에서만 화살표 보이기
+        if(window.innerWidth > 768) {
+          prevBtn.style.display = 'block';
+          nextBtn.style.display = 'block';
+        }
+      }
+
+      function unlockScroll() {
+        document.body.classList.remove('modal-open');
+        window.scrollTo(0, scrollPosition);
+        prevBtn.style.display = 'none';
+        nextBtn.style.display = 'none';
+      }
+
+      function getVisibleItems() {
+        return Array.from(document.querySelectorAll('.project-item')).filter(el => el.style.display !== 'none');
+      }
+
+      function openModal(index) {
+        visibleItems = getVisibleItems();
+        if (index < 0) index = visibleItems.length - 1;
+        if (index >= visibleItems.length) index = 0;
+        
+        currentIdx = index;
+        const item = visibleItems[index];
+        const type = item.dataset.type || 'normal';
+        const isMobile = window.innerWidth <= 768;
+
+        // 닫기 버튼 HTML
+        const closeBtnHtml = `
+            <button class="close-btn-fixed icon-btn" id="modalCloseBtn">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+        `;
+
+        // 컨트롤 바 (PC용)
+        const xrUrl = item.dataset.xr;
+        const pcControls = `
+            <div class="modal-controls">
+                <div class="control-group">
+                    ${xrUrl ? `<button onclick="window.open('${xrUrl}', '_blank')" class="icon-btn">XR View</button>` : ''}
+                </div>
+                ${closeBtnHtml}
+            </div>
+        `;
+        
+        // 모바일은 컨트롤 바 없이 닫기 버튼만 우측 상단 고정
+        const mobileControls = `
+            <div class="modal-controls">
+                ${closeBtnHtml}
+            </div>
+        `;
+
+        let contentHtml = '';
+
+        if (type === 'detail') {
+          const detailRaw = item.dataset.detail || item.querySelector('img').src;
+          const images = detailRaw.split(',').map(s => s.trim()).filter(Boolean);
+          const imgHtml = images.map(src => `<img src="${src}">`).join('');
+          
+          if (isMobile) {
+            // 모바일: 그냥 이미지만 쭉 나열 (회색박스/버튼 없음)
+            contentHtml = `
+                ${mobileControls}
+                <div class="modal-frame detail-pc">
+                    <div class="pc-viewport" style="overflow: visible; height: auto;">
+                        <div class="pc-scroll">${imgHtml}</div>
+                    </div>
+                </div>
+            `;
+          } else {
+            // PC: 뷰어 모드 토글
+            contentHtml = `
+              <div class="modal-frame detail-pc" id="detailFrame">
+                 <div class="modal-controls" style="top: -50px;">
+                    <div class="control-group">
+                      <button class="icon-btn active" id="viewPC">PC</button>
+                      <button class="icon-btn" id="viewMO">Mobile</button>
+                    </div>
+                    ${closeBtnHtml}
+                 </div>
+                 <div class="pc-viewport" id="viewport">
+                    <div class="pc-scroll">${imgHtml}</div>
+                 </div>
+              </div>
+            `;
+          }
+
+        } else {
+          // 일반 이미지
+          const src = item.dataset.src || item.querySelector('img').src;
+          contentHtml = `
+            <div class="modal-frame gallery">
+              ${isMobile ? mobileControls : pcControls}
+              <img src="${src}">
+            </div>
+          `;
+        }
+
+        modal.innerHTML = contentHtml;
+        modal.classList.add('open');
+        lockScroll();
+
+        document.getElementById('modalCloseBtn')?.addEventListener('click', closeModal);
+
+        // PC 상세페이지 뷰어 전환 이벤트 (모바일 아닐 때만 존재)
+        if (!isMobile && type === 'detail') {
+            const btnPC = document.getElementById('viewPC');
+            const btnMO = document.getElementById('viewMO');
+            const frame = document.getElementById('detailFrame');
+            const viewport = document.getElementById('viewport');
+
+            if(btnPC && btnMO) {
+                btnPC.addEventListener('click', () => {
+                    btnPC.classList.add('active'); btnMO.classList.remove('active');
+                    frame.classList.replace('detail-mo', 'detail-pc');
+                    viewport.className = 'pc-viewport';
+                    viewport.firstElementChild.className = 'pc-scroll';
+                });
+                btnMO.addEventListener('click', () => {
+                    btnMO.classList.add('active'); btnPC.classList.remove('active');
+                    frame.classList.replace('detail-pc', 'detail-mo');
+                    viewport.className = 'mobile-viewport';
+                    viewport.firstElementChild.className = 'mobile-scroll';
+                });
+            }
+        }
+      }
+
+      function closeModal() {
+        modal.classList.remove('open');
+        setTimeout(() => { modal.innerHTML = ''; }, 300);
+        unlockScroll();
+      }
+
+      items.forEach((item) => {
+        item.addEventListener('click', () => {
+           visibleItems = getVisibleItems();
+           openModal(visibleItems.indexOf(item));
+        });
+      });
+
+      prevBtn.addEventListener('click', (e) => { e.stopPropagation(); openModal(currentIdx - 1); });
+      nextBtn.addEventListener('click', (e) => { e.stopPropagation(); openModal(currentIdx + 1); });
+      
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+      });
+
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.classList.contains('open')) closeModal();
+      });
+
+    })();
   </script>
-
-
 </body>
-
-
 </html>
-
 
